@@ -5,8 +5,6 @@ import { ClientLogos } from "@/components/sections/ClientLogos";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { VideoSection } from "@/components/sections/VideoSection";
-import { FounderSection } from "@/components/sections/FounderSection";
-import { TeamSection } from "@/components/sections/TeamSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { ShortsCarousel } from "@/components/sections/ShortsCarousel";
 import { FAQSection } from "@/components/sections/FAQSection";
@@ -24,9 +22,8 @@ export const metadata: Metadata = {
 /**
  * Section order follows a conversion funnel rather than a feature list:
  *
- *   hook -> who we are -> proof -> what we sell -> why us -> see it ->
- *   who you deal with -> what others say -> educate -> handle objections ->
- *   authority -> convert
+ *   hook -> who we are -> proof -> what we sell -> why us -> what others say ->
+ *   see it -> educate -> handle objections -> authority -> convert
  *
  * Formats alternate deliberately (split, ticker, card grid, split, full-bleed
  * video, portrait, grid, carousel...) so no two adjacent sections share a
@@ -47,9 +44,8 @@ export default function Home() {
       <ServicesSection />
       <WhyChooseUs />
 
-      {/* The people behind it */}
-      <FounderSection />
-      <TeamSection />
+      {/* The founder and crew sections are unhooked, not deleted. Both
+          components still exist and can be reinstated by importing them here. */}
 
       {/* Social proof */}
       <TestimonialsSection />

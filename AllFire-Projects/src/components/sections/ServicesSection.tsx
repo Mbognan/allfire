@@ -4,6 +4,7 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ServicesGridMotion } from "@/components/sections/ServicesGridMotion";
 import { CheckIcon } from "@/components/ui/Icon";
+import { Button } from "@/components/ui/Button";
 import { services } from "@/content/services";
 import {
   serviceStatement,
@@ -73,6 +74,14 @@ export function ServicesSection() {
             ))}
           </p>
         )}
+
+        {/* The grid only features five services, so send anyone who wants the
+            full list to the services index rather than growing the grid. */}
+        <div className="mt-10">
+          <Button href="/services" variant="outline-light" withArrow>
+            Explore more
+          </Button>
+        </div>
 
         {/* Licensed classes of work. This is hard credential detail, so it is
             set as a dense two-column list rather than more cards. */}
