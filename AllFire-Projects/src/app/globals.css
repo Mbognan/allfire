@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+:root {
+  --color-ink: #16130f;
+  --color-ink-2: #24201b;
+  --color-ink-soft: #6b6259;
+  --color-paper: #ffffff;
+  --color-paper-raised: #f7f4f0;
+  --color-line: rgba(22, 19, 15, 0.12);
+
+  /* Brand hex, straight from the AllFire logo. */
+  --color-flame-red: #fc0403;
+  --color-flame-orange: #fb5614;
+  --color-flame-yellow: #feaf04;
+
+  /* Accessible-for-text sibling of flame-red (white text passes 4.94:1). */
+  --color-flame-red-deep: #e20302;
+
+  --font-display: var(--font-rajdhani);
+  --font-body: var(--font-rajdhani);
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-ink-2: var(--color-ink-2);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-paper: var(--color-paper);
+  --color-paper-raised: var(--color-paper-raised);
+  --color-line: var(--color-line);
+
+  --color-flame-red: var(--color-flame-red);
+  --color-flame-orange: var(--color-flame-orange);
+  --color-flame-yellow: var(--color-flame-yellow);
+  --color-flame-red-deep: var(--color-flame-red-deep);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+
+  --container-content: 78rem;
+
+  /* Shape lock: this design is all-sharp. No rounded corners anywhere. */
+  --radius-none: 0px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Base element styles live in @layer base so Tailwind utilities
+   (text-white, text-ink, ...) always win over them. */
+@layer base {
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink-soft);
+    font-family: var(--font-body);
+    /* Rajdhani is condensed, so body copy gets a larger size and looser
+       leading than a normal-width face would need to stay comfortable. */
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    font-weight: 500;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    letter-spacing: 0.01em;
+    line-height: 1.05;
+  }
+}
+
+::selection {
+  background: var(--color-flame-orange);
+  color: #fff;
+}
+
+/* ---- Shape system ----------------------------------------------------
+   One documented radius rule, applied everywhere:
+
+     interactive (buttons, pills, chips, icon controls)  50px  -> full pill
+     surfaces    (cards, panels, media frames)           16px  -> rounded-2xl
+     inputs      (text fields, selects)                  12px  -> rounded-xl
+
+   The earlier diagonal corner-cut (.notch-tr) is gone: it fought the pill
+   buttons and could not be expressed as a radius, so it broke the lock.
+   -------------------------------------------------------------------- */
+:root {
+  --radius-pill: 50px;
+  --radius-surface: 16px;
+  --radius-input: 12px;
+}
+
+/* Brand gradient, one direction, used everywhere for consistency. */
+.brand-gradient {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-flame-red) 0%,
+    var(--color-flame-orange) 55%,
+    var(--color-flame-yellow) 100%
+  );
+}
+
+.brand-gradient-text {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-flame-red) 0%,
+    var(--color-flame-orange) 50%,
+    var(--color-flame-yellow) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Photographic band: grayscale texture under a brand-tinted scrim.
+   Swap the background-image for real AllFire photography. */
+.photo-band::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(22, 19, 15, 0.94) 0%,
+    rgba(22, 19, 15, 0.82) 45%,
+    rgba(226, 3, 2, 0.55) 100%
+  );
+}
+
+/* Marquee: transform-only keyframe, so it composites on the GPU.
+   The track holds two identical copies, so -50% lands exactly on the
+   start of the second copy and the loop has no visible seam. */
+@keyframes marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 34s linear infinite;
+}
+
+/* Logo ticker reads better slower than the headline marquee. */
+.marquee-slow {
+  animation-duration: 60s;
+}
+
+/* Assistant launcher: rings radiating out to signal the channel is live.
+   Transform + opacity only, so it stays on the compositor. */
+@keyframes assistant-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+.assistant-ping {
+  animation: assistant-ping 2.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.assistant-ping-delayed {
+  animation-delay: 1.3s;
+}
+
+/* Chat typing indicator. Each dot carries its own inline animation-delay. */
+@keyframes assistant-typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+.assistant-typing-dot {
+  animation: assistant-typing 1.3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Motion sensitivity: no looping attention-seeking on the launcher. */
+  .assistant-ping {
+    animation: none;
+  }
+
+  /* Dots hold still but stay visible, so "thinking" is still legible. */
+  .assistant-typing-dot {
+    animation: none;
+    opacity: 0.65;
+  }
+}
+
+@media (hover: hover) {
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Motion sensitivity: stop the crawl rather than merely speeding it up. */
+  .marquee-track {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
