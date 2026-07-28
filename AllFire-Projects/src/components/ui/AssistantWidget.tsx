@@ -167,14 +167,14 @@ export function AssistantWidget() {
                   setEngaged(true);
                 }}
                 aria-expanded={open}
-                aria-label="Ask AllFire: open the chat assistant"
+                aria-label="Need help? Open the AllFire chat assistant"
                 /* min-h-14 is a generous touch target, well past the 44px
                    minimum, for less precise pointing. */
                 className="relative flex min-h-14 cursor-pointer items-center gap-3 rounded-full border border-line bg-white py-3 pr-6 pl-4 shadow-2xl transition-transform duration-200 hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-orange"
               >
                 <Logo className="h-8 w-auto lg:h-8" />
                 <span className="font-display text-lg leading-none font-bold text-ink uppercase">
-                  Ask AllFire
+                  Need Help?
                 </span>
               </button>
             </div>
@@ -198,13 +198,13 @@ export function AssistantWidget() {
             {/* Header with a curved lower edge */}
             <div className="brand-gradient relative z-10 shrink-0 pt-5 pb-9">
               <div className="flex items-start gap-3 px-5">
-                <span className="flex shrink-0 items-center justify-center rounded-xl bg-white px-2.5 py-2 shadow-sm">
-                  <Logo className="h-7 w-auto lg:h-7" />
-                </span>
+                {/* The light lockup sits straight on the gradient: no plate,
+                    no container. */}
+                <Logo tone="paper" className="h-10 w-auto shrink-0 lg:h-10" />
 
                 <div className="min-w-0 flex-1">
                   <p className="font-display text-xl leading-tight font-bold text-white uppercase">
-                    Ask AllFire
+                    Need Help?
                   </p>
                   <p className="mt-0.5 text-sm text-white/90">We are online</p>
                 </div>
@@ -235,11 +235,16 @@ export function AssistantWidget() {
                 without it, messages scrolling past the curved header hard-clip
                 mid-bubble and read as a rendering fault.
 
-                min-h-40 keeps a usable transcript before the conversation is
-                long enough to overflow, while staying low enough that a short
-                viewport shrinks the transcript rather than pushing the
-                composer out of the clipped panel. */}
-            <div className="relative min-h-40 flex-1">
+                The scroller is positioned absolutely inside this wrapper, which
+                is what actually makes it scroll. Left in flow it contributed
+                its full content height back to the flex column, so the region
+                grew with the transcript instead of overflowing, and the last
+                reply was clipped by the panel with no way to reach it. Taken
+                out of flow the wrapper measures zero, so flex-1 hands it
+                exactly the leftover space and inset-0 pins the scroller to it.
+
+                min-h-40 then only sets a floor for a short conversation. */}
+            <div className="relative min-h-40 flex-1 overflow-hidden">
               <div
                 className="pointer-events-none absolute inset-x-0 top-0 z-10 h-6 bg-linear-to-b from-white to-transparent"
                 aria-hidden="true"
@@ -249,7 +254,7 @@ export function AssistantWidget() {
                 role="log"
                 aria-live="polite"
                 aria-label="Conversation"
-                className="h-full space-y-3 overflow-y-auto overscroll-contain bg-white px-4 pt-4 pb-4"
+                className="absolute inset-0 space-y-3 overflow-y-auto overscroll-contain bg-white px-4 pt-4 pb-4"
               >
                 {messages.map((m, i) => (
                   <div key={i} className="space-y-2">
