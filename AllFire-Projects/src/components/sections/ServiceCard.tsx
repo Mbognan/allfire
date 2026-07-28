@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Service } from "@/types/service";
 import { getServiceImage } from "@/content/services/images";
@@ -21,14 +22,19 @@ export function ServiceCard({ service }: { service: Service }) {
       className="group flex h-full flex-col focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-orange"
     >
       <div className="relative aspect-4/5 w-full overflow-hidden rounded-2xl bg-ink-2">
-        {/* eslint-disable-next-line @next/next/no-img-element -- pre-optimised local asset */}
-        <img
+        {/* next/image rather than a bare <img>.
+
+            The raw tag was fine while every service pointed at a hand-optimised
+            webp. The new artwork is ~2MB PNG apiece, so five of them shipped
+            unprocessed would be roughly 10MB on the landing page. This resizes
+            and re-encodes per viewport instead. */}
+        <Image
           src={getServiceImage(service.slug)}
           alt=""
-          loading="lazy"
-          decoding="async"
+          fill
+          sizes="(max-width: 640px) 68vw, (max-width: 1024px) 33vw, 20vw"
           aria-hidden="true"
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out motion-safe:group-hover:scale-105"
+          className="object-cover transition-transform duration-500 ease-out motion-safe:group-hover:scale-105"
         />
         {/* Keeps five different photos inside one palette. */}
         <span

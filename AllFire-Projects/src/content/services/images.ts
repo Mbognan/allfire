@@ -9,11 +9,14 @@
  * client supplies it, keyed by the same slugs.
  */
 export const serviceImages: Record<string, string> = {
-  "diesel-pump-inspection": "/images/stock/team-3.webp",
-  "fire-extinguisher-tagging": "/images/stock/extinguisher.webp",
-  "emergency-lighting-testing": "/images/stock/svc-emergency-lighting.webp",
-  "smoke-alarm-testing": "/images/stock/svc-smoke-alarm.webp",
-  "air-mechanical": "/images/stock/svc-air-mechanical.webp",
+  /* The five headline services now carry purpose-made artwork in
+     services-img/, named by slug so the mapping is self-evident. The remaining
+     nine are still on stock stand-ins below. */
+  "emergency-lighting-testing": "/images/services-img/emergency-lighting-testing.png",
+  "fire-extinguisher-tagging": "/images/services-img/fire-extinguisher-tagging.png",
+  "smoke-alarm-testing": "/images/services-img/smoke-alarm-testing.png",
+  "diesel-pump-inspection": "/images/services-img/diesel-pump-inspection.png",
+  "air-mechanical": "/images/services-img/air-mechanical.png",
   "fire-panels-detection": "/images/stock/riser-room.webp",
   "fire-hydrant-systems": "/images/stock/hydrant.webp",
   "fire-sprinkler-systems": "/images/stock/backdrop-extinguishers.webp",
