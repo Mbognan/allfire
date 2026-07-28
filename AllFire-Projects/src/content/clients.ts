@@ -34,6 +34,15 @@ export type Client = {
    * empty alt rather than a caption we cannot stand behind.
    */
   nameConfirmed?: boolean;
+  /**
+   * The supplied artwork is white on transparent, which is invisible on this
+   * row's white background. Inverting flips it to dark so it reads.
+   *
+   * This is a stopgap: it only works because both affected logos are single
+   * colour. Ask the client for the dark or full-colour version of each and drop
+   * the flag, rather than adding more entries to it.
+   */
+  invert?: boolean;
 };
 
 const dir = "/images/clients-logo";
@@ -41,10 +50,10 @@ const dir = "/images/clients-logo";
 export const clients: Client[] = [
   { name: "Harbour Strata Group", monogram: "HS", shape: "arc", src: `${dir}/client-logo-1.png` },
   { name: "Meridian Property", monogram: "MP", shape: "ring", src: `${dir}/client-logo-2.png` },
-  { name: "Parkline Facilities", monogram: "PF", shape: "bars", src: `${dir}/client-logo-3.png` },
+  { name: "Parkline Facilities", monogram: "PF", shape: "bars", src: `${dir}/client-logo-3.png`, invert: true },
   { name: "Northshore Owners Corp", monogram: "NO", shape: "peak", src: `${dir}/client-logo-4.png` },
   { name: "Quayside Commercial", monogram: "QC", shape: "tower", src: `${dir}/client-logo-5.png` },
-  { name: "Ironbark Estates", monogram: "IE", shape: "chevron", src: `${dir}/client-logo-6.png` },
+  { name: "Ironbark Estates", monogram: "IE", shape: "chevron", src: `${dir}/client-logo-6.png`, invert: true },
   { name: "Wattle Building Services", monogram: "WB", shape: "shield", src: `${dir}/client-logo-7.jpg` },
   { name: "Southbank Retail", monogram: "SR", shape: "quad", src: `${dir}/client-logo-8-768x340.png` },
 ];

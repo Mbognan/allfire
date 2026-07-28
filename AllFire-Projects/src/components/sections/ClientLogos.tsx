@@ -54,7 +54,17 @@ function ClientMark({ client }: { client: (typeof clients)[number] }) {
            The section heading already states what the row is. */
         alt={client.nameConfirmed ? client.name : ""}
         loading="lazy"
-        className="h-12 w-auto max-w-40 shrink-0 object-contain px-6 opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0 md:h-14 md:max-w-48"
+        /* Full colour, no grayscale wash.
+
+           The logo-wall convention of muting at rest assumes artwork with
+           enough contrast to survive it. This set does not: two logos are white
+           on transparent and vanish entirely, and grayscale flattened the rest
+           into near-identical greys. Legibility of a real client's mark beats
+           the texture effect. */
+        className={cn(
+          "h-12 w-auto max-w-40 shrink-0 object-contain px-6 transition-opacity duration-300 md:h-14 md:max-w-48",
+          client.invert && "invert"
+        )}
       />
     );
   }
