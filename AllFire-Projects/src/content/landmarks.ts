@@ -53,27 +53,11 @@ export const landmarks: Landmark[] = [
     image: "/images/stock/hydrant.webp",
   },
   {
-    id: "customs-house",
-    name: "Customs House",
-    locality: "Circular Quay",
-    blurb:
-      "Adaptive reuse layering modern occupancy over nineteenth-century construction, where compartmentation has to be proven rather than assumed.",
-    image: "/images/stock/crew-2.webp",
-  },
-  {
     id: "barangaroo",
     name: "Barangaroo",
     locality: "Harbourside",
     blurb:
       "Contemporary high-rise where stair pressurisation, sprinkler coverage and hydrant boosters are tested as one interlocking system.",
     image: "/images/stock/technician.webp",
-  },
-  {
-    id: "the-rocks",
-    name: "The Rocks",
-    locality: "Millers Point",
-    blurb:
-      "Tight historic streets and shared walls, where a fire that breaches one building's separation is immediately the next building's problem.",
-    image: "/images/stock/crew-3.webp",
   },
 ];

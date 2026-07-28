@@ -41,11 +41,20 @@ export function ClientLogos() {
 function ClientMark({ client }: { client: (typeof clients)[number] }) {
   if (client.src) {
     return (
+      /* Real artwork arrives at wildly different aspect ratios (one of these is
+         768x340). Constraining height alone let the wide ones dominate the row,
+         so max-w caps them too and object-contain letterboxes rather than
+         distorts. The px gives each logo its own breathing room instead of
+         relying on the track gap alone. */
       // eslint-disable-next-line @next/next/no-img-element -- client-supplied logo asset
       <img
         src={client.src}
-        alt={client.name}
-        className="h-12 w-auto shrink-0 opacity-60 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+        /* Empty until `name` is the real company: captioning someone else's
+           logo with a placeholder brand is worse than leaving it decorative.
+           The section heading already states what the row is. */
+        alt={client.nameConfirmed ? client.name : ""}
+        loading="lazy"
+        className="h-12 w-auto max-w-40 shrink-0 object-contain px-6 opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0 md:h-14 md:max-w-48"
       />
     );
   }

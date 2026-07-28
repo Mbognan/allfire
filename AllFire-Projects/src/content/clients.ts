@@ -1,14 +1,17 @@
 /**
- * Client logo placeholders.
+ * Client logos for the scrolling ticker.
  *
- * IMPORTANT: these are invented brands, not AllFire's real customers. The names
- * are generic building and strata descriptors chosen so they cannot be mistaken
- * for, or impersonate, any actual Sydney firm, and each carries a generated
- * geometric mark rather than a copy of a real company's logo.
+ * Now pointing at the real artwork in `public/images/clients-logo/`. The
+ * generated geometric marks are retained in ClientLogoMarks and still render
+ * for any entry without a `src`, so nothing was deleted, it is simply no longer
+ * reached while every entry has artwork.
  *
- * When the client supplies real logo files, drop them in
- * `public/images/clients/` and add `src` to each entry: ClientLogos renders the
- * image instead of the generated mark automatically, no component change needed.
+ * OUTSTANDING: the `name` values below are the invented placeholders from the
+ * previous pass and do NOT identify these logos. They survive only as React
+ * keys, and ClientLogos deliberately renders an empty alt for image entries so
+ * no real company is captioned with a wrong name. Replace each `name` with the
+ * actual company once the client confirms who they are, and the alt text starts
+ * carrying it automatically.
  */
 export type ClientMarkShape =
   | "ring"
@@ -26,15 +29,22 @@ export type Client = {
   /** Generated stand-in mark. Ignored once `src` is set. */
   shape: ClientMarkShape;
   src?: string;
+  /**
+   * Set once `name` is the real company. Until then the logo renders with an
+   * empty alt rather than a caption we cannot stand behind.
+   */
+  nameConfirmed?: boolean;
 };
 
+const dir = "/images/clients-logo";
+
 export const clients: Client[] = [
-  { name: "Harbour Strata Group", monogram: "HS", shape: "arc" },
-  { name: "Meridian Property", monogram: "MP", shape: "ring" },
-  { name: "Parkline Facilities", monogram: "PF", shape: "bars" },
-  { name: "Northshore Owners Corp", monogram: "NO", shape: "peak" },
-  { name: "Quayside Commercial", monogram: "QC", shape: "tower" },
-  { name: "Ironbark Estates", monogram: "IE", shape: "chevron" },
-  { name: "Wattle Building Services", monogram: "WB", shape: "shield" },
-  { name: "Southbank Retail", monogram: "SR", shape: "quad" },
+  { name: "Harbour Strata Group", monogram: "HS", shape: "arc", src: `${dir}/client-logo-1.png` },
+  { name: "Meridian Property", monogram: "MP", shape: "ring", src: `${dir}/client-logo-2.png` },
+  { name: "Parkline Facilities", monogram: "PF", shape: "bars", src: `${dir}/client-logo-3.png` },
+  { name: "Northshore Owners Corp", monogram: "NO", shape: "peak", src: `${dir}/client-logo-4.png` },
+  { name: "Quayside Commercial", monogram: "QC", shape: "tower", src: `${dir}/client-logo-5.png` },
+  { name: "Ironbark Estates", monogram: "IE", shape: "chevron", src: `${dir}/client-logo-6.png` },
+  { name: "Wattle Building Services", monogram: "WB", shape: "shield", src: `${dir}/client-logo-7.jpg` },
+  { name: "Southbank Retail", monogram: "SR", shape: "quad", src: `${dir}/client-logo-8-768x340.png` },
 ];
