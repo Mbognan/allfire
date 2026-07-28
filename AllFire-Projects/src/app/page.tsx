@@ -3,6 +3,7 @@ import { Hero } from "@/components/sections/Hero";
 import { OurStory } from "@/components/sections/OurStory";
 import { ClientLogos } from "@/components/sections/ClientLogos";
 import { ServicesSection } from "@/components/sections/ServicesSection";
+import { LandmarkShowcase } from "@/components/sections/LandmarkShowcase";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { VideoSection } from "@/components/sections/VideoSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
@@ -42,6 +43,7 @@ export default function Home() {
 
       {/* The offer, then the differentiator */}
       <ServicesSection />
+      <LandmarkShowcase />
       <WhyChooseUs />
 
       {/* The founder and crew sections are unhooked, not deleted. Both

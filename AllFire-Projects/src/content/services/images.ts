@@ -14,6 +14,15 @@ export const serviceImages: Record<string, string> = {
   "emergency-lighting-testing": "/images/stock/svc-emergency-lighting.webp",
   "smoke-alarm-testing": "/images/stock/svc-smoke-alarm.webp",
   "air-mechanical": "/images/stock/svc-air-mechanical.webp",
+  "fire-panels-detection": "/images/stock/riser-room.webp",
+  "fire-hydrant-systems": "/images/stock/hydrant.webp",
+  "fire-sprinkler-systems": "/images/stock/backdrop-extinguishers.webp",
+  "fire-penetration-sealing": "/images/stock/crew-2.webp",
+  "fire-doors-frames": "/images/stock/crew-3.webp",
+  "fire-spray-protection": "/images/stock/crew-4.webp",
+  "fire-system-upgrades": "/images/stock/team-1.webp",
+  "annual-fire-safety-statement": "/images/stock/team-2.webp",
+  "as1851-routine-servicing": "/images/stock/crew-1.webp",
 };
 
 export const serviceImageFallback = "/images/stock/technician.webp";

@@ -193,7 +193,7 @@ export function AssistantWidget() {
             transition={{ duration: 0.26, ease }}
             /* Sits where the launcher was, since the launcher is now hidden
                while this is open. */
-            className="fixed right-5 bottom-5 z-50 flex max-h-[min(36rem,80vh)] w-[min(24rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl"
+            className="fixed right-5 bottom-5 z-50 flex h-[min(44rem,calc(100vh-2.5rem))] w-[min(24rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl"
           >
             {/* Header with a curved lower edge */}
             <div className="brand-gradient relative z-10 shrink-0 pt-5 pb-9">
