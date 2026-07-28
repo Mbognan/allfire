@@ -6,6 +6,7 @@ import { BookingSection } from "@/components/sections/BookingSection";
 import { ServiceSidebar } from "@/components/services/ServiceSidebar";
 import { ServiceIntro } from "@/components/services/ServiceIntro";
 import { ProductGrid } from "@/components/services/ProductGrid";
+import { ServiceOverview } from "@/components/services/ServiceOverview";
 import { services, getServiceBySlug } from "@/content/services";
 import { getProductsFor } from "@/content/products";
 
@@ -50,14 +51,32 @@ export default async function ServicePage({
 
   const products = getProductsFor(service.slug);
 
+  const hero = (
+    <PageHero
+      eyebrow="Our services"
+      lead={service.name}
+      crumbLabel={service.shortName}
+      crumbs={[{ label: "Services", href: "/services" }]}
+    />
+  );
+
+  /* Services that sell labour and a signed document rather than hardware have
+     no catalogue. Branching on the products themselves rather than on category
+     keeps this correct as the catalogue fills in: add products to a service and
+     it moves to the grid layout on its own. */
+  if (products.length === 0) {
+    return (
+      <>
+        {hero}
+        <ServiceOverview service={service} />
+        <BookingSection />
+      </>
+    );
+  }
+
   return (
     <>
-      <PageHero
-        eyebrow="Our services"
-        lead={service.name}
-        crumbLabel={service.shortName}
-        crumbs={[{ label: "Services", href: "/services" }]}
-      />
+      {hero}
 
       <section className="bg-white py-14 md:py-20">
         <Container className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[264px_1fr] lg:gap-14">

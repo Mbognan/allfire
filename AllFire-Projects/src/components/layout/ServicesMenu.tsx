@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronDownIcon, ArrowRightIcon } from "@/components/ui/Icon";
-import type { NavItem } from "@/content/nav";
+import { serviceMenuGroups, type NavItem } from "@/content/nav";
 
 /**
  * Services dropdown.
@@ -108,37 +108,49 @@ export function ServicesMenu({ item }: { item: NavItem }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 4 }}
             transition={{ duration: 0.18, ease: [0.33, 1, 0.68, 1] }}
-            className="absolute top-full left-1/2 z-50 mt-4 w-66 -translate-x-1/2 overflow-hidden rounded-2xl border border-line bg-white shadow-[0_20px_50px_rgba(22,19,15,0.16)]"
-          >
-            <p className="brand-gradient px-5 py-3 font-display text-sm font-bold tracking-[0.12em] text-white uppercase">
-              {item.label}
-            </p>
+            /* Wide panel, not a tall one. Thirteen services stacked in a single
+               66-unit column ran past the fold and turned the menu into a
+               scroll; three columns fit the same list in five rows.
 
-            <ul className="py-2">
-              {item.children?.map((child) => {
-                const active = pathname === child.href;
-                return (
-                  <li key={child.href}>
-                    <Link
-                      href={child.href}
-                      onClick={() => setOpen(false)}
-                      className={`block cursor-pointer px-5 py-2.5 text-sm font-semibold transition-colors duration-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-flame-red-deep ${
-                        active
-                          ? "text-flame-red-deep"
-                          : "text-ink-soft hover:text-flame-red-deep"
-                      }`}
-                    >
-                      {child.label}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+               Width is clamped to the viewport so the centred panel cannot
+               push a horizontal scrollbar on narrow laptops. */
+            className="absolute top-full left-1/2 z-50 mt-4 w-[min(46rem,calc(100vw-2rem))] -translate-x-1/2 overflow-hidden rounded-2xl border border-line bg-white shadow-[0_20px_50px_rgba(22,19,15,0.16)]"
+          >
+            <div className="grid grid-cols-3 gap-x-6 gap-y-8 px-8 pt-7 pb-6">
+              {serviceMenuGroups.map((group) => (
+                <div key={group.id}>
+                  <p className="font-display text-xs font-bold tracking-[0.16em] text-ink-soft uppercase">
+                    {group.label}
+                  </p>
+
+                  <ul className="mt-4 space-y-0.5">
+                    {group.items.map((child) => {
+                      const active = pathname === child.href;
+                      return (
+                        <li key={child.href}>
+                          <Link
+                            href={child.href}
+                            onClick={() => setOpen(false)}
+                            className={`block cursor-pointer rounded-lg px-3 py-2 text-[0.9375rem] font-semibold transition-colors duration-200 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-flame-red-deep ${
+                              active
+                                ? "bg-paper-raised text-flame-red-deep"
+                                : "text-ink hover:bg-paper-raised hover:text-flame-red-deep"
+                            }`}
+                          >
+                            {child.label}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+            </div>
 
             <Link
               href={item.href}
               onClick={() => setOpen(false)}
-              className="flex cursor-pointer items-center justify-between border-t border-line px-5 py-3.5 font-display text-sm font-bold tracking-wide text-ink uppercase transition-colors duration-200 hover:bg-paper-raised focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-flame-red-deep"
+              className="flex cursor-pointer items-center gap-2 border-t border-line px-8 py-4 font-display text-sm font-bold tracking-wide text-flame-red-deep uppercase transition-colors duration-200 hover:bg-paper-raised focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-flame-red-deep"
             >
               View all services
               <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />

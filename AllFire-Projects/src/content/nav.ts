@@ -1,4 +1,4 @@
-import { services } from "@/content/services";
+import { services, serviceCategories, getServicesByCategory } from "@/content/services";
 
 /**
  * Anchors are absolute ("/#booking", not "#booking") so the nav still works
@@ -25,6 +25,26 @@ export const primaryNav: NavItem[] = [
   },
   { label: "Blogs", href: "/blog" },
 ];
+
+/**
+ * Column layout for the services dropdown.
+ *
+ * `primaryNav` keeps a flat `children` list because the mobile drawer wants one
+ * accordion of every service. The desktop menu wants columns: at thirteen
+ * services a single column is taller than the viewport and turns a menu into a
+ * scroll, so the same data is grouped here by category instead.
+ *
+ * shortName rather than name, because these are column entries, not headings,
+ * and "Air & Mechanical" scans faster than "Air & Mechanical Services".
+ */
+export const serviceMenuGroups = serviceCategories.map((category) => ({
+  id: category.id,
+  label: category.label,
+  items: getServicesByCategory(category.id).map((service) => ({
+    label: service.shortName,
+    href: `/services/${service.slug}`,
+  })),
+}));
 
 /**
  * Footer navigation. Booking and Contact were removed from the header menu, so

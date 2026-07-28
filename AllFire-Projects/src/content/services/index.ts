@@ -307,32 +307,11 @@ export const services: Service[] = [
 
   /* ------------------------------------------------------------------
      Compliance
+
+     Order matters here: this is the order the Compliance column renders in,
+     and routine servicing precedes the statement because that is the order a
+     building actually experiences them.
      ------------------------------------------------------------------ */
-  {
-    slug: "annual-fire-safety-statement",
-    name: "Annual Fire Safety Statements",
-    shortName: "AFSS Support",
-    category: "compliance",
-    summary:
-      "End-to-end AFSS support: assessment of every measure on your schedule, defect rectification and the signed statement lodged on time.",
-    standardReference: "EP&A Regulation (NSW)",
-    frequency: "Annually",
-    whatItCovers: [
-      "Assessment of each essential fire safety measure on the schedule",
-      "Defect identification and rectification before certification",
-      "Accredited practitioner assessment and statement issue",
-      "Lodgement with council and Fire and Rescue NSW"],
-    whoItsFor:
-      "Every NSW building owner and strata committee with a fire safety schedule, which is effectively all commercial and multi-residential buildings.",
-    whyFirefighterRun:
-      "A statement is a promise the building will perform. Our people have relied on that promise from the other side of the door, so we do not sign one we would not stand behind.",
-    relatedServiceSlugs: ["as1851-routine-servicing", "fire-system-upgrades"],
-    faqs: [
-      {
-        q: "What happens if the statement is lodged late?",
-        a: "Councils can issue penalty notices, and insurers may treat an out-of-date statement as a coverage problem. The cost of being late is almost always higher than the work itself.",
-      }],
-  },
   {
     slug: "as1851-routine-servicing",
     name: "Annual Inspections & Routine Servicing",
@@ -356,6 +335,31 @@ export const services: Service[] = [
       {
         q: "Can you take over servicing partway through a cycle?",
         a: "Yes. We audit what has already been done, pick up the schedule where it stands and bring the records up to date rather than restarting the cycle.",
+      }],
+  },
+  {
+    slug: "annual-fire-safety-statement",
+    name: "Annual Fire Safety Statements",
+    shortName: "AFSS Support",
+    category: "compliance",
+    summary:
+      "End-to-end AFSS support: assessment of every measure on your schedule, defect rectification and the signed statement lodged on time.",
+    standardReference: "EP&A Regulation (NSW)",
+    frequency: "Annually",
+    whatItCovers: [
+      "Assessment of each essential fire safety measure on the schedule",
+      "Defect identification and rectification before certification",
+      "Accredited practitioner assessment and statement issue",
+      "Lodgement with council and Fire and Rescue NSW"],
+    whoItsFor:
+      "Every NSW building owner and strata committee with a fire safety schedule, which is effectively all commercial and multi-residential buildings.",
+    whyFirefighterRun:
+      "A statement is a promise the building will perform. Our people have relied on that promise from the other side of the door, so we do not sign one we would not stand behind.",
+    relatedServiceSlugs: ["as1851-routine-servicing", "fire-system-upgrades"],
+    faqs: [
+      {
+        q: "What happens if the statement is lodged late?",
+        a: "Councils can issue penalty notices, and insurers may treat an out-of-date statement as a coverage problem. The cost of being late is almost always higher than the work itself.",
       }],
   }];
 
