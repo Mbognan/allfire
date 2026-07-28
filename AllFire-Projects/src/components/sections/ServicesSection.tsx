@@ -3,6 +3,7 @@ import { SectionBackdrop } from "@/components/ui/SectionBackdrop";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ServicesGridMotion } from "@/components/sections/ServicesGridMotion";
+import { ServiceTiles } from "@/components/sections/ServiceTiles";
 import { CheckIcon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
 import { services } from "@/content/services";
@@ -33,7 +34,6 @@ export function ServicesSection() {
   const featured = FEATURED_SLUGS.map((slug) => services.find((s) => s.slug === slug)).filter(
     (s): s is NonNullable<typeof s> => Boolean(s)
   );
-  const rest = services.filter((s) => !FEATURED_SLUGS.includes(s.slug));
 
   return (
     <section
@@ -58,22 +58,13 @@ export function ServicesSection() {
 
         <ServicesGridMotion services={featured} />
 
-        {rest.length > 0 && (
-          <p className="mt-10 max-w-2xl text-white/70">
-            We also handle{" "}
-            {rest.map((service, i) => (
-              <span key={service.slug}>
-                <a
-                  href="#booking"
-                  className="cursor-pointer font-semibold text-flame-yellow underline-offset-4 transition-colors duration-200 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flame-yellow"
-                >
-                  {service.name.toLowerCase()}
-                </a>
-                {i < rest.length - 2 ? ", " : i === rest.length - 2 ? " and " : "."}
-              </span>
-            ))}
-          </p>
-        )}
+        {/* The rest of the range, as photographs.
+
+            This replaced a run-on sentence listing every remaining service as
+            inline links to the booking anchor. That paragraph named the work
+            but showed none of it, and sent every service to the same place; the
+            tiles show the equipment and link to the actual service page. */}
+        <ServiceTiles />
 
         {/* The grid only features five services, so send anyone who wants the
             full list to the services index rather than growing the grid. */}

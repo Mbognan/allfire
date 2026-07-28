@@ -170,10 +170,16 @@ export function AssistantWidget() {
                 aria-label="Need help? Open the AllFire chat assistant"
                 /* min-h-14 is a generous touch target, well past the 44px
                    minimum, for less precise pointing. */
-                className="relative flex min-h-14 cursor-pointer items-center gap-3 rounded-full border border-line bg-white py-3 pr-6 pl-4 shadow-2xl transition-transform duration-200 hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-orange"
+                /* Symmetric padding. The old pl-4/pr-6 split was compensating
+                   for the logo's own baked-in whitespace by eye, which left the
+                   pill looking off-centre rather than fixing it. */
+                className="relative flex min-h-14 cursor-pointer items-center gap-3 rounded-full border border-line bg-white px-5 py-3 shadow-2xl transition-transform duration-200 hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-orange"
               >
-                <Logo className="h-8 w-auto lg:h-8" />
-                <span className="font-display text-lg leading-none font-bold text-ink uppercase">
+                <Logo className="h-9 w-auto shrink-0 lg:h-9" />
+                {/* leading-none pulled the cap-height off the logo's optical
+                    centre; the flex row centres the box, so the text needs its
+                    normal line box to actually sit level. */}
+                <span className="font-display text-lg leading-tight font-bold whitespace-nowrap text-ink uppercase">
                   Need Help?
                 </span>
               </button>
