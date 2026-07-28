@@ -54,12 +54,18 @@ export function ServiceTiles() {
     >
       {tiles.map(({ slug, label }) => (
         <motion.li key={slug} variants={item}>
+          {/* Same anatomy as ServiceCard directly above: rounded photo, tonal
+              scrim, centred white label underneath that goes yellow on hover.
+
+              The first pass floated a white caption plate over the image, which
+              put two different card designs in one section and made the tiles
+              read as a separate component borrowed from somewhere else. */}
           <Link
             href={`/services/${slug}`}
-            className="group block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-yellow"
+            className="group flex h-full flex-col focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-orange"
           >
             {/* Fixed aspect so the row cannot reflow as images load. */}
-            <div className="relative aspect-4/3 overflow-hidden rounded-xl">
+            <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-ink-2">
               <Image
                 src={getServiceImage(slug)}
                 alt=""
@@ -67,17 +73,16 @@ export function ServiceTiles() {
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 className="object-cover transition-transform duration-500 ease-out motion-safe:group-hover:scale-105"
               />
-
-              {/* Caption plate. Sits over the base of the photograph rather than
-                  under it, so the label is legible whatever the image is doing
-                  and the tile stays one object instead of a picture with a
-                  paragraph beneath it. */}
-              <div className="absolute inset-x-3 bottom-3 rounded-lg bg-white/95 px-3 py-2.5 backdrop-blur-sm transition-colors duration-300 group-hover:bg-white">
-                <p className="text-center text-sm leading-snug font-semibold text-balance text-ink">
-                  {label}
-                </p>
-              </div>
+              {/* Keeps eight different photographs inside one palette. */}
+              <span
+                className="absolute inset-0 bg-linear-to-t from-ink/55 via-transparent to-transparent transition-opacity duration-300 group-hover:opacity-60"
+                aria-hidden="true"
+              />
             </div>
+
+            <span className="mt-4 block text-center font-display text-base leading-tight font-bold text-balance text-white transition-colors duration-200 group-hover:text-flame-yellow md:text-lg">
+              {label}
+            </span>
           </Link>
         </motion.li>
       ))}
