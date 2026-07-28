@@ -193,7 +193,11 @@ export function AssistantWidget() {
             transition={{ duration: 0.26, ease }}
             /* Sits where the launcher was, since the launcher is now hidden
                while this is open. */
-            className="fixed right-5 bottom-5 z-50 flex h-[min(44rem,calc(100vh-2.5rem))] w-[min(24rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl"
+            /* 36rem, not 44: at 44 the panel ran most of the viewport and the
+               transcript read as a mostly-empty column. Fixed rather than a
+               max, so the panel is a consistent size instead of resizing as
+               the conversation grows. */
+            className="fixed right-5 bottom-5 z-50 flex h-[min(36rem,calc(100vh-3rem))] w-[min(24rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl"
           >
             {/* Header with a curved lower edge */}
             <div className="brand-gradient relative z-10 shrink-0 pt-5 pb-9">
@@ -245,8 +249,11 @@ export function AssistantWidget() {
 
                 min-h-40 then only sets a floor for a short conversation. */}
             <div className="relative min-h-40 flex-1 overflow-hidden">
+              {/* Deeper than the 6 it was: at that height a bubble scrolling
+                  out hard-cut mid-line just under the header curve and read as
+                  a rendering fault rather than as content continuing. */}
               <div
-                className="pointer-events-none absolute inset-x-0 top-0 z-10 h-6 bg-linear-to-b from-white to-transparent"
+                className="pointer-events-none absolute inset-x-0 top-0 z-10 h-10 bg-linear-to-b from-white via-white/80 to-transparent"
                 aria-hidden="true"
               />
               <div
@@ -254,7 +261,10 @@ export function AssistantWidget() {
                 role="log"
                 aria-live="polite"
                 aria-label="Conversation"
-                className="absolute inset-0 space-y-3 overflow-y-auto overscroll-contain bg-white px-4 pt-4 pb-4"
+                /* pt-6 keeps the first bubble clear of the header curve, and a
+                   thin scrollbar so the default chunky one stops competing
+                   with the panel's own rounded shape. */
+                className="absolute inset-0 space-y-3 overflow-y-auto overscroll-contain bg-white px-4 pt-6 pb-4 scrollbar-thin [scrollbar-color:var(--color-line)_transparent]"
               >
                 {messages.map((m, i) => (
                   <div key={i} className="space-y-2">

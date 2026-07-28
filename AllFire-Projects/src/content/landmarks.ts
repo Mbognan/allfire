@@ -1,63 +1,79 @@
 /**
- * Building types AllFire works across, shown as an expanding image strip.
+ * Landmark Sydney buildings shown in the expanding image strip.
  *
- * These are deliberately typologies ("heritage sandstone", "harbourside
- * high-rise") rather than named buildings. Naming a real landmark would assert
- * a client relationship we cannot evidence from anything in this repo, and a
- * fabricated credential is worse than a general one. Swap in real project names
- * once the client confirms which sites they are permitted to reference.
+ * Named at the client's direction. Each blurb describes the fire protection
+ * challenge that class of building presents, not a claimed contract, so the
+ * section reads as "this is the Sydney we work across" rather than a client
+ * list. Before publishing, confirm the client is comfortable being associated
+ * with each building named here.
  *
- * Images are stock stand-ins, keyed by id. Replace the files or repoint `image`
+ * Images are stock stand-ins keyed by id. Replace the files or repoint `image`
  * and nothing else needs to change.
  */
 export type Landmark = {
   id: string;
   name: string;
+  /** Short locality line, so a visitor who doesn't know the building still places it. */
+  locality: string;
   blurb: string;
   image: string;
 };
 
 export const landmarks: Landmark[] = [
   {
-    id: "heritage",
-    name: "Heritage Sandstone",
+    id: "opera-house",
+    name: "Sydney Opera House",
+    locality: "Bennelong Point",
     blurb:
-      "Fire safety retrofitted into buildings that predate every standard it has to meet, without touching the fabric.",
+      "Performance venues concentrate thousands of people into spaces with limited egress, where detection and evacuation systems carry the entire margin.",
     image: "/images/stock/riser-room.webp",
   },
   {
-    id: "cbd-tower",
-    name: "CBD Towers",
+    id: "town-hall",
+    name: "Sydney Town Hall",
+    locality: "George Street",
     blurb:
-      "Stair pressurisation, smoke exhaust and hydrant boosters kept certified across full commercial floorplates.",
+      "Heritage sandstone that predates every standard it now has to meet, protected without cutting into the fabric that makes it worth protecting.",
     image: "/images/stock/backdrop-extinguishers.webp",
   },
   {
-    id: "harbourside",
-    name: "Harbourside Residential",
+    id: "qvb",
+    name: "Queen Victoria Building",
+    locality: "CBD",
     blurb:
-      "Strata high-rise where one annual statement covers hundreds of lots and every measure between them.",
-    image: "/images/stock/hydrant.webp",
-  },
-  {
-    id: "industrial",
-    name: "Industrial & Warehousing",
-    blurb:
-      "Sprinkler coverage and diesel pump sets tested against racking that changes with every stock cycle.",
-    image: "/images/stock/technician.webp",
-  },
-  {
-    id: "retail",
-    name: "Retail Centres",
-    blurb:
-      "Detection, egress lighting and fire doors serviced around trading hours rather than through them.",
+      "A retail atrium spanning multiple levels, where smoke moves vertically faster than people do and mechanical exhaust does the heavy work.",
     image: "/images/stock/extinguisher.webp",
   },
   {
-    id: "care",
-    name: "Aged Care & Health",
+    id: "central-station",
+    name: "Central Station",
+    locality: "Haymarket",
     blurb:
-      "Buildings where evacuation is slowest, so compartmentation and detection carry the most weight.",
+      "Transport interchange running continuously, so every inspection happens around live passenger movement rather than through it.",
+    image: "/images/stock/hydrant.webp",
+  },
+  {
+    id: "customs-house",
+    name: "Customs House",
+    locality: "Circular Quay",
+    blurb:
+      "Adaptive reuse layering modern occupancy over nineteenth-century construction, where compartmentation has to be proven rather than assumed.",
     image: "/images/stock/crew-2.webp",
+  },
+  {
+    id: "barangaroo",
+    name: "Barangaroo",
+    locality: "Harbourside",
+    blurb:
+      "Contemporary high-rise where stair pressurisation, sprinkler coverage and hydrant boosters are tested as one interlocking system.",
+    image: "/images/stock/technician.webp",
+  },
+  {
+    id: "the-rocks",
+    name: "The Rocks",
+    locality: "Millers Point",
+    blurb:
+      "Tight historic streets and shared walls, where a fire that breaches one building's separation is immediately the next building's problem.",
+    image: "/images/stock/crew-3.webp",
   },
 ];
