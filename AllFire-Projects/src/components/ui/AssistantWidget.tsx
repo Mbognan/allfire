@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowRightIcon } from "@/components/ui/Icon";
+import { Logo } from "@/components/brand/Logo";
 import { company } from "@/content/company";
+import { cn } from "@/lib/utils";
 
 const ease = [0.33, 1, 0.68, 1] as const;
 
@@ -48,6 +50,9 @@ export function AssistantWidget() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [round, setRound] = useState(0);
   const [thinking, setThinking] = useState(false);
+  /* Controlled, so Send can be disabled on an empty box rather than accepting
+     the click and doing nothing. */
+  const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<Message[]>([
     { from: "bot", text: "Hi. How can I help you today?", isGreeting: true },
     {
@@ -57,6 +62,8 @@ export function AssistantWidget() {
       isGreeting: true,
     },
   ]);
+
+  const canSend = draft.trim().length > 0 && !thinking;
 
   /* send() needs the transcript at call time. Reading state directly would
      capture a stale closure when two messages are sent in quick succession. */
@@ -120,44 +127,60 @@ export function AssistantWidget() {
 
   return (
     <>
-      {/* Launcher: the mark on its own, no container behind it. */}
-      <motion.div
-        initial={{ opacity: 0, y: 20, scale: 0.9 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.8, delay: 1, ease }}
-        className="fixed right-5 bottom-5 z-50"
-      >
-        <div className="relative">
-          {/* Soft pulse behind the mark. Non-interactive, stops once engaged. */}
-          {!open && !engaged && (
-            <>
-              <span
-                className="assistant-ping pointer-events-none absolute inset-3 rounded-full bg-flame-orange/35"
-                aria-hidden="true"
-              />
-              <span
-                className="assistant-ping assistant-ping-delayed pointer-events-none absolute inset-3 rounded-full bg-flame-orange/35"
-                aria-hidden="true"
-              />
-            </>
-          )}
+      {/* Launcher.
 
-          <button
-            type="button"
-            onClick={() => {
-              setOpen((v) => !v);
-              setEngaged(true);
-            }}
-            aria-expanded={open}
-            aria-label={open ? "Close the AllFire assistant" : "Open the AllFire assistant"}
-            /* No background plate: the logo is the button. Fixed size, so it
-               never becomes a moving click target. */
-            className="relative block cursor-pointer transition-transform duration-200 hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-orange"
+          A bare robot mark asked the visitor to work out what it was before
+          they could decide to use it. This is the company logo they already
+          recognise plus a literal instruction, so the control explains itself.
+
+          It unmounts while the panel is open: two overlapping chat affordances
+          in the same corner is the thing that reads as clutter, and the panel
+          already carries its own close button. */}
+      <AnimatePresence>
+        {!open && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95, transition: { duration: 0.18, ease } }}
+            transition={{ duration: 0.8, delay: engaged ? 0 : 1, ease }}
+            className="fixed right-5 bottom-5 z-50"
           >
-            <BotLogo className="h-20 w-20 drop-shadow-xl md:h-24 md:w-24" />
-          </button>
-        </div>
-      </motion.div>
+            <div className="relative">
+              {/* Soft pulse behind the button. Non-interactive, stops once engaged. */}
+              {!engaged && (
+                <>
+                  <span
+                    className="assistant-ping pointer-events-none absolute inset-0 rounded-full bg-flame-orange/35"
+                    aria-hidden="true"
+                  />
+                  <span
+                    className="assistant-ping assistant-ping-delayed pointer-events-none absolute inset-0 rounded-full bg-flame-orange/35"
+                    aria-hidden="true"
+                  />
+                </>
+              )}
+
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(true);
+                  setEngaged(true);
+                }}
+                aria-expanded={open}
+                aria-label="Ask AllFire: open the chat assistant"
+                /* min-h-14 is a generous touch target, well past the 44px
+                   minimum, for less precise pointing. */
+                className="relative flex min-h-14 cursor-pointer items-center gap-3 rounded-full border border-line bg-white py-3 pr-6 pl-4 shadow-2xl transition-transform duration-200 hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-orange"
+              >
+                <Logo className="h-8 w-auto lg:h-8" />
+                <span className="font-display text-lg leading-none font-bold text-ink uppercase">
+                  Ask AllFire
+                </span>
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {open && (
@@ -168,33 +191,34 @@ export function AssistantWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 18, scale: 0.97 }}
             transition={{ duration: 0.26, ease }}
-            className="fixed right-5 bottom-32 z-50 flex max-h-[min(34rem,75vh)] w-[min(23rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl md:bottom-36"
+            /* Sits where the launcher was, since the launcher is now hidden
+               while this is open. */
+            className="fixed right-5 bottom-5 z-50 flex max-h-[min(36rem,80vh)] w-[min(24rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl"
           >
             {/* Header with a curved lower edge */}
             <div className="brand-gradient relative z-10 shrink-0 pt-5 pb-9">
               <div className="flex items-start gap-3 px-5">
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/25 ring-2 ring-white/40">
-                  <BotLogo className="h-9 w-9" mono />
+                <span className="flex shrink-0 items-center justify-center rounded-xl bg-white px-2.5 py-2 shadow-sm">
+                  <Logo className="h-7 w-auto lg:h-7" />
                 </span>
 
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm text-white/85">Chat with</p>
-                  <p className="font-display text-xl leading-tight font-bold text-white">
-                    AllFire Assistant
+                  <p className="font-display text-xl leading-tight font-bold text-white uppercase">
+                    Ask AllFire
                   </p>
+                  <p className="mt-0.5 text-sm text-white/90">We are online</p>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  aria-label="Minimise chat"
-                  className="-mr-1 flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-white/90 transition-colors duration-200 hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  aria-label="Close chat"
+                  /* Full 44px target: closing was the fiddliest control here. */
+                  className="-mr-1.5 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full text-white transition-colors duration-200 hover:bg-white/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
-                  <ChevronDown className="h-5 w-5" />
+                  <ChevronDown className="h-6 w-6" />
                 </button>
               </div>
-
-              <p className="mt-4 px-5 text-sm font-medium text-white">We are online!</p>
 
               {/* Wave separating header from transcript */}
               <svg
@@ -211,9 +235,11 @@ export function AssistantWidget() {
                 without it, messages scrolling past the curved header hard-clip
                 mid-bubble and read as a rendering fault.
 
-                min-h-56 guarantees a scrollable region even before the
-                conversation is long enough to overflow the panel. */}
-            <div className="relative min-h-56 flex-1">
+                min-h-40 keeps a usable transcript before the conversation is
+                long enough to overflow, while staying low enough that a short
+                viewport shrinks the transcript rather than pushing the
+                composer out of the clipped panel. */}
+            <div className="relative min-h-40 flex-1">
               <div
                 className="pointer-events-none absolute inset-x-0 top-0 z-10 h-6 bg-linear-to-b from-white to-transparent"
                 aria-hidden="true"
@@ -230,8 +256,8 @@ export function AssistantWidget() {
                     <div
                       className={
                         m.from === "bot"
-                          ? "max-w-[85%] rounded-2xl rounded-tl-md bg-paper-raised px-4 py-2.5 text-sm text-ink"
-                          : "brand-gradient ml-auto max-w-[85%] rounded-2xl rounded-tr-md px-4 py-2.5 text-sm font-medium text-white"
+                          ? "max-w-[88%] rounded-2xl rounded-tl-md bg-paper-raised px-4 py-3 text-base leading-relaxed text-ink"
+                          : "brand-gradient ml-auto max-w-[88%] rounded-2xl rounded-tr-md px-4 py-3 text-base leading-relaxed font-medium text-white"
                       }
                     >
                       {m.text}
@@ -257,7 +283,7 @@ export function AssistantWidget() {
                               type="button"
                               onClick={() => send(s)}
                               disabled={thinking}
-                              className="min-h-11 cursor-pointer rounded-full border border-flame-red-deep px-4 py-2 text-sm font-semibold text-flame-red-deep transition-colors duration-200 hover:bg-flame-red-deep hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flame-red-deep disabled:cursor-not-allowed disabled:opacity-50"
+                              className="min-h-12 cursor-pointer rounded-full border-2 border-flame-red-deep px-4 py-2 text-[0.9375rem] font-semibold text-flame-red-deep transition-colors duration-200 hover:bg-flame-red-deep hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flame-red-deep disabled:cursor-not-allowed disabled:opacity-50"
                             >
                               {s}
                             </button>
@@ -297,23 +323,27 @@ export function AssistantWidget() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                const input = e.currentTarget.elements.namedItem("q") as HTMLInputElement;
-                send(input.value);
-                input.value = "";
+                if (!canSend) return;
+                send(draft);
+                setDraft("");
               }}
               className="relative shrink-0 border-t border-line bg-white px-4 pt-3 pb-4"
             >
               <label htmlFor="assistant-input" className="sr-only">
-                Ask the AllFire assistant
+                Type your question for AllFire
               </label>
               <input
                 id="assistant-input"
                 name="q"
                 type="text"
                 autoComplete="off"
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
                 disabled={thinking}
-                placeholder={thinking ? "Thinking..." : "Enter your message..."}
-                className="w-full bg-transparent pr-14 text-sm text-ink placeholder:text-ink-soft/60 focus:outline-none disabled:cursor-not-allowed"
+                placeholder={thinking ? "Thinking..." : "Type your question here..."}
+                /* text-base, not text-sm: under 16px iOS zooms the whole page
+                   on focus, and small type is the first thing to fail here. */
+                className="w-full bg-transparent pr-14 text-base text-ink placeholder:text-ink-soft/70 focus:outline-none disabled:cursor-not-allowed"
               />
 
               <p className="mt-3 pr-14 text-xs text-ink-soft/70">
@@ -326,11 +356,20 @@ export function AssistantWidget() {
                 </a>
               </p>
 
+              {/* Send is inert until there is something to send, so an empty
+                  press can't read as the assistant ignoring you. Greyed rather
+                  than gradient, so the difference is legible at a glance and
+                  not carried by colour alone. */}
               <button
                 type="submit"
                 aria-label="Send message"
-                disabled={thinking}
-                className="brand-gradient absolute right-4 bottom-4 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full text-white shadow-lg transition-[filter,transform] duration-200 hover:scale-105 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flame-orange disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
+                disabled={!canSend}
+                className={cn(
+                  "absolute right-4 bottom-4 flex h-12 w-12 items-center justify-center rounded-full text-white shadow-lg transition-[filter,transform,background-color] duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flame-orange",
+                  canSend
+                    ? "brand-gradient cursor-pointer hover:scale-105 hover:brightness-110"
+                    : "cursor-not-allowed bg-ink-soft/30 shadow-none"
+                )}
               >
                 <ArrowRightIcon className="h-5 w-5" />
               </button>
@@ -339,50 +378,6 @@ export function AssistantWidget() {
         )}
       </AnimatePresence>
     </>
-  );
-}
-
-/**
- * Standalone assistant mark: a bot face inside a speech bubble.
- * Self-coloured so it can sit directly on the page with nothing behind it.
- * `mono` renders it flat white for use on the gradient header.
- */
-function BotLogo({ className, mono = false }: { className?: string; mono?: boolean }) {
-  const bubble = mono ? "#fff" : "url(#allfire-bot-grad)";
-  const face = mono ? "rgba(226,3,2,0.9)" : "#fff";
-
-  return (
-    <svg viewBox="0 0 48 48" className={className} fill="none" aria-hidden="true">
-      <defs>
-        <linearGradient id="allfire-bot-grad" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0%" stopColor="#fc0403" />
-          <stop offset="55%" stopColor="#fb5614" />
-          <stop offset="100%" stopColor="#feaf04" />
-        </linearGradient>
-      </defs>
-
-      {/* Speech bubble */}
-      <path
-        d="M9 13.5A5.5 5.5 0 0 1 14.5 8h19A5.5 5.5 0 0 1 39 13.5v13a5.5 5.5 0 0 1-5.5 5.5H22.6l-8.1 5.9a1.1 1.1 0 0 1-1.75-.89V32h-.25A5.5 5.5 0 0 1 9 26.5v-13Z"
-        fill={bubble}
-      />
-      {/* Antenna */}
-      <path d="M24 13.6V10.4" stroke={bubble} strokeWidth="2.2" strokeLinecap="round" />
-      <circle cx="24" cy="8.4" r="2.5" fill={mono ? "#fff" : "#feaf04"} />
-
-      {/* Face plate */}
-      <rect x="15.5" y="14.6" width="17" height="12" rx="3.4" fill={face} />
-      {/* Eyes */}
-      <circle cx="20.8" cy="19.9" r="2" fill={bubble} />
-      <circle cx="27.2" cy="19.9" r="2" fill={bubble} />
-      {/* Smile */}
-      <path
-        d="M20.9 23.4c1.9 1.35 4.3 1.35 6.2 0"
-        stroke={bubble}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
   );
 }
 
