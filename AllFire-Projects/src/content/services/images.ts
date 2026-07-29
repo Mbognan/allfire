@@ -17,9 +17,11 @@ export const serviceImages: Record<string, string> = {
   "smoke-alarm-testing": "/images/services-img/smoke-alarm-testing.png",
   "diesel-pump-inspection": "/images/services-img/diesel-pump-inspection.png",
   "air-mechanical": "/images/services-img/air-mechanical.png",
+  /* Real job photography, from the documented jobs in jobs.ts. */
+  "electric-pump-motor": "/images/services-img/staff-img/george-electric-pump-1.jpeg",
+  "fire-sprinkler-systems": "/images/services-img/staff-img/peter-sprinkler-1.jpeg",
   "fire-panels-detection": "/images/stock/riser-room.webp",
   "fire-hydrant-systems": "/images/stock/hydrant.webp",
-  "fire-sprinkler-systems": "/images/stock/backdrop-extinguishers.webp",
   "fire-penetration-sealing": "/images/stock/crew-2.webp",
   "fire-doors-frames": "/images/stock/crew-3.webp",
   "fire-spray-protection": "/images/stock/crew-4.webp",

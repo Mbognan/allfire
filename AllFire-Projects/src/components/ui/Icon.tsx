@@ -12,6 +12,7 @@
 import {
   ArrowLeft,
   ArrowRight,
+  ArrowsOutSimple,
   Buildings,
   Camera,
   CaretDown,
@@ -51,6 +52,8 @@ export const XIcon = (p: Props) => <X weight={WEIGHT} {...p} />;
 export const ChevronDownIcon = (p: Props) => <CaretDown weight={WEIGHT} {...p} />;
 export const ArrowRightIcon = (p: Props) => <ArrowRight weight={WEIGHT} {...p} />;
 export const ArrowLeftIcon = (p: Props) => <ArrowLeft weight={WEIGHT} {...p} />;
+/** Corner arrows, for "open this larger". */
+export const ExpandIcon = (p: Props) => <ArrowsOutSimple weight={WEIGHT} {...p} />;
 export const TagIcon = (p: Props) => <Tag weight={WEIGHT} {...p} />;
 export const SearchIcon = (p: Props) => <MagnifyingGlass weight={WEIGHT} {...p} />;
 

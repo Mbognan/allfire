@@ -28,6 +28,13 @@ export const team: TeamMember[] = [
   { name: "Sam", role: "Fire Protection Technician", photo: "/images/stock/team-2.webp" },
   { name: "George", role: "Fire Protection Technician", photo: "/images/stock/team-3.webp" },
   { name: "Ken", role: "Fire Protection Technician", photo: "/images/stock/crew-1.webp" },
+  {
+    name: "Cornelius",
+    role: "Fire Protection Technician",
+    /* Real photo, cropped from his diesel pump job in jobs.ts. The only crew
+       member besides Peter not on a stock stand-in. */
+    photo: "/images/services-img/staff-img/cornelius-diesel-pump-1.jpeg",
+  },
   { name: "Kyriakos", role: "Fire Protection Technician", photo: "/images/stock/crew-3.webp" },
   { name: "Orlando", role: "Fire Protection Technician", photo: "/images/stock/crew-4.webp" },
 ];

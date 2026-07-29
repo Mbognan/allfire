@@ -202,6 +202,32 @@ export const services: Service[] = [
       }],
   },
 
+  {
+    slug: "electric-pump-motor",
+    name: "Electric Fire Pump Motors",
+    shortName: "Electric Pumps",
+    category: "active",
+    summary:
+      "Testing of electric fire pump sets, starters and control gear, confirming the pump delivers its duty when the system calls for it.",
+    standardReference: "AS1851",
+    frequency: "Monthly / annually (per schedule)",
+    whatItCovers: [
+      "Motor run testing under load",
+      "Starter, contactor and control gear inspection",
+      "Performance verified against the pump's duty curve",
+      "Power supply and changeover arrangement checks"],
+    whoItsFor:
+      "Buildings running electric rather than diesel pump sets, or a duty/standby pair of both.",
+    whyFirefighterRun:
+      "A pump that runs but cannot make its duty point is worse than one that fails outright, because the panel reports it as healthy. We test to the curve, not to the start button.",
+    relatedServiceSlugs: ["diesel-pump-inspection", "fire-sprinkler-systems"],
+    faqs: [
+      {
+        q: "We have both an electric and a diesel pump. Do both need testing?",
+        a: "Yes. They are usually arranged as duty and standby, so each has to prove it can carry the system on its own, and the changeover between them has to work.",
+      }],
+  },
+
   /* ------------------------------------------------------------------
      Passive fire
      ------------------------------------------------------------------ */
