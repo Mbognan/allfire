@@ -5,7 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionBackdrop } from "@/components/ui/SectionBackdrop";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { InspectionForm } from "@/components/forms/InspectionForm";
+import { BookingForm } from "@/components/forms/BookingForm";
 import { PhoneIcon, ClockIcon, ShieldCheckIcon } from "@/components/ui/Icon";
 import { company } from "@/content/company";
 
@@ -76,7 +76,7 @@ export function BookingSection() {
           transition={{ duration: 0.85, delay: 0.1, ease: [0.33, 1, 0.68, 1] }}
           className="rounded-2xl border border-line bg-white p-8 md:p-10"
         >
-          <InspectionForm />
+          <BookingForm />
         </motion.div>
       </Container>
     </section>

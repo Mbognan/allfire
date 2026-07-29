@@ -19,8 +19,8 @@ export type TeamMember = {
  */
 export const team: TeamMember[] = [
   {
-    name: "Peter Wood",
-    role: "Founder, former NSW Fire Brigades Senior Officer",
+    name: "Peter Tricklebank",
+    role: "Managing Director, former NSW Fire Brigades Senior Officer",
     photo: "/images/our-team/pete_img.jpeg",
     bio: "Thirty-eight years on the tools, and a family line in the fire service reaching back to 1911. Peter still runs the harder jobs himself.",
   },
@@ -34,6 +34,38 @@ export const team: TeamMember[] = [
 
 export const widerCrewNote =
   "Backed by a wider crew of serving and retired firefighters across Greater Sydney.";
+
+/**
+ * How the team works. Client-supplied copy, used verbatim.
+ */
+export const teamValues = [
+  {
+    title: "People First",
+    body: "Behind every inspection, service and compliance report is a team that genuinely cares. We believe great service starts with great people, and we're committed to building lasting relationships with every client we support.",
+  },
+  {
+    title: "Straight Talking",
+    body: "No jargon. No unnecessary complexity. Just honest advice, practical solutions and clear communication to help you make informed decisions about your building's fire safety.",
+  },
+  {
+    title: "We Show Up",
+    body: "Reliability isn't just what we do, it's who we are. Whether it's routine maintenance, an Annual Fire Safety Statement (AFSS), emergency support or scheduled testing, you can count on us to deliver when it matters.",
+  },
+  {
+    title: "On Your Team",
+    body: "We work alongside property owners, strata managers, facility managers and businesses as a trusted extension of their team. Our goal is simple: make compliance easier and keep your building operating safely and efficiently.",
+  },
+  {
+    title: "Built on Trust",
+    body: "Our experienced technicians bring extensive knowledge across commercial, industrial, strata, healthcare, education and residential properties. Every job is completed with professionalism, attention to detail and a commitment to protecting your people, your property and your peace of mind.",
+  },
+];
+
+/** Management statement. Client-supplied copy. */
+export const managementStatement = {
+  headline: "Service Driven. Client Focused. Committed to your success.",
+  body: "Our management team is committed to building lasting relationships through responsive communication, professional advice, and a genuine focus on achieving the best outcomes for every client.",
+};
 
 /**
  * Real photographs of the crew on the job, for the team page gallery.

@@ -6,9 +6,9 @@
  * phone, is selectable and indexable, and can be corrected without re-exporting
  * artwork.
  *
- * NOTE FOR THE CLIENT: the graphic lists Peter Tricklebank as Managing Director
- * (2020-current), while the site copy elsewhere credits the 2009 founding to
- * "Peter Wood". Those need reconciling before launch. See company.ts.
+ * Naming resolved with the client: the founder is Peter Tricklebank, Managing
+ * Director. Earlier copy calling him "Peter Wood" was wrong and has been
+ * corrected across company.ts, team.ts and founder.ts.
  */
 export type Generation = {
   year: string;

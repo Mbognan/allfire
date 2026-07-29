@@ -9,7 +9,9 @@ export const company = {
    * page. Confirm which is correct before launch, then update this one field:
    * it feeds the About page, the story section and the JSON-LD.
    */
-  founder: "Peter",
+  founder: "Peter Tricklebank",
+  /** Current role. Distinct from founderTitle, which is his fire service background. */
+  founderRole: "Managing Director",
   founderTitle: "former NSW Fire Brigades Senior Officer",
   yearsExperience: "38+",
   foundingYear: 2009,
