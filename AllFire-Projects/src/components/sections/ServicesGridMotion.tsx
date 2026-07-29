@@ -32,16 +32,23 @@ export function ServicesGridMotion({ services }: { services: Service[] }) {
           on a phone with no sense of how much is left; a snap rail keeps the
           set browsable and shows there is more beside it.
         */
-        /* All five in one row from lg, so the full range is visible without
-           scrolling. Carousel below sm, as before. */
-        className="mt-14 -mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-4 scrollbar-none sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-5"
+        /* Three up, then the remaining two centred beneath, per the reference.
+
+           A wrapping flex row rather than a grid: with five items a 3-column
+           grid strands the last two hard left, and centring them needs
+           col-start hacks that break the moment the count changes. Flex-wrap
+           with justify-center handles any count on its own.
+
+           Carousel below sm, as before. */
+        className="mt-14 -mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-4 scrollbar-none sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0 sm:pb-0"
       >
         {services.map((service) => (
           <motion.div
             key={service.slug}
             data-card
             variants={item}
-            className="w-[68%] shrink-0 snap-start sm:w-auto sm:shrink"
+            /* calc subtracts the gap share so three fit per row exactly. */
+            className="w-[68%] shrink-0 snap-start sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
           >
             <ServiceCard service={service} />
           </motion.div>

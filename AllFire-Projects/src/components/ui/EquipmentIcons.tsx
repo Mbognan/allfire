@@ -12,6 +12,7 @@
 import {
   ClipboardText,
   Drop,
+  Fan,
   FireExtinguisher,
   Gauge,
   Lightbulb,
@@ -29,3 +30,5 @@ export const HydrantIcon = (p: Props) => <Gauge weight={WEIGHT} {...p} />;
 export const EmergencyExitIcon = (p: Props) => <Lightbulb weight={WEIGHT} {...p} />;
 export const FirePanelIcon = (p: Props) => <Siren weight={WEIGHT} {...p} />;
 export const ComplianceIcon = (p: Props) => <ClipboardText weight={WEIGHT} {...p} />;
+/** Mechanical smoke control: exhaust fans, dampers, stair pressurisation. */
+export const AirHandlingIcon = (p: Props) => <Fan weight={WEIGHT} {...p} />;

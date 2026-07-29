@@ -34,14 +34,19 @@ function Required() {
 }
 
 /**
- * Landing page contact form.
+ * Book an inspection.
  *
- * Field order follows the reference: identity, then contact, then an optional
- * property location block, then the free-text question. Location is grouped in
- * a fieldset and labelled optional so nobody stalls on a postcode they do not
- * have to give.
+ * Field order follows the client's reference: identity, then contact, then an
+ * optional property location block, then the free-text question. Location is
+ * grouped in a fieldset and labelled optional so nobody stalls on a postcode
+ * they do not have to give.
+ *
+ * Replaces BookingForm in this slot. That form asked for property type, service
+ * and preferred date as required selects, which is three more decisions before
+ * someone can ask a question. BookingForm is retained, not deleted, if those
+ * fields turn out to be needed.
  */
-export function EnquiryForm() {
+export function InspectionForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const id = useId();

@@ -3,7 +3,6 @@ import { SectionBackdrop } from "@/components/ui/SectionBackdrop";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ServicesGridMotion } from "@/components/sections/ServicesGridMotion";
-import { ServiceTiles } from "@/components/sections/ServiceTiles";
 import { CheckIcon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
 import { services } from "@/content/services";
@@ -58,13 +57,20 @@ export function ServicesSection() {
 
         <ServicesGridMotion services={featured} />
 
-        {/* The rest of the range, as photographs.
+        {/* The remaining nine services are represented by this line rather than
+            shown. ServiceTiles still exists and can be reinstated here; it was
+            unhooked, not deleted.
 
-            This replaced a run-on sentence listing every remaining service as
-            inline links to the booking anchor. That paragraph named the work
-            but showed none of it, and sent every service to the same place; the
-            tiles show the equipment and link to the actual service page. */}
-        <ServiceTiles />
+            The count is derived, so it cannot drift out of date the way a
+            hardcoded number would. */}
+        <p className="mt-12 max-w-2xl text-lg text-white/70">
+          These five are where most buildings start. We also service{" "}
+          <span className="font-semibold text-flame-yellow">
+            {services.length - FEATURED_SLUGS.length} more
+          </span>{" "}
+          areas of fire protection, from hydrants and sprinklers to passive fire, fire doors and
+          annual statements.
+        </p>
 
         {/* The grid only features five services, so send anyone who wants the
             full list to the services index rather than growing the grid. */}

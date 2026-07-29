@@ -42,11 +42,9 @@ export async function sendBookingNotification(data: BookingInput) {
 }
 
 /**
- * Contact enquiry from the landing page.
+ * Inspection request from the Book an Inspection section.
  *
- * Own subject prefix so it is distinguishable in the inbox from a booking: the
- * two need different responses, and a general enquiry that looks like a booking
- * request gets triaged wrong.
+ * Own subject prefix so it is distinguishable in the inbox at a glance.
  */
 export async function sendEnquiryNotification(data: EnquiryInput) {
   const apiKey = process.env.RESEND_API_KEY;
@@ -57,7 +55,7 @@ export async function sendEnquiryNotification(data: EnquiryInput) {
     .filter(Boolean)
     .join(", ");
 
-  const subject = `Website enquiry from ${name}`;
+  const subject = `Inspection request from ${name}`;
   const text = [
     `Name: ${name}`,
     `Phone: ${data.phone}`,
