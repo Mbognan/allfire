@@ -42,3 +42,35 @@ export const questionSchema = z.object({
 });
 
 export type QuestionInput = z.infer<typeof questionSchema>;
+
+/**
+ * Landing page contact enquiry.
+ *
+ * Separate from bookingSchema because it asks a different question. A booking
+ * needs a property type, a service and a date; this is "here is who I am and
+ * what I need", which is a lower bar to clear and therefore converts better on
+ * a landing page.
+ *
+ * The whole property location block is optional on purpose: someone asking a
+ * general question should not be blocked on a postcode. Only identity, contact
+ * and the message itself are required.
+ */
+export const enquirySchema = z.object({
+  firstName: z.string().trim().min(1, "First name is required").max(80),
+  lastName: z.string().trim().min(1, "Last name is required").max(80),
+  phone: z.string().trim().min(6, "A valid phone number is required").max(30),
+  email: z.string().trim().email("A valid email is required").max(200),
+  address: z.string().trim().max(200).optional().or(z.literal("")),
+  suburb: z.string().trim().max(120).optional().or(z.literal("")),
+  state: z.string().trim().max(40).optional().or(z.literal("")),
+  postcode: z.string().trim().max(10).optional().or(z.literal("")),
+  message: z
+    .string()
+    .trim()
+    .min(5, "Please tell us a little about what you need")
+    .max(2000),
+  /** Honeypot. Accepts a value on purpose, see the note on bookingSchema. */
+  website: z.string().max(200).optional().or(z.literal("")),
+});
+
+export type EnquiryInput = z.infer<typeof enquirySchema>;

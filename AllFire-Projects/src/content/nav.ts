@@ -23,6 +23,7 @@ export const primaryNav: NavItem[] = [
       href: `/services/${service.slug}`,
     })),
   },
+  { label: "Our Team", href: "/team" },
   { label: "Blogs", href: "/blog" },
 ];
 
@@ -55,6 +56,7 @@ export const footerNav: NavChild[] = [
   { label: "Home", href: "/" },
   { label: "Our Story", href: "/about" },
   { label: "Our Services", href: "/services" },
+  { label: "Our Team", href: "/team" },
   { label: "Blogs", href: "/blog" },
   { label: "Booking", href: "/#booking" },
   { label: "Contact", href: "/#contact" },

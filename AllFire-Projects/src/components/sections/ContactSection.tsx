@@ -6,6 +6,7 @@ import { BrandCorner } from "@/components/ui/BrandCorner";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ServiceMap } from "@/components/sections/ServiceMap";
+import { EnquiryForm } from "@/components/forms/EnquiryForm";
 import { PhoneIcon, MailIcon, MapPinIcon, ClockIcon } from "@/components/ui/Icon";
 import { company } from "@/content/company";
 
@@ -145,14 +146,34 @@ export function ContactSection() {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.85, delay: 0.08, ease }}
           >
+            {/* The coverage map used to sit here. A contact section whose only
+                action was "read our phone number" left people with nothing to
+                submit, so the column now carries the form and the map moved
+                below it. */}
             <p className="font-display text-sm font-bold tracking-[0.18em] text-ink-soft uppercase">
-              Where we work
+              Send us a message
             </p>
             <h3 className="mt-3 font-display text-2xl font-bold text-ink uppercase md:text-3xl">
-              On the ground across <span className="brand-gradient-text">Australia</span>
+              Tell us what your <span className="brand-gradient-text">building needs</span>
             </h3>
-            <ServiceMap />
+
+            <div className="mt-8">
+              <EnquiryForm />
+            </div>
           </motion.div>
+        </div>
+
+        {/* Coverage map, displaced from the right column by the form. Kept
+            because it answers a question the street map does not: not "where is
+            your office" but "do you come to me". */}
+        <div className="mt-16">
+          <p className="font-display text-sm font-bold tracking-[0.18em] text-ink-soft uppercase">
+            Where we work
+          </p>
+          <h3 className="mt-3 font-display text-2xl font-bold text-ink uppercase md:text-3xl">
+            On the ground across <span className="brand-gradient-text">Australia</span>
+          </h3>
+          <ServiceMap />
         </div>
 
         {/* Street map to the office. Different question from the coverage map. */}

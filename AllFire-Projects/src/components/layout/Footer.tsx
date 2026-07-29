@@ -1,10 +1,10 @@
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/Button";
 import { footerNav } from "@/content/nav";
 import { services } from "@/content/services";
 import { company } from "@/content/company";
-import { equipment } from "@/content/equipment";
 import { MailIcon, MapPinIcon, PhoneIcon } from "@/components/ui/Icon";
 import {
   FacebookIcon,
@@ -39,22 +39,27 @@ export function Footer() {
         </Container>
       </div>
 
-      {/* Capability strip: what we actually service, at a glance. */}
-      <Container className="border-b border-white/10 py-10">
-        <ul className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
-          {equipment.map((item) => (
-            <li key={item.label} className="flex flex-col items-center gap-3 text-center">
-              <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-flame-red/50 text-flame-red">
-                <item.Icon className="h-7 w-7" />
-              </span>
-              <span className="font-display text-xs font-bold tracking-[0.08em] text-white uppercase">
-                {item.label}
-              </span>
-              <span className="h-0.5 w-6 bg-flame-red" aria-hidden="true" />
-            </li>
-          ))}
-        </ul>
-      </Container>
+      {/* Capability strip: the client's own supplied artwork, replacing the
+          hand-drawn icon row that approximated it.
+
+          The artwork has a white background rather than transparency, so it
+          gets its own white band instead of sitting on the dark footer.
+
+          It is roughly 8:1. Scaled to a phone width that puts the labels around
+          five pixels tall, so below sm it scrolls at a legible minimum width
+          rather than shrinking into an illegible smear. */}
+      <div className="border-b border-white/10 bg-white">
+        <Container className="overflow-x-auto py-6">
+          <Image
+            src="/images/brand/fpa-capability-strip.png"
+            alt="FPA Australia Bronze Member. AllFire services fire extinguishers, fire hoses and reels, fire hydrants and boosters, emergency equipment, fire panels, and testing and compliance."
+            width={2953}
+            height={369}
+            sizes="(max-width: 1024px) 900px, 1024px"
+            className="mx-auto h-auto w-full max-w-5xl min-w-160"
+          />
+        </Container>
+      </div>
 
       <Container className="grid grid-cols-1 gap-12 py-16 md:grid-cols-4">
         <div>
