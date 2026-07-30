@@ -18,21 +18,24 @@ export const company = {
   legacyYear: 1911,
   phone: "1300 765 594",
   phoneHref: "tel:1300765594",
-  emergencyPhone: "0484 648 400",
-  emergencyPhoneHref: "tel:0484648400",
   /**
-   * WhatsApp click-to-chat. wa.me needs the number in full international form
-   * with no plus, spaces or leading zero: 0484 648 400 -> 61484648400.
+   * The 1300 line, not a mobile.
    *
-   * NOTE: this reuses the mobile above. Confirm with Peter that WhatsApp is
-   * actually active on that number before launch, or swap in the dedicated one.
+   * Peter's personal mobile was removed from the site at his request. Every
+   * emergency CTA now routes to the same 1300 number as everything else, so
+   * there is a single published contact point.
    */
-  whatsappNumber: "61484648400",
-  whatsappHref:
-    "https://wa.me/61484648400?text=" +
-    encodeURIComponent(
-      "Hi AllFire Services, I'd like to ask about fire safety compliance for my building."
-    ),
+  emergencyPhone: "1300 765 594",
+  emergencyPhoneHref: "tel:1300765594",
+  /*
+   * WhatsApp click-to-chat was here. Removed with the mobile it depended on:
+   * wa.me requires a real mobile in the URL, so keeping it would have shipped
+   * 0484 648 400 in the page source regardless of the label shown.
+   *
+   * Deleted rather than left unused, because an unused property on this object
+   * still ends up in the client bundle. To reinstate, add a mobile the client is
+   * happy to publish.
+   */
   email: "admin@allfireservices.com.au",
   address: {
     street: "330 Wattle Street",
@@ -45,7 +48,7 @@ export const company = {
   hours: [
     { days: "Monday – Friday", time: "7:00am – 6:30pm" },
     { days: "Saturday", time: "7:00am – 12:30pm" },
-    { days: "24/7 emergency line", time: "0484 648 400" },
+    { days: "24/7 emergency line", time: "1300 765 594" },
   ],
   social: {
     facebook: "https://www.facebook.com/profile.php?id=61566630403365",

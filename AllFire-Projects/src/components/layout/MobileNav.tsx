@@ -7,7 +7,6 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ChevronDownIcon, MenuIcon, XIcon } from "@/components/ui/Icon";
-import { WhatsAppIcon } from "@/components/ui/SocialIcons";
 import { primaryNav } from "@/content/nav";
 import { company } from "@/content/company";
 
@@ -155,17 +154,9 @@ export function MobileNav() {
               <Button href="#booking" variant="outline-light" onClick={() => setOpen(false)}>
                 Get a Quote
               </Button>
-              <Button
-                href={company.whatsappHref}
-                target="_blank"
-                rel="noreferrer noopener"
-                variant="outline-light"
-                className="gap-2"
-                onClick={() => setOpen(false)}
-              >
-                <WhatsAppIcon className="h-5 w-5" weight="fill" aria-hidden="true" />
-                1300 765 594
-              </Button>
+              {/* A WhatsApp button sat here linking to Peter's mobile, beneath a
+                  "Call 1300 765 594" button that was already the same intent.
+                  Removed: it duplicated the call CTA and published the mobile. */}
             </motion.div>
           </Container>
         </motion.div>

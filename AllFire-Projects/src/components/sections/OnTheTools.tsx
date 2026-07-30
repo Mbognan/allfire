@@ -14,8 +14,18 @@ import { cn } from "@/lib/utils";
 
 const ease = [0.33, 1, 0.68, 1] as const;
 
-/** Scroll distance allotted to each job while the section is pinned. */
-const VH_PER_JOB = 100;
+/**
+ * Scroll distance allotted to each job.
+ *
+ * The track is `jobs.length * VH_PER_JOB` tall and the panel is pinned for one
+ * viewport of it, so the distance actually spent stepping through jobs is
+ * `(jobs.length * VH_PER_JOB) - 100vh`.
+ *
+ * At 100 that meant 300vh of track for three jobs, and the section ate about
+ * five screens of scrolling. At 70 the same three jobs occupy 210vh of track
+ * and roughly 110vh of stepping, so the whole section costs about two screens.
+ */
+const VH_PER_JOB = 70;
 
 function leadAlt(job: Job) {
   return `${job.technician} servicing a ${job.system.toLowerCase()}`;

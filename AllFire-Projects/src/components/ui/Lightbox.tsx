@@ -117,10 +117,20 @@ export function Lightbox({
             aria-modal="true"
             aria-label={caption ? `${caption}, image viewer` : "Image viewer"}
             className="relative flex h-full w-full max-w-5xl flex-col"
-            /* The backdrop closes on click; the panel must not. */
-            onClick={(event) => event.stopPropagation()}
+            /* No stopPropagation here on purpose.
+
+               This panel is a full-height box, and a contained image leaves
+               large empty areas inside it. Swallowing clicks at this level
+               meant all that dead space did nothing, and only the thin margin
+               outside the panel closed the viewer, which reads as the dialog
+               ignoring you. Clicks are stopped on the actual content below
+               instead, so anywhere that looks like background behaves like
+               background. */
           >
-            <div className="flex shrink-0 items-center justify-between gap-4 pb-4 text-white">
+            <div
+              className="flex shrink-0 items-center justify-between gap-4 pb-4 text-white"
+              onClick={(event) => event.stopPropagation()}
+            >
               <p className="min-w-0 truncate font-display text-sm font-bold tracking-wide uppercase">
                 {caption}
                 <span className="ml-3 font-normal text-white/50 tabular-nums">
@@ -160,7 +170,10 @@ export function Lightbox({
             </div>
 
             {images.length > 1 && (
-              <div className="flex shrink-0 items-center justify-center gap-3 pt-4">
+              <div
+                className="flex shrink-0 items-center justify-center gap-3 pt-4"
+                onClick={(event) => event.stopPropagation()}
+              >
                 <button
                   type="button"
                   onClick={() => go(-1)}

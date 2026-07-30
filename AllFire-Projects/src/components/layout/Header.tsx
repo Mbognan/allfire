@@ -74,19 +74,19 @@ export function Header() {
 
         {/*
           Two channels, not two labels for the same thing: the quote button goes
-          to the booking form, the number opens a WhatsApp chat.
+          to the booking form, the number dials.
 
-          The number is always rendered. It was previously wrapped in
-          `hidden xl:inline`, which left an empty button between lg and xl.
+          This was a WhatsApp link. WhatsApp cannot run on a 1300 number, so the
+          wa.me URL carried Peter's mobile in plain text, which would have kept
+          publishing the number he asked to have removed. Now a tel: link on the
+          1300 line.
         */}
         <div className="hidden items-center gap-3 lg:flex">
           <Button
-            href={company.whatsappHref}
-            target="_blank"
-            rel="noreferrer noopener"
+            href={company.phoneHref}
             variant="outline"
             className="px-4 text-base xl:px-6 xl:text-lg"
-            aria-label={`Message AllFire Services on WhatsApp, ${company.phone}`}
+            aria-label={`Call AllFire Services on ${company.phone}`}
           >
             {company.phone}
           </Button>
