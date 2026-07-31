@@ -5,7 +5,6 @@ import { Container } from "@/components/ui/Container";
 import { BrandCorner } from "@/components/ui/BrandCorner";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ServiceMap } from "@/components/sections/ServiceMap";
 import { PhoneIcon, MailIcon, MapPinIcon, ClockIcon } from "@/components/ui/Icon";
 import { company } from "@/content/company";
 
@@ -20,11 +19,12 @@ const ease = [0.33, 1, 0.68, 1] as const;
  * The four identical bordered tiles are gone. They were cards where elevation
  * communicated nothing: same weight for a phone number you want people to use
  * and an address you rarely need. This is a divided list instead, with the
- * emergency line pulled out as the one thing that earns its own panel, and the
- * coverage map filling the column that was previously empty.
+ * emergency line pulled out as the one thing that earns its own panel.
  *
- * The street map at the bottom stays: it answers a different question (where is
- * the office) from the coverage map (where do you work).
+ * One map, not two. The Australia coverage map was removed and the street map
+ * promoted into the right column: a contact section is answering "where are
+ * you", and the coverage question belongs to ServiceAreas, which still renders
+ * that map elsewhere.
  */
 export function ContactSection() {
   return (
@@ -145,25 +145,31 @@ export function ContactSection() {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.85, delay: 0.08, ease }}
           >
+            {/* The Australia coverage map used to sit here, with the street map
+                below it. Two maps answering two different questions was one map
+                too many for a contact section: this one answers "where are
+                you", which is the question the section is actually about.
+
+                The street map moves up into this column rather than staying
+                below the grid, so the section keeps its two-column shape. */}
             <p className="font-display text-sm font-bold tracking-[0.18em] text-ink-soft uppercase">
-              Where we work
+              Where to find us
             </p>
             <h3 className="mt-3 font-display text-2xl font-bold text-ink uppercase md:text-3xl">
-              On the ground across <span className="brand-gradient-text">Australia</span>
+              {company.address.suburb},{" "}
+              <span className="brand-gradient-text">{company.address.state}</span>
             </h3>
-            <ServiceMap />
-          </motion.div>
-        </div>
 
-        {/* Street map to the office. Different question from the coverage map. */}
-        <div className="mt-12 min-h-90 overflow-hidden rounded-2xl border border-line">
-          <iframe
-            src={mapSrc}
-            title={`Map to ${company.legalName}`}
-            className="h-full min-h-90 w-full"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+            <div className="mt-6 overflow-hidden rounded-2xl border border-line">
+              <iframe
+                src={mapSrc}
+                title={`Map to ${company.legalName}`}
+                className="h-100 w-full"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </motion.div>
         </div>
       </Container>
     </section>

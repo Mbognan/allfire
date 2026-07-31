@@ -125,7 +125,10 @@ export function BookingForm() {
           type="tel"
           required
           className={inputClasses}
-          placeholder="0400 000 000"
+          /* Generic hint, not a sample number. This field is the visitor's own
+             phone, so a fake mobile here only invites confusion with a real
+             contact number. */
+          placeholder="Your contact number"
         />
       </div>
 

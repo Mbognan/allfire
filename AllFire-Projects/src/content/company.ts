@@ -13,9 +13,27 @@ export const company = {
   /** Current role. Distinct from founderTitle, which is his fire service background. */
   founderRole: "Managing Director",
   founderTitle: "former NSW Fire Brigades Senior Officer",
-  yearsExperience: "38+",
+  /**
+   * Years in business: current year minus foundingYear, 2026 - 2009 = 17.
+   *
+   * Held as a literal rather than derived from `new Date()`, because this
+   * object is read by both server and client components and a value computed at
+   * runtime would differ across a new year boundary mid-session. Bump it in
+   * January.
+   *
+   * Not the founder's NSW Fire Brigades service, which is a separate and larger
+   * figure and lives in mission.ts.
+   */
+  yearsExperience: "17",
   foundingYear: 2009,
-  legacyYear: 1911,
+  /** Month included because the client's own copy is specific about it. */
+  foundedLabel: "December 2009",
+  /**
+   * Was 1911, carrying a "family fire service legacy" line through the site.
+   * Replaced with the founding year at the client's direction: the site now
+   * dates the business from 2009 rather than the family line.
+   */
+  legacyYear: 2009,
   phone: "1300 765 594",
   phoneHref: "tel:1300765594",
   /**
@@ -30,7 +48,8 @@ export const company = {
   /*
    * WhatsApp click-to-chat was here. Removed with the mobile it depended on:
    * wa.me requires a real mobile in the URL, so keeping it would have shipped
-   * 0484 648 400 in the page source regardless of the label shown.
+   * the founder's personal mobile in the page source regardless of the label
+   * shown. The number itself is deliberately not repeated here.
    *
    * Deleted rather than left unused, because an unused property on this object
    * still ends up in the client bundle. To reinstate, add a mobile the client is

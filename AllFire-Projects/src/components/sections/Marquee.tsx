@@ -7,8 +7,16 @@ import { cn } from "@/lib/utils";
  * and costs no main-thread work. The phrase list is duplicated once and the
  * track translates exactly -50%, which is what makes the loop seamless.
  *
+ * The default phrase names the destination rather than opening a conversation.
+ * It was "Let's talk", which is vague for a band that scrolls you to a booking
+ * form, and it was a sixth way of saying the same thing across the site.
+ *
+ * Deliberately not "Need help?": that is the chat assistant's label, and the
+ * same two words pointing at two different destinations is worse than a dull
+ * label.
+ *
  * Two tones:
- *   ink   - solid dark band, used as a CTA ("Let's talk"), the phrase links.
+ *   ink   - solid dark band, used as a CTA, the phrase links.
  *   ghost - oversized outlined type on paper, used as a decorative divider
  *           listing the systems we service. Not a link, and aria-hidden,
  *           because repeating "fire alarm systems" twelve times to a screen
@@ -17,7 +25,7 @@ import { cn } from "@/lib/utils";
  * One marquee per page. A second reads as filler.
  */
 export function Marquee({
-  text = "Let's talk",
+  text = "Book an inspection",
   phrases,
   href = "#booking",
   tone = "ink",
@@ -81,7 +89,7 @@ export function Marquee({
   return (
     <section
       className={cn("relative isolate overflow-hidden border-y border-ink bg-ink py-7", className)}
-      aria-label={`${text} - jump to booking`}
+      aria-label={`${text}, jump to the booking form`}
     >
       <a href={href} className="group block cursor-pointer">
         {track}

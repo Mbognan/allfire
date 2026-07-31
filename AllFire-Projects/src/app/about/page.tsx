@@ -4,10 +4,11 @@ import { OurStory } from "@/components/sections/OurStory";
 import { AboutPrinciples } from "@/components/sections/AboutPrinciples";
 import { BookingSection } from "@/components/sections/BookingSection";
 import { company } from "@/content/company";
+import { mission } from "@/content/mission";
 
 export const metadata: Metadata = {
   title: "Our Story",
-  description: `Firefighter-run fire protection compliance across ${company.areaServed}. Founded in ${company.foundingYear} by ${company.founder}, with a family history in the fire service since ${company.legacyYear}.`,
+  description: `High-level professional fire safety services across ${company.areaServed}. Australian owned and operated, created by a former NSW Fire Brigades Senior Officer in ${company.foundedLabel}.`,
   alternates: { canonical: "/about" },
 };
 
@@ -29,7 +30,7 @@ export default function AboutPage() {
         lead="Our"
         accent="story"
         crumbLabel="Our Story"
-        intro={`Firefighter-run compliance for ${company.areaServed}, built on a family history in the fire service since ${company.legacyYear}.`}
+        intro={mission}
       />
 
       <OurStory />

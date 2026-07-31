@@ -8,6 +8,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionBackdrop } from "@/components/ui/SectionBackdrop";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ArrowRightIcon, ExpandIcon } from "@/components/ui/Icon";
+import { CarouselDots } from "@/components/ui/CarouselDots";
 import { Lightbox } from "@/components/ui/Lightbox";
 import { jobs, type Job } from "@/content/jobs";
 import { cn } from "@/lib/utils";
@@ -70,14 +71,26 @@ export function OnTheTools() {
 
   return (
     <section className="relative isolate bg-ink">
-      {/* Spotlight, lg and up. Hidden entirely under reduced motion. */}
-      {!reduce && <Spotlight onOpen={openViewer} />}
+      {/* Three render paths, each simple, rather than one that bends to fit
+          every case:
 
-      {/* Stacked fallback. Always present below lg; becomes the only version
-          under reduced motion. */}
-      <div className={reduce ? undefined : "lg:hidden"}>
+            Spotlight  lg and up, pinned, scroll-driven.
+            Carousel   below lg, one job per slide, swipeable.
+            Stacked    reduced motion, at every width.
+
+          The mobile carousel exists because the desktop photo cluster does not
+          survive a narrow column: a lead frame spanning two of three columns at
+          375px is about 200px wide, and the two supporting frames land near
+          100px. That is not a photograph, it is a swatch. One job per slide
+          gives the lead frame the full width instead. */}
+      {reduce ? (
         <Stacked onOpen={openViewer} />
-      </div>
+      ) : (
+        <>
+          <Spotlight onOpen={openViewer} />
+          <Carousel onOpen={openViewer} />
+        </>
+      )}
 
       <Lightbox
         images={viewerImages}
@@ -204,6 +217,99 @@ function Spotlight({ onOpen }: { onOpen: OpenViewer }) {
 
 /* ------------------------------------------------------------------ */
 
+/**
+ * Mobile: one job per slide on a scroll-snap rail.
+ *
+ * Slides sit at 86% width so the next one peeks in at the edge. Without that
+ * the rail looks like a single static image and nobody swipes.
+ *
+ * The lead photograph gets the full slide width and the two supporting frames
+ * sit under it as a thumbnail pair, which keeps all three reachable without
+ * shrinking the main frame to fit them alongside.
+ */
+function Carousel({ onOpen }: { onOpen: OpenViewer }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <div className="relative overflow-hidden py-20 lg:hidden">
+      <SectionBackdrop />
+      <Container className="relative">
+        <SectionHeading tone="light" lead="Work on" accent="the ground" />
+        <p className="mt-6 text-white/70">
+          Recent jobs across Greater Sydney, on the systems buildings depend on, done by the crew
+          you would meet on site.
+        </p>
+      </Container>
+
+      {/* Full-bleed rail: the gutter is padding on the track, so the first slide
+          lines up with the heading above while the rail itself runs edge to
+          edge. */}
+      <div
+        ref={trackRef}
+        className="relative mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 scrollbar-none"
+      >
+        {jobs.map((job, i) => (
+          <article
+            key={job.id}
+            data-card
+            className="w-[86%] shrink-0 snap-start"
+          >
+            <button
+              type="button"
+              onClick={() => onOpen(i, 0)}
+              aria-label={`View photos of ${leadAlt(job)}`}
+              className="group/photo relative block aspect-3/4 w-full cursor-pointer overflow-hidden rounded-2xl bg-ink-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-yellow"
+            >
+              <Image
+                src={job.photos[0]}
+                alt={leadAlt(job)}
+                fill
+                sizes="86vw"
+                className="object-cover"
+              />
+              <span
+                className="absolute inset-x-0 bottom-0 flex items-center gap-2 bg-linear-to-t from-ink/85 to-transparent p-4 font-display text-xs font-bold tracking-[0.14em] text-white uppercase"
+                aria-hidden="true"
+              >
+                <ExpandIcon className="h-4 w-4" />
+                View {job.photos.length} photos
+              </span>
+            </button>
+
+            {/* Supporting frames. Square and side by side, so they read as
+                secondary to the lead rather than competing with it. */}
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              {job.photos.slice(1, 3).map((photo, p) => (
+                <button
+                  key={photo}
+                  type="button"
+                  onClick={() => onOpen(i, p + 1)}
+                  aria-label={`View photo ${p + 2} of ${job.system.toLowerCase()}`}
+                  className="relative aspect-4/3 cursor-pointer overflow-hidden rounded-xl bg-ink-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-yellow"
+                >
+                  <Image src={photo} alt="" fill sizes="43vw" className="object-cover" />
+                </button>
+              ))}
+            </div>
+
+            <JobCopy job={job} className="mt-5" />
+          </article>
+        ))}
+      </div>
+
+      <Container className="relative">
+        <CarouselDots
+          trackRef={trackRef}
+          count={jobs.length}
+          tone="light"
+          label="Jobs"
+          className="mt-8"
+        />
+      </Container>
+    </div>
+  );
+}
+
 function Stacked({ onOpen }: { onOpen: OpenViewer }) {
   return (
     <div className="relative overflow-hidden py-20 md:py-28">
@@ -224,7 +330,16 @@ function Stacked({ onOpen }: { onOpen: OpenViewer }) {
               viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 0.6, ease }}
             >
-              <JobPhotos job={job} jobIndex={i} onOpen={onOpen} tabbable />
+              {/* The cluster's rows divide the container's height, so the
+                  container needs one. Spotlight supplies it via flex-1; here it
+                  comes from an aspect ratio. */}
+              <JobPhotos
+                job={job}
+                jobIndex={i}
+                onOpen={onOpen}
+                tabbable
+                className="aspect-4/3 sm:aspect-3/2"
+              />
               <JobCopy job={job} className="mt-6" />
             </motion.article>
           ))}

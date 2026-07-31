@@ -7,7 +7,7 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { StoryVideo } from "@/components/sections/StoryVideo";
 import { generations, legacyStrapline } from "@/content/legacy";
-import { company } from "@/content/company";
+import { story } from "@/content/mission";
 
 /** The client's supplied artwork. Any of these extensions is picked up. */
 const LEGACY_IMAGE_CANDIDATES = [
@@ -48,14 +48,19 @@ export function OurStory({ variant = "full" }: { variant?: "full" | "compact" })
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.25fr_0.75fr] lg:gap-16">
           <div>
             <Eyebrow>Our story</Eyebrow>
-            <SectionHeading className="mt-5" lead="Fire protection" accent="runs in our blood" />
-            <p className="mt-6 max-w-xl text-lg">
-              {company.legalName} is an Australian-owned business founded in{" "}
-              {company.foundingYear} by former NSW Fire Brigades Senior Officer,{" "}
-              {company.founder}. With a family history in the fire service dating back to{" "}
-              {company.legacyYear}, protecting people and property is not just our profession,
-              it is our legacy.
-            </p>
+            <SectionHeading className="mt-5" lead="Founded by" accent="a firefighter" />
+
+            {/* Founder named by role, not by name, at the client's request. The
+                paragraphs are their own copy, held in mission.ts. */}
+            <p className="mt-6 max-w-xl text-lg">{story.founding}</p>
+            <p className="mt-4 max-w-xl text-ink-soft">{story.concept}</p>
+
+            {!compact && (
+              <>
+                <p className="mt-4 max-w-xl text-ink-soft">{story.training}</p>
+                <p className="mt-4 max-w-xl text-ink-soft">{story.credentials}</p>
+              </>
+            )}
 
             {compact && (
               <Link

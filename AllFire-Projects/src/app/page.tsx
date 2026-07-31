@@ -18,7 +18,7 @@ import { ContactSection } from "@/components/sections/ContactSection";
 export const metadata: Metadata = {
   title: "Fire Protection Compliance, Sydney",
   description:
-    "AllFire Services: firefighter-run fire protection compliance for Sydney strata, commercial and industrial buildings. Founded 2009, family legacy since 1911.",
+    "High-level professional fire safety services across Greater Sydney, whilst being approachable, practical and reasonable. Australian owned and operated since 2009, staffed by professional firefighters, serving and retired.",
 };
 
 /**

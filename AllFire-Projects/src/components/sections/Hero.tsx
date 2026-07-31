@@ -97,16 +97,18 @@ export function Hero() {
           className="mt-16 flex flex-wrap items-center gap-x-10 gap-y-4 border-t border-white/15 pt-8"
         >
           <div>
+            {/* Was a hardcoded 38. Reads from company.ts now, so the stat and
+                the rest of the site cannot drift apart. */}
             <p className="font-display text-3xl font-bold text-flame-yellow tabular-nums">
-              <CountUp value={38} suffix="+" />
+              <CountUp value={Number(company.yearsExperience)} />
             </p>
             <p className="text-sm text-white/60">Years of experience</p>
           </div>
           <div>
             <p className="font-display text-3xl font-bold text-flame-yellow tabular-nums">
-              <CountUp value={company.legacyYear} duration={1800} />
+              <CountUp value={company.foundingYear} duration={1800} />
             </p>
-            <p className="text-sm text-white/60">Family fire service legacy</p>
+            <p className="text-sm text-white/60">Australian owned since</p>
           </div>
           <div>
             <p className="font-display text-3xl font-bold text-flame-yellow">24/7</p>

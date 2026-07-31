@@ -10,6 +10,7 @@ import { PhotoFrame } from "@/components/ui/PhotoFrame";
 import { PlayButton } from "@/components/ui/PlayButton";
 import { CheckIcon, FlameIcon, ShieldCheckIcon } from "@/components/ui/Icon";
 import { company } from "@/content/company";
+import { story } from "@/content/mission";
 
 const pillars = [
   { icon: FlameIcon, title: "Firefighter-led crew" },
@@ -85,9 +86,7 @@ export function AboutSection() {
           />
 
           <p className="mt-6 max-w-lg text-lg">
-            Founded in {company.foundingYear} by {company.founder}, a {company.founderTitle},
-            with a family history in the fire service dating back to {company.legacyYear}.
-            Protecting people and property is our legacy, not just our profession.
+            {story.founding} {story.concept}
           </p>
 
           <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -115,7 +114,7 @@ export function AboutSection() {
 
               <div className="mt-8">
                 <Button href="#booking" variant="primary">
-                  Book an Inspection
+                  Book an inspection
                 </Button>
               </div>
             </div>

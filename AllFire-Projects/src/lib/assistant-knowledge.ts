@@ -4,6 +4,7 @@ import { faqs } from "@/content/faqs";
 import { licensedWork, licenceClass, serviceStatement } from "@/content/accreditation";
 import { posts } from "@/content/posts";
 import { founder } from "@/content/founder";
+import { mission } from "@/content/mission";
 
 /**
  * Company knowledge for the assistant.
@@ -41,8 +42,9 @@ export function buildKnowledgeBase(): string {
 ## About
 ${serviceStatement}
 
-Founded ${company.foundingYear} by ${company.founder}, a ${company.founderTitle}.
-The family has been in the fire service since ${company.legacyYear}.
+Australian owned and operated, created by a ${company.founderTitle} in ${company.foundedLabel}.
+Do not name the founder; refer to the role only.
+Mission: ${mission}
 Work is carried out by serving and retired professional firefighters.
 Area served: ${company.areaServed}.
 Memberships: ${company.memberships.join(", ")}.

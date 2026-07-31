@@ -65,8 +65,8 @@ export function Footer() {
         <div>
           <Logo tone="paper" />
           <p className="mt-5 max-w-xs text-sm">
-            Firefighter-run fire protection compliance, serving {company.areaServed}. Family
-            legacy in the fire service since {company.legacyYear}.
+            High-level professional fire safety services across {company.areaServed}. Australian
+            owned and operated since {company.foundingYear}.
           </p>
           <div className="mt-6 flex gap-2">
             {socials.map((social) => (

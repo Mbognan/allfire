@@ -9,6 +9,7 @@ import { PhotoFrame } from "@/components/ui/PhotoFrame";
 import { Button } from "@/components/ui/Button";
 import { CheckIcon, ClockIcon, ShieldCheckIcon } from "@/components/ui/Icon";
 import { company } from "@/content/company";
+import { story } from "@/content/mission";
 
 const pillars = [
   { icon: ClockIcon, title: "Fast, reliable service", body: "Same business day callback." },
@@ -67,9 +68,7 @@ export function AboutStory() {
           />
 
           <p className="mt-6 max-w-xl text-lg">
-            Founded in {company.foundingYear} by {company.founder}, a {company.founderTitle}, with a
-            family history in the fire service reaching back to {company.legacyYear}. Protecting
-            people and property is our legacy, not just our profession.
+            {story.founding} {story.concept}
           </p>
 
           <div className="mt-9 grid grid-cols-1 gap-5 sm:grid-cols-2">
