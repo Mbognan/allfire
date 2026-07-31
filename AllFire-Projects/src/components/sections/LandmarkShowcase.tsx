@@ -7,6 +7,7 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { landmarks } from "@/content/landmarks";
+import { company } from "@/content/company";
 import { cn } from "@/lib/utils";
 
 /**
@@ -27,13 +28,13 @@ const ease = [0.33, 1, 0.68, 1] as const;
  * The animation is flex-grow rather than width: the panels share one row, so
  * growing one has to shrink the others, and letting flex distribute the space
  * keeps the row exactly full at every frame instead of accumulating rounding
- * error across six elements. It is a layout property, which the usual
+ * error across the row. It is a layout property, which the usual
  * transform-only advice warns against, but the alternative (scaling panels)
- * would overlap neighbours and distort the photographs. Cost is bounded: six
- * elements, one row, no reflow outside this section.
+ * would overlap neighbours and distort the photographs. Cost is bounded: five
+ * panels, one row, no reflow outside this section.
  *
- * Below `md` the strip becomes a vertical stack. A six-panel accordion at
- * 375px gives every panel about 60px, which is unreadable and unhittable, so
+ * Below `md` the strip becomes a vertical stack. A five-panel accordion at
+ * 375px gives every panel about 70px, which is unreadable and unhittable, so
  * the interaction is dropped rather than shrunk.
  */
 export function LandmarkShowcase() {
@@ -48,13 +49,12 @@ export function LandmarkShowcase() {
             <Eyebrow>Where we work</Eyebrow>
             <SectionHeading
               className="mt-5"
-              lead="Proven across"
-              accent="landmark Sydney"
+              lead="Strata and landmark"
+              accent="buildings we service"
             />
           </div>
           <p className="self-end text-ink-soft">
-            From sandstone that predates the standards to towers that test every one of them, the
-            same crew keeps them all certified.
+            Across {company.areaServed}, from single blocks to whole portfolios.
           </p>
         </div>
 
@@ -82,13 +82,13 @@ export function LandmarkShowcase() {
                 onFocus={() => setActive(i)}
                 onClick={() => setActive(i)}
                 aria-pressed={isActive}
-                aria-label={`${landmark.name}, ${landmark.locality}: ${landmark.blurb}`}
+                aria-label={`${landmark.name}, a building we service`}
                 className={cn(
                   "group relative cursor-pointer overflow-hidden rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-red-deep",
                   // The whole interaction is this one line: grow the open panel,
                   // let the others fall back to a sliver.
-                  "motion-safe:transition-[flex-grow] motion-safe:duration-[600ms] motion-safe:ease-[cubic-bezier(0.33,1,0.68,1)]",
-                  isActive ? "grow-[5]" : "grow"
+                  "motion-safe:transition-[flex-grow] motion-safe:duration-600 motion-safe:ease-[cubic-bezier(0.33,1,0.68,1)]",
+                  isActive ? "grow-5" : "grow"
                 )}
                 style={{ flexBasis: 0 }}
               >
@@ -148,10 +148,12 @@ export function LandmarkShowcase() {
                   </span>
                 </span>
 
-                {/* Open: name and blurb, fading in behind the panel's growth so
-                    the text is not sliding around while the panel resizes. */}
-                {/* Caption. Present at rest and when open, hidden only while
-                    this panel is the one being squeezed. */}
+                {/* Caption: the suburb, nothing else. Present at rest and when
+                    open, hidden only while this panel is being squeezed.
+
+                    The descriptive paragraph that used to sit here is gone. It
+                    was written copy standing in front of a photograph that
+                    already makes the point. */}
                 <motion.div
                   initial={false}
                   animate={{
@@ -161,24 +163,9 @@ export function LandmarkShowcase() {
                   transition={{ duration: 0.4, ease, delay: isActive ? 0.15 : 0 }}
                   className="absolute inset-x-0 bottom-0 p-5 text-left lg:p-7"
                 >
-                  <p className="text-xs font-semibold tracking-[0.18em] text-flame-yellow uppercase">
-                    {landmark.locality}
-                  </p>
-                  <h3 className="mt-1.5 font-display text-xl font-bold text-white uppercase lg:text-2xl">
+                  <h3 className="font-display text-xl font-bold text-white uppercase lg:text-2xl">
                     {landmark.name}
                   </h3>
-
-                  {/* The blurb is the one thing that genuinely needs the extra
-                      width, so it waits for the panel to open rather than
-                      wrapping to five lines in a sixth of the row. */}
-                  <motion.p
-                    initial={false}
-                    animate={{ opacity: isActive ? 1 : 0, height: isActive ? "auto" : 0 }}
-                    transition={{ duration: 0.35, ease }}
-                    className="max-w-sm overflow-hidden text-sm leading-relaxed text-white/90 lg:text-base"
-                  >
-                    <span className="mt-2 block">{landmark.blurb}</span>
-                  </motion.p>
                 </motion.div>
               </button>
             );
@@ -204,13 +191,9 @@ export function LandmarkShowcase() {
                 aria-hidden="true"
               />
               <div className="absolute inset-x-0 bottom-0 p-5">
-                <p className="text-xs font-semibold tracking-[0.18em] text-flame-yellow uppercase">
-                  {landmark.locality}
-                </p>
-                <h3 className="mt-1 font-display text-xl font-bold text-white uppercase">
+                <h3 className="font-display text-xl font-bold text-white uppercase">
                   {landmark.name}
                 </h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-white/85">{landmark.blurb}</p>
               </div>
             </div>
           ))}
