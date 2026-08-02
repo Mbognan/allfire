@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/components/ui/Icon";
 import { Container } from "@/components/ui/Container";
@@ -75,6 +76,26 @@ export function OurStory({ variant = "full" }: { variant?: "full" | "compact" })
 
           <StoryVideo />
         </div>
+
+        {/* The fireman tree, directly below the story column.
+
+            Full width of the container rather than inside the left column: the
+            artwork is roughly 2.7:1, and dropping it into a half-width column
+            would render five portraits at about 90px each. It reads as a band
+            under the story, which is also where it sits in the reading order,
+            straight after "Read our full story". */}
+        {compact && (
+          <figure className="mt-14">
+            <Image
+              src="/images/tricklebank-fireman-tree.png"
+              alt="The Tricklebank fireman tree: five generations of firefighters, Walter, Ian, Trevor, Stanley and Peter, spanning 1911 to 2025."
+              width={3080}
+              height={1150}
+              sizes="(max-width: 1280px) 100vw, 1280px"
+              className="h-auto w-full rounded-2xl"
+            />
+          </figure>
+        )}
 
         {/* Not rendered at all in compact mode. Hiding it with CSS would still
             ship the markup and publish the same content on two pages. */}
