@@ -70,9 +70,12 @@ export function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.95, delay: 0.16, ease }}
-          className="mt-7 max-w-xl text-lg text-white/75"
+          /* max-w-2xl: at xl this wrapped to five lines under an already large
+             headline, pushing the CTAs toward the fold. */
+          className="mt-7 max-w-2xl text-lg text-white/75"
         >
-          Firefighter-run compliance for Sydney strata, commercial and industrial buildings.
+          High-level professional fire safety services, delivered by people who are approachable,
+          practical and reasonable. Australian owned and operated since {company.foundingYear}.
         </motion.p>
 
         <motion.div

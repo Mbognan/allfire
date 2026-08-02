@@ -131,9 +131,16 @@ export function Lightbox({
               className="flex shrink-0 items-center justify-between gap-4 pb-4 text-white"
               onClick={(event) => event.stopPropagation()}
             >
-              <p className="min-w-0 truncate font-display text-sm font-bold tracking-wide uppercase">
-                {caption}
-                <span className="ml-3 font-normal text-white/50 tabular-nums">
+              {/* Caption truncates, counter does not: they were one <p>, so a
+                  long system name pushed the position indicator out of view.
+                  aria-live announces the change when paging with arrow keys,
+                  which otherwise moved the image silently. */}
+              <p className="flex min-w-0 items-baseline gap-3 font-display text-sm font-bold tracking-wide uppercase">
+                <span className="min-w-0 truncate">{caption}</span>
+                <span
+                  className="shrink-0 font-normal text-white/70 tabular-nums"
+                  aria-live="polite"
+                >
                   {index + 1} / {images.length}
                 </span>
               </p>

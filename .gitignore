@@ -1,2 +1,17 @@
 .vercel
 .env*
+
+# Agent and editor tooling, vendored from marketplaces rather than authored
+# here. Both are ~3.2MB and re-installable, so they are noise in diffs and
+# weight in every deploy: `vercel deploy` runs from this directory and respects
+# this file, so ignoring them also trims the upload.
+#
+# Scoped to .claude/skills/ rather than all of .claude/, so any commands or
+# settings this project actually authors can still be committed and shared.
+.claude/skills/
+.cursor/
+
+# Impeccable critique snapshots. Generated reports, reproducible by re-running
+# the command. Committing them would share score history across the team, which
+# is a reasonable alternative: drop this line if that is wanted.
+AllFire-Projects/.impeccable/
