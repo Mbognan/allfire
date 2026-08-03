@@ -84,15 +84,23 @@ export const productRange: Record<string, Product[]> = {
     "5 Yearly Hydrant Flow Test, Fire Truck Appliance Simulation",
   ]),
 
-  "fire-doors-frames": range([
-    "Door Tag",
-    "Frame Tag",
-    "Door Gap",
-    "Non-Compliant Door",
+  "fire-doors-frames": range(["Door Tag", "Frame Tag", "Door Gap", "Non Compliance Door"]),
+
+  /* Plans and diagrams. No catalogue page hosts these yet, so nothing renders
+     them today; the list is here so it is not lost, and so the page can be
+     added without retyping it. */
+  "zone-block-evacuation-plans": range([
+    "Fire Alarm Zone Block Plan",
+    "Evacuation Plan",
+    "Hydrant Block Plan",
+    "Sprinkler Block Plan",
   ]),
 
-  "fire-penetration-sealing": range(["Service Penetration", "Fire Damper"]),
-
+  /* Deliberately empty. The client's list gives these two categories no items,
+     and an earlier pass invented "Service Penetration" and "Fire Damper" as
+     products by echoing the category name back. Both services still have their
+     own page; they simply have no range to show. */
+  "fire-penetration-sealing": [],
   "air-mechanical": [],
 };
 

@@ -7,6 +7,7 @@ import { ServiceSidebar } from "@/components/services/ServiceSidebar";
 import { ServiceIntro } from "@/components/services/ServiceIntro";
 import { ProductGrid } from "@/components/services/ProductGrid";
 import { ServiceOverview } from "@/components/services/ServiceOverview";
+import { QuoteForm } from "@/components/forms/QuoteForm";
 import { services, getServiceBySlug } from "@/content/services";
 import { getProductsFor } from "@/content/products";
 
@@ -69,6 +70,15 @@ export default async function ServicePage({
       <>
         {hero}
         <ServiceOverview service={service} />
+
+        {/* Services with no range still get quoted; there is just no catalogue
+            above the form. */}
+        <section className="bg-white pb-14 md:pb-20">
+          <Container className="max-w-3xl">
+            <QuoteForm service={service.name} />
+          </Container>
+        </section>
+
         <BookingSection />
       </>
     );
@@ -85,22 +95,17 @@ export default async function ServicePage({
           <div>
             <ServiceIntro service={service} />
 
-            <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-y border-line py-4">
+            {/* Count only.
+
+                A disabled "Default sorting" select sat here. A control that
+                cannot be used is worse than no control: it reads as broken
+                rather than as forthcoming, and it was the only interactive
+                element on the row. */}
+            <div className="mt-10 border-y border-line py-4">
               <p className="text-ink-soft">
                 Showing all <span className="font-bold text-ink">{products.length}</span>{" "}
-                {products.length === 1 ? "result" : "results"}
+                {products.length === 1 ? "item" : "items"}
               </p>
-              <label className="flex items-center gap-2 text-sm text-ink-soft">
-                <span className="sr-only">Sort products</span>
-                <select
-                  disabled
-                  defaultValue="default"
-                  title="Sorting becomes available once the full range is loaded"
-                  className="min-h-11 cursor-not-allowed rounded-xl border border-line bg-white px-3 py-2 text-sm text-ink-soft"
-                >
-                  <option value="default">Default sorting</option>
-                </select>
-              </label>
             </div>
 
             <div className="mt-8">
@@ -109,6 +114,13 @@ export default async function ServicePage({
                 serviceSlug={service.slug}
                 serviceName={service.name}
               />
+            </div>
+
+            {/* Directly under the range, while the reader is still looking at
+                the thing they want priced. The general booking section below
+                asks for an inspection, which is a different commitment. */}
+            <div className="mt-14">
+              <QuoteForm service={service.name} />
             </div>
           </div>
         </Container>

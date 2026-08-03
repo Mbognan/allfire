@@ -74,3 +74,28 @@ export const enquirySchema = z.object({
 });
 
 export type EnquiryInput = z.infer<typeof enquirySchema>;
+
+/**
+ * Quote request from a service page.
+ *
+ * Nothing is stored. The route validates, sends one email and forgets, which is
+ * also why there is no consent checkbox or retention notice: there is no record
+ * to consent to.
+ *
+ * `service` is filled by the page rather than typed, so the recipient always
+ * knows which category the request came from even when the message is "how much
+ * for the whole building".
+ */
+export const quoteSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(120),
+  phone: z.string().trim().min(6, "A valid phone number is required").max(30),
+  email: z.string().trim().email("A valid email is required").max(200),
+  /** Set by the page. Free text so a future page can pass anything sensible. */
+  service: z.string().trim().max(160).optional().or(z.literal("")),
+  /** Optional: someone asking for a price should not be blocked on prose. */
+  message: z.string().trim().max(2000).optional().or(z.literal("")),
+  /** Honeypot. Accepts a value on purpose, see the note on bookingSchema. */
+  website: z.string().max(200).optional().or(z.literal("")),
+});
+
+export type QuoteInput = z.infer<typeof quoteSchema>;

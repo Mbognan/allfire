@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import type { BookingInput, QuestionInput, EnquiryInput } from "@/lib/validation";
+import type { BookingInput, QuestionInput, EnquiryInput, QuoteInput } from "@/lib/validation";
 import { company } from "@/content/company";
 
 export async function sendBookingNotification(data: BookingInput) {
@@ -29,6 +29,56 @@ export async function sendBookingNotification(data: BookingInput) {
   const { error } = await resend.emails.send({
     from: process.env.CONTACT_EMAIL_FROM || "AllFire Services Website <onboarding@resend.dev>",
     to,
+    replyTo: data.email,
+    subject,
+    text,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return { delivered: true as const };
+}
+
+/**
+ * Quote request.
+ *
+ * Goes to the client's quoting inbox rather than the general contact address,
+ * because quotes are actioned by a different person from enquiries. Env var
+ * first so the destination can change without a deploy.
+ *
+ * Nothing is persisted anywhere: the request is validated, sent and dropped.
+ */
+export async function sendQuoteNotification(data: QuoteInput) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const to = process.env.QUOTE_EMAIL_TO || "admin@allfireservices.com.au";
+
+  const subject = data.service
+    ? `Quote request: ${data.service} (${data.name})`
+    : `Quote request from ${data.name}`;
+
+  const text = [
+    `Name: ${data.name}`,
+    `Phone: ${data.phone}`,
+    `Email: ${data.email}`,
+    data.service ? `Service: ${data.service}` : null,
+    data.message ? `\nMessage:\n${data.message}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  if (!apiKey) {
+    console.log("[quote] RESEND_API_KEY not set, logging submission instead:\n", text);
+    return { delivered: false as const };
+  }
+
+  const resend = new Resend(apiKey);
+  const { error } = await resend.emails.send({
+    from: process.env.CONTACT_EMAIL_FROM || "AllFire Services Website <onboarding@resend.dev>",
+    to,
+    /* Reply goes to the customer, so the team can answer from the inbox
+       without copying the address out of the body. */
     replyTo: data.email,
     subject,
     text,

@@ -781,11 +781,19 @@ export const productsByService: Record<string, Product[]> = {
   ],
 };
 
+/**
+ * The client's supplied range, and nothing else.
+ *
+ * `productsByService` below is no longer read. It holds the placeholder
+ * catalogue written before the real range arrived: invented model codes
+ * ("AF-DP45"), invented product names ("Sentry 4.5", "Halo 2.0") and invented
+ * specifications. The client has now supplied what they actually sell and asked
+ * that nothing outside that list appear, so the placeholders are cut off at the
+ * accessor rather than deleted, in case any of that written detail is worth
+ * reattaching to a real product later.
+ */
 export function getProductsFor(slug: string): Product[] {
-  /* Detailed entries first, then the client's supplied range. Both are the same
-     catalogue to a visitor; they are separate files only because one carries
-     written detail and the other is still names. */
-  return [...(productsByService[slug] ?? []), ...(productRange[slug] ?? [])];
+  return productRange[slug] ?? [];
 }
 
 export function getProduct(serviceSlug: string, productSlug: string): Product | undefined {
