@@ -19,6 +19,14 @@ export type Landmark = {
 
 const dir = "/images/strata-landmark-buildings";
 
+/**
+ * Order is hand-set, not alphabetical or file-numbered.
+ *
+ * Two of these buildings are in Strathfield. Since the caption is the suburb
+ * alone, two panels carry the same word, so they are placed several apart:
+ * side by side they would read as the same building duplicated rather than as
+ * two jobs in one suburb.
+ */
 export const landmarks: Landmark[] = [
   { id: "waterloo", name: "Waterloo", image: `${dir}/7-all-fire-services-welcome-waterloo.webp` },
   {
@@ -26,11 +34,23 @@ export const landmarks: Landmark[] = [
     name: "Marrickville",
     image: `${dir}/9-all-fire-services-welcome-marrickville.webp`,
   },
+  { id: "pyrmont", name: "Pyrmont", image: `${dir}/21-all-fire-services-welcome-pyrmont.webp` },
   { id: "rockdale", name: "Rockdale", image: `${dir}/6-all-fire-services-welcome-rockdale.webp` },
   {
-    id: "strathfield",
+    id: "strathfield-20",
     name: "Strathfield",
     image: `${dir}/20-all-fire-services-welcome-strathfield.webp`,
+  },
+  {
+    id: "dulwich-hill",
+    name: "Dulwich Hill",
+    image: `${dir}/29-all-fire-services-welcome-dulwich-hill.webp`,
+  },
+  { id: "ramsgate", name: "Ramsgate", image: `${dir}/18-all-fire-services-welcome-ramsgate.webp` },
+  {
+    id: "strathfield-15",
+    name: "Strathfield",
+    image: `${dir}/15-all-fire-services-welcome-strathfield.webp`,
   },
   {
     id: "elderslie",

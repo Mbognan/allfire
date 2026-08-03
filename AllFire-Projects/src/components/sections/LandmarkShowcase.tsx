@@ -1,75 +1,88 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Image from "next/image";
-import { motion } from "motion/react";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { ArrowRightIcon } from "@/components/ui/Icon";
 import { landmarks } from "@/content/landmarks";
 import { company } from "@/content/company";
 import { cn } from "@/lib/utils";
 
-/**
- * Shared easing. Matches the curve used elsewhere in the site so this section
- * moves with the same rhythm as everything around it rather than inventing its
- * own feel.
- */
-const ease = [0.33, 1, 0.68, 1] as const;
+/** Panel widths. Closed is wide enough to read a suburb; open shows the building. */
+const CLOSED = "w-44 lg:w-52";
+const OPEN = "w-[22rem] lg:w-[30rem]";
 
 /**
- * Expanding image strip.
+ * Strata and landmark buildings.
  *
- * One panel is open at a time and grows to take most of the row while the rest
- * compress to slivers. Hover drives it on pointer devices, focus drives it for
- * keyboard, and the panels are real buttons so both paths land on the same
- * state.
+ * An expanding accordion inside a horizontal rail, which is what lets it hold
+ * any number of buildings without giving up the hover expansion.
  *
- * The animation is flex-grow rather than width: the panels share one row, so
- * growing one has to shrink the others, and letting flex distribute the space
- * keeps the row exactly full at every frame instead of accumulating rounding
- * error across the row. It is a layout property, which the usual
- * transform-only advice warns against, but the alternative (scaling panels)
- * would overlap neighbours and distort the photographs. Cost is bounded: five
- * panels, one row, no reflow outside this section.
+ * The earlier version was a fixed row that divided the container between however
+ * many panels existed. That caps the set at about six before each panel is too
+ * narrow to read, and adding a seventh silently made every other one worse. Here
+ * the panels have their own width and the row scrolls, so the set can grow to
+ * twenty without changing how any single panel looks.
  *
- * Below `md` the strip becomes a vertical stack. A five-panel accordion at
- * 375px gives every panel about 70px, which is unreadable and unhittable, so
- * the interaction is dropped rather than shrunk.
+ * Width is animated rather than transform. Transform would scale the photograph
+ * and overlap its neighbours; this is a row of solid objects making space for
+ * each other, and the layout cost is bounded to one scroll container.
  */
 export function LandmarkShowcase() {
   /** null = resting: every panel equal, nothing singled out. */
   const [active, setActive] = useState<number | null>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const page = useCallback((direction: 1 | -1) => {
+    const track = trackRef.current;
+    if (!track) return;
+    /* Scroll by most of a viewport rather than one panel: panels are narrow, and
+       a single-panel step makes the arrows feel broken. */
+    track.scrollBy({ left: track.clientWidth * 0.8 * direction, behavior: "smooth" });
+  }, []);
 
   return (
     <section className="relative isolate overflow-hidden bg-paper py-20 md:py-28">
       <Container>
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-          <div>
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-2xl">
             <Eyebrow>Where we work</Eyebrow>
             <SectionHeading
               className="mt-5"
               lead="Strata and landmark"
               accent="buildings we service"
             />
+            <p className="mt-6 text-ink-soft">
+              Across {company.areaServed}, from single blocks to whole portfolios.
+            </p>
           </div>
-          <p className="self-end text-ink-soft">
-            Across {company.areaServed}, from single blocks to whole portfolios.
-          </p>
+
+          {/* Arrows only where the rail exists. Below md the layout is a stack. */}
+          <div className="hidden shrink-0 gap-2 md:flex">
+            {([-1, 1] as const).map((direction) => (
+              <button
+                key={direction}
+                type="button"
+                onClick={() => page(direction)}
+                aria-label={direction === 1 ? "Show more buildings" : "Show previous buildings"}
+                className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-ink/25 text-ink transition-colors duration-200 hover:border-ink hover:bg-ink hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flame-red-deep"
+              >
+                <ArrowRightIcon className={cn("h-4 w-4", direction === -1 && "rotate-180")} />
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Desktop: expanding strip.
+        {/* The rail.
 
-            Resting state is every panel at equal width with the photographs
-            reading at full strength. Nothing is pre-selected, so the section
-            does not open already asserting one building matters more, and the
-            growth is unambiguously a response to the pointer.
-
-            onMouseLeave returns the row to even, otherwise whichever panel the
-            pointer happened to exit through would stay expanded. */}
+            Full-bleed via negative margin so panels run to the screen edge and
+            the row reads as continuing rather than stopping at the container. */}
         <div
-          className="mt-12 hidden gap-3 md:flex md:h-104 lg:h-128"
+          ref={trackRef}
           onMouseLeave={() => setActive(null)}
+          className="mt-12 -mx-6 hidden gap-3 overflow-x-auto px-6 pb-2 scrollbar-none md:flex md:h-104 lg:h-128"
         >
           {landmarks.map((landmark, i) => {
             const isActive = i === active;
@@ -84,101 +97,54 @@ export function LandmarkShowcase() {
                 aria-pressed={isActive}
                 aria-label={`${landmark.name}, a building we service`}
                 className={cn(
-                  "group relative cursor-pointer overflow-hidden rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-red-deep",
-                  // The whole interaction is this one line: grow the open panel,
-                  // let the others fall back to a sliver.
-                  "motion-safe:transition-[flex-grow] motion-safe:duration-600 motion-safe:ease-[cubic-bezier(0.33,1,0.68,1)]",
-                  isActive ? "grow-5" : "grow"
+                  "group relative shrink-0 cursor-pointer overflow-hidden rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-red-deep",
+                  "motion-safe:transition-[width] motion-safe:duration-600 motion-safe:ease-[cubic-bezier(0.33,1,0.68,1)]",
+                  isActive ? OPEN : CLOSED
                 )}
-                style={{ flexBasis: 0 }}
               >
                 <Image
                   src={landmark.image}
                   alt=""
                   fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  /* Scale is transform-only, so the zoom itself costs no layout
-                     work even though the panel around it is resizing.
-
-                     At rest every panel sits at 1: the images are the point,
-                     and pre-zooming all six only crops them. The 1.1 applies
-                     solely to the panels being squeezed while a sibling is
-                     open, where it stops the building reading as compressed. */
+                  sizes="(max-width: 1024px) 50vw, 30vw"
+                  /* Closed panels sit slightly zoomed so the crop keeps the
+                     building centred at narrow width; opening releases it. */
                   className={cn(
                     "object-cover transition-transform duration-700 ease-out",
-                    active === null || isActive ? "scale-100" : "scale-110"
+                    isActive ? "scale-100" : "scale-110"
                   )}
                 />
 
-                {/* Scrim.
-
-                    Anchored to the bottom third rather than covering the whole
-                    panel. A full-cover wash was dimming the photographs to make
-                    text legible in the one place text actually sits, which cost
-                    the images everywhere else. This darkens only under the
-                    caption and leaves the top two thirds of every building at
-                    full strength.
-
-                    from-ink/80 at the base still clears 4.5:1 for the white
-                    caption; the closed panels run lighter because they carry
-                    only a short label. */}
+                {/* Scrim anchored to the base, under the label only, so the
+                    building itself is never dimmed to make text work. */}
                 <div
                   className={cn(
                     "absolute inset-x-0 bottom-0 transition-opacity duration-500",
                     isActive
-                      ? "h-2/3 bg-linear-to-t from-ink/80 via-ink/35 to-transparent"
-                      : "h-1/2 bg-linear-to-t from-ink/65 to-transparent"
+                      ? "h-2/3 bg-linear-to-t from-ink/80 via-ink/30 to-transparent"
+                      : "h-1/2 bg-linear-to-t from-ink/70 to-transparent"
                   )}
                   aria-hidden="true"
                 />
 
-                {/* Squeezed: name rotated up the panel. Only used while a
-                    sibling is open, because that is the only time a panel is
-                    too narrow to set the name horizontally. At rest the panels
-                    are wide and this treatment would be affectation. */}
                 <span
                   className={cn(
-                    "pointer-events-none absolute inset-x-0 bottom-6 flex justify-center transition-opacity duration-300",
-                    active !== null && !isActive ? "opacity-100" : "opacity-0"
+                    "absolute inset-x-0 bottom-0 p-5 text-left font-display font-bold text-white uppercase transition-[font-size] duration-500",
+                    isActive ? "text-2xl lg:text-3xl" : "text-lg"
                   )}
-                  aria-hidden="true"
                 >
-                  <span className="font-display text-sm font-bold tracking-[0.18em] whitespace-nowrap text-white uppercase [writing-mode:vertical-rl] rotate-180">
-                    {landmark.name}
-                  </span>
+                  {landmark.name}
                 </span>
-
-                {/* Caption: the suburb, nothing else. Present at rest and when
-                    open, hidden only while this panel is being squeezed.
-
-                    The descriptive paragraph that used to sit here is gone. It
-                    was written copy standing in front of a photograph that
-                    already makes the point. */}
-                <motion.div
-                  initial={false}
-                  animate={{
-                    opacity: isActive || active === null ? 1 : 0,
-                    y: isActive || active === null ? 0 : 12,
-                  }}
-                  transition={{ duration: 0.4, ease, delay: isActive ? 0.15 : 0 }}
-                  className="absolute inset-x-0 bottom-0 p-5 text-left lg:p-7"
-                >
-                  <h3 className="font-display text-xl font-bold text-white uppercase lg:text-2xl">
-                    {landmark.name}
-                  </h3>
-                </motion.div>
               </button>
             );
           })}
         </div>
 
-        {/* Mobile: plain stacked cards, no accordion. */}
+        {/* Below md: a plain stack. An accordion at 375px gives every panel
+            about 70px, which is neither readable nor hittable. */}
         <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:hidden">
           {landmarks.map((landmark) => (
-            <div
-              key={landmark.id}
-              className="relative h-64 overflow-hidden rounded-2xl"
-            >
+            <div key={landmark.id} className="relative h-64 overflow-hidden rounded-2xl">
               <Image
                 src={landmark.image}
                 alt=""

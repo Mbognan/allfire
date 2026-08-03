@@ -19,6 +19,11 @@ import {
  * URLs and nav entries; this decides only what the landing page leads with and
  * in what sequence. Reordering one cannot disturb the other.
  *
+ * Labels are the client's category titles verbatim, slashes and all. An earlier
+ * pass rewrote them into house style ("Extinguishers, Signage & Blankets"),
+ * which read better but dropped wording the client uses with their own
+ * customers. Their titles win. Only "SIGNANGE" is corrected, as a typo.
+ *
  * `standard` appears on two cards only, per the client's list: the two entries
  * they wrote a standard against. The rest carry none rather than having numbers
  * added that were not asked for.
@@ -42,7 +47,7 @@ export type ServiceCard = {
 
 export const serviceCards: (ServiceCard | null)[] = [
   {
-    label: "Fire Panels & Smoke Detection",
+    label: "Fire Panel / Smoke Alarms",
     /* Client's list said "AS 1070.1", which is not a fire standard. Detection
        and alarm systems are AS 1670.1, the number already used elsewhere in
        this repo. Corrected deliberately. */
@@ -52,38 +57,38 @@ export const serviceCards: (ServiceCard | null)[] = [
     Icon: FirePanelIcon,
   },
   {
-    label: "Smoke Alarms",
+    label: "Smoke",
     standard: "AS 3786",
     image: "/images/services-img/smoke-alarm-testing.png",
     href: "/services/smoke-alarm-testing",
     Icon: SmokeAlarmIcon,
   },
   {
-    label: "Extinguishers, Signage & Blankets",
+    label: "Fire Extinguisher / Signage / Blanket",
     image: "/images/services-img/fire-extinguisher-tagging.png",
     href: "/services/fire-extinguisher-tagging",
     Icon: ExtinguisherIcon,
   },
   {
-    label: "Emergency & Exit Lighting",
+    label: "Emergency Lights / Emergency Exit Light",
     image: "/images/services-img/emergency-lighting-testing.png",
     href: "/services/emergency-lighting-testing",
     Icon: EmergencyExitIcon,
   },
   {
-    label: "Diesel Fire Pumps",
+    label: "Diesel Pump",
     image: "/images/services-img/diesel-pump-inspection.png",
     href: "/services/diesel-pump-inspection",
     Icon: HydrantIcon,
   },
   {
-    label: "Air & Mechanical Services",
+    label: "Air Mechanical Services",
     image: "/images/services-img/air-mechanical.png",
     href: "/services/air-mechanical",
     Icon: AirHandlingIcon,
   },
   {
-    label: "Flow Testing",
+    label: "Flowtest",
     image: "/images/stock/hydrant.webp",
     /* No standalone flow-testing page exists. Hydrant flow and pressure testing
        is the closest catalogue entry; sprinkler flow lives under Sprinkler
@@ -92,17 +97,17 @@ export const serviceCards: (ServiceCard | null)[] = [
     Icon: FlowTestIcon,
   },
   {
-    label: "Service Penetrations & Fire Dampers",
+    label: "Service Penetration / Fire Damper",
     href: "/services/fire-penetration-sealing",
     Icon: PenetrationIcon,
   },
   {
-    label: "Fire Doors",
+    label: "Fire Door",
     href: "/services/fire-doors-frames",
     Icon: FireDoorIcon,
   },
   {
-    label: "Zone Block, Evacuation & Hydrant Plans",
+    label: "Zone Block Plan, Evacuation Plan and Hydrant / Sprinkler Plan",
     /* No catalogue page covers plans and diagrams, so this goes to the booking
        form rather than somewhere it does not belong. Add a service entry and
        repoint when the client confirms scope. */
