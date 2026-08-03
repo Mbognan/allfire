@@ -1,6 +1,5 @@
 import fs from "node:fs";
 import path from "node:path";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/components/ui/Icon";
 import { Container } from "@/components/ui/Container";
@@ -11,13 +10,12 @@ import { generations, legacyStrapline } from "@/content/legacy";
 import { story } from "@/content/mission";
 
 /**
- * Master switch for every Tricklebank family-legacy element in this section:
- * the fireman tree artwork on the landing page and the generations timeline on
- * /about. Both are gated on this one constant so neither can come back alone.
+ * Master switch for the Tricklebank generations timeline, on both the landing
+ * page and /about.
  *
- * Off at the client's request. It is retained rather than deleted because it is
- * their own artwork and data, and because turning it back on is a one-word
- * change if the family-legacy story returns to the site.
+ * On. It previously also gated a separate "fireman tree" image on the landing
+ * page; that artwork was deleted from the repo and its block has gone with it,
+ * so this constant now controls one thing.
  *
  * Typed as boolean, not inferred as `false`, so the JSX below stays type-checked
  * rather than being narrowed to unreachable.
@@ -100,25 +98,12 @@ export function OurStory({ variant = "full" }: { variant?: "full" | "compact" })
           <StoryVideo />
         </div>
 
-        {/* The fireman tree, directly below the story column.
-
-            Full width of the container rather than inside the left column: the
-            artwork is roughly 2.7:1, and dropping it into a half-width column
-            would render five portraits at about 90px each. It reads as a band
-            under the story, which is also where it sits in the reading order,
-            straight after "Read our full story". */}
-        {SHOW_LEGACY_TIMELINE && compact && (
-          <figure className="mt-14">
-            <Image
-              src="/images/tricklebank-fireman-tree.png"
-              alt="The Tricklebank fireman tree: five generations of firefighters, Walter, Ian, Trevor, Stanley and Peter, spanning 1911 to 2025."
-              width={3080}
-              height={1150}
-              sizes="(max-width: 1280px) 100vw, 1280px"
-              className="h-auto w-full rounded-2xl"
-            />
-          </figure>
-        )}
+        {/* A second, landing-page-only block sat here rendering
+            /images/tricklebank-fireman-tree.png. That file has been deleted
+            from the repo, so it shipped as a broken image with its alt text
+            showing, and it named a different five people from the current
+            artwork. Removed: the block below now covers both pages with the
+            file that actually exists. */}
 
         {/* Shown in both modes now, so it sits under "Read our full story" on
             the landing page as well as on /about.
