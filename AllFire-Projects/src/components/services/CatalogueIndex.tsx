@@ -41,8 +41,9 @@ export function CatalogueIndex({ services }: { services: Service[] }) {
           ? products.filter(
               (p) =>
                 p.name.toLowerCase().includes(q) ||
-                p.subtitle.toLowerCase().includes(q) ||
-                p.code.toLowerCase().includes(q) ||
+                /* Both optional now: most of the range is a name only. */
+                p.subtitle?.toLowerCase().includes(q) ||
+                p.code?.toLowerCase().includes(q) ||
                 service.name.toLowerCase().includes(q)
             )
           : products;
@@ -160,7 +161,7 @@ export function CatalogueIndex({ services }: { services: Service[] }) {
             <ul className="mt-5 -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 scrollbar-none sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
               {products.map((product) => (
                 <li key={product.slug} className="w-44 shrink-0 snap-start sm:w-auto sm:shrink">
-                  <ProductTile service={service} product={product} />
+                  <ProductTile product={product} />
                 </li>
               ))}
             </ul>
@@ -168,7 +169,7 @@ export function CatalogueIndex({ services }: { services: Service[] }) {
             <ul className="mt-5 divide-y divide-line border-y border-line">
               {products.map((product) => (
                 <li key={product.slug}>
-                  <ProductRow service={service} product={product} />
+                  <ProductRow product={product} />
                 </li>
               ))}
             </ul>
@@ -179,13 +180,16 @@ export function CatalogueIndex({ services }: { services: Service[] }) {
   );
 }
 
-/** List view: denser, and shows the model code the grid has no room for. */
-function ProductRow({ service, product }: { service: Service; product: Product }) {
+/**
+ * List view: denser, and shows the model code the grid has no room for.
+ *
+ * Not a link. Per-product pages were removed, so this is a catalogue row rather
+ * than a navigation target; making it look clickable would promise a page that
+ * does not exist.
+ */
+function ProductRow({ product }: { product: Product }) {
   return (
-    <Link
-      href={`/services/${service.slug}/${product.slug}`}
-      className="group flex items-center gap-5 py-4 transition-colors duration-200 hover:bg-paper-raised focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-flame-red-deep"
-    >
+    <div className="flex items-center gap-5 py-4">
       <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-paper-raised">
         {product.image ? (
           /* eslint-disable-next-line @next/next/no-img-element -- pre-optimised local asset */
@@ -205,30 +209,25 @@ function ProductRow({ service, product }: { service: Service; product: Product }
       </span>
 
       <span className="min-w-0 flex-1">
-        <span className="block font-display text-base font-bold text-ink transition-colors duration-200 group-hover:text-flame-red-deep">
-          {product.name}
+        <span className="block font-display text-base font-bold text-ink">{product.name}</span>
+        {product.subtitle && (
+          <span className="block text-sm text-ink-soft">{product.subtitle}</span>
+        )}
+      </span>
+
+      {product.code && (
+        <span className="hidden font-display text-xs font-bold tracking-[0.14em] text-ink-soft uppercase sm:block">
+          {product.code}
         </span>
-        <span className="block text-sm text-ink-soft">{product.subtitle}</span>
-      </span>
-
-      <span className="hidden font-display text-xs font-bold tracking-[0.14em] text-ink-soft uppercase sm:block">
-        {product.code}
-      </span>
-
-      <ArrowRightIcon
-        className="h-4 w-4 shrink-0 text-flame-red-deep transition-transform duration-200 group-hover:translate-x-1"
-        aria-hidden="true"
-      />
-    </Link>
+      )}
+    </div>
   );
 }
 
-function ProductTile({ service, product }: { service: Service; product: Product }) {
+/** Catalogue tile. Not a link, for the same reason as ProductRow. */
+function ProductTile({ product }: { product: Product }) {
   return (
-    <Link
-      href={`/services/${service.slug}/${product.slug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white transition-[transform,border-color] duration-300 hover:-translate-y-1 hover:border-flame-red-deep/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flame-red-deep"
-    >
+    <div className="flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white">
       <div className="relative aspect-square w-full overflow-hidden bg-paper-raised">
         {product.image ? (
           /* eslint-disable-next-line @next/next/no-img-element -- pre-optimised local asset */
@@ -238,7 +237,7 @@ function ProductTile({ service, product }: { service: Service; product: Product 
             loading="lazy"
             decoding="async"
             aria-hidden="true"
-            className="absolute inset-0 h-full w-full object-contain p-4 transition-transform duration-500 ease-out group-hover:scale-105"
+            className="absolute inset-0 h-full w-full object-contain p-4"
           />
         ) : (
           <span className="absolute inset-0 flex items-center justify-center">
@@ -247,15 +246,12 @@ function ProductTile({ service, product }: { service: Service; product: Product 
         )}
       </div>
 
-      {/* Name bar. Fills with brand colour on hover, as on the reference. */}
-      <div className="flex flex-1 flex-col justify-center border-t border-line px-4 py-3 transition-colors duration-300 group-hover:bg-flame-red-deep">
-        <span className="font-display text-sm font-bold text-ink transition-colors duration-300 group-hover:text-white">
-          {product.name}
-        </span>
-        <span className="mt-0.5 text-xs text-ink-soft transition-colors duration-300 group-hover:text-white/80">
-          {product.subtitle}
-        </span>
+      <div className="flex flex-1 flex-col justify-center border-t border-line px-4 py-3">
+        <span className="font-display text-sm font-bold text-ink">{product.name}</span>
+        {product.subtitle && (
+          <span className="mt-0.5 text-xs text-ink-soft">{product.subtitle}</span>
+        )}
       </div>
-    </Link>
+    </div>
   );
 }

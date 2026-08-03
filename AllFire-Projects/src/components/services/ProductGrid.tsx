@@ -1,17 +1,26 @@
-import Link from "next/link";
-import type { Product } from "@/content/products";
+"use client";
+
+import { useState } from "react";
 import { FlameIcon } from "@/components/ui/Icon";
+import { Button } from "@/components/ui/Button";
+import { rangeNotes } from "@/content/products-range";
+import type { Product } from "@/content/products";
+
+/** Three rows at the widest column count, per the client's brief. */
+const COLUMNS = 3;
+const VISIBLE_ROWS = 3;
+const INITIAL_VISIBLE = COLUMNS * VISIBLE_ROWS;
 
 /**
- * Product grid for a service page.
+ * The range for one service, as a catalogue.
  *
- * Photo and label, nothing else, matching the supplied reference. The model
- * code, description, specifications and enquiry action all live on the product
- * page, which is one click away through any tile.
+ * Items are shown, not linked. The per-product pages are gone: most of the
+ * range is a name and a photograph, and a page per item would be a heading on
+ * an empty screen. When an item carries specifications worth reading, that is
+ * the moment to give it a page again.
  *
- * Stripped on request from an earlier card layout that carried a code, a
- * summary line and its own CTA: five of those side by side competed with each
- * other instead of letting the picture do the work.
+ * Capped at three rows with the remainder behind a disclosure, so a service
+ * with thirteen extinguisher lines does not push the enquiry off the page.
  */
 export function ProductGrid({
   products,
@@ -22,6 +31,8 @@ export function ProductGrid({
   serviceSlug: string;
   serviceName: string;
 }) {
+  const [expanded, setExpanded] = useState(false);
+
   if (products.length === 0) {
     return (
       <div className="rounded-2xl border border-line p-10 text-center">
@@ -34,28 +45,32 @@ export function ProductGrid({
     );
   }
 
+  const note = rangeNotes[serviceSlug];
+  const hidden = products.length - INITIAL_VISIBLE;
+  const visible = expanded ? products : products.slice(0, INITIAL_VISIBLE);
+
   return (
-    <ul className="grid grid-cols-2 gap-6 sm:gap-7 lg:grid-cols-3 xl:grid-cols-4">
-      {products.map((product) => (
-        <li key={product.slug}>
-          <Link
-            href={`/services/${serviceSlug}/${product.slug}`}
-            className="group flex h-full flex-col focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-red-deep"
-          >
-            <div className="relative aspect-4/5 w-full overflow-hidden rounded-2xl bg-paper-raised">
+    <div>
+      {note && <p className="mb-8 max-w-prose text-ink-soft">{note}</p>}
+
+      {/* Three columns, not four. Larger cells mean the equipment is legible at
+          a glance, which is the whole job of a catalogue page. */}
+      <ul className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-3">
+        {visible.map((product) => (
+          <li key={product.slug} className="flex flex-col">
+            <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-paper-raised">
               {product.image ? (
                 /* eslint-disable-next-line @next/next/no-img-element -- pre-optimised local asset */
                 <img
                   src={product.image}
-                  alt=""
+                  alt={product.name}
                   loading="lazy"
                   decoding="async"
-                  aria-hidden="true"
-                  className="absolute inset-0 h-full w-full object-contain p-6 transition-transform duration-500 ease-out motion-safe:group-hover:scale-105"
+                  className="absolute inset-0 h-full w-full object-contain p-6"
                 />
               ) : (
                 <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-ink-soft/60">
-                  <FlameIcon className="h-9 w-9 text-flame-orange/40" aria-hidden="true" />
+                  <FlameIcon className="h-10 w-10 text-flame-orange/40" aria-hidden="true" />
                   <span className="font-display text-[0.65rem] font-bold tracking-[0.14em] uppercase">
                     Photo to come
                   </span>
@@ -63,12 +78,24 @@ export function ProductGrid({
               )}
             </div>
 
-            <span className="mt-4 block text-center font-display text-base leading-tight font-bold text-ink transition-colors duration-200 group-hover:text-flame-red-deep md:text-lg">
-              {product.subtitle}
-            </span>
-          </Link>
-        </li>
-      ))}
-    </ul>
+            <p className="mt-4 font-display text-base leading-tight font-bold text-balance text-ink md:text-lg">
+              {product.name}
+            </p>
+            {/* Only where the client has confirmed one. Most of the range has no
+                classification line yet, and an empty element leaves the cards
+                ragged. */}
+            {product.subtitle && <p className="mt-1 text-sm text-ink-soft">{product.subtitle}</p>}
+          </li>
+        ))}
+      </ul>
+
+      {hidden > 0 && !expanded && (
+        <div className="mt-10 text-center">
+          <Button variant="outline" onClick={() => setExpanded(true)}>
+            Show all {products.length} items
+          </Button>
+        </div>
+      )}
+    </div>
   );
 }

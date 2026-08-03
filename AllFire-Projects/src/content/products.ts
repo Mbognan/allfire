@@ -1,3 +1,4 @@
+import { productRange } from "@/content/products-range";
 import { services } from "@/content/services";
 
 /**
@@ -31,16 +32,27 @@ export type VariantGroup = { label: string; options: string[] };
 export type Product = {
   /** URL segment, unique within a service. */
   slug: string;
-  /** Model code, shown above the name and on the detail page. */
-  code: string;
   /** Short product name, the big heading. */
   name: string;
+
+  /*
+    Everything below is optional.
+
+    The client supplied a large range by name only. Writing a model code, a
+    classification line and body copy for each would mean inventing product
+    detail on a compliance site, so items arrive with a name and gain the rest
+    as real information is confirmed. Every consumer treats these as absent
+    rather than assuming a value.
+  */
+
+  /** Model code, shown above the name and on the detail page. */
+  code?: string;
   /** One-line classification under the name. */
-  subtitle: string;
+  subtitle?: string;
   /** One line for the catalogue grid. */
-  note: string;
+  note?: string;
   /** Body paragraphs on the detail page. */
-  description: string[];
+  description?: string[];
   image?: string;
   variants?: VariantGroup[];
   specs?: SpecGroup[];
@@ -770,7 +782,10 @@ export const productsByService: Record<string, Product[]> = {
 };
 
 export function getProductsFor(slug: string): Product[] {
-  return productsByService[slug] ?? [];
+  /* Detailed entries first, then the client's supplied range. Both are the same
+     catalogue to a visitor; they are separate files only because one carries
+     written detail and the other is still names. */
+  return [...(productsByService[slug] ?? []), ...(productRange[slug] ?? [])];
 }
 
 export function getProduct(serviceSlug: string, productSlug: string): Product | undefined {

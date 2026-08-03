@@ -14,26 +14,28 @@ import {
 /**
  * The landing page services grid, in the client's stated order.
  *
- * This is a presentation list, deliberately separate from the catalogue in
+ * A presentation list, deliberately separate from the catalogue in
  * `services/index.ts`. The catalogue keeps all fifteen services, their pages,
  * URLs and nav entries; this decides only what the landing page leads with and
- * in what sequence. Reordering the catalogue cannot disturb this, and vice
- * versa.
+ * in what sequence. Reordering one cannot disturb the other.
  *
- * `standard` is shown on the card because it is the fastest way for a strata or
- * facility manager to match a card to a line on their fire safety schedule.
+ * `standard` appears on two cards only, per the client's list: the two entries
+ * they wrote a standard against. The rest carry none rather than having numbers
+ * added that were not asked for.
  *
- * `href` points at the catalogue page that covers the work. Two entries are
- * approximate and flagged inline.
+ * `image` is omitted where no photograph of that work exists yet. The grid
+ * renders a branded placeholder for those rather than borrowing a photo of
+ * different work, which on a compliance site would be a small lie.
  *
  * Slots 11 and 12 are held at the client's request so the grid divides evenly.
- * They are `null` rather than fabricated services: an invented card would be a
- * claim, and a held slot is honest about being unfinished.
+ * They are `null` rather than invented services.
  */
 export type ServiceCard = {
   label: string;
-  /** Australian Standard, where the work is governed by one. */
+  /** Australian Standard. Shown only where the client specified one. */
   standard?: string;
+  /** Omit when no photograph of this work exists; the grid handles the gap. */
+  image?: string;
   href: string;
   Icon: typeof ExtinguisherIcon;
 };
@@ -41,46 +43,48 @@ export type ServiceCard = {
 export const serviceCards: (ServiceCard | null)[] = [
   {
     label: "Fire Panels & Smoke Detection",
-    /* Client's brief said "AS 1070.1", which is not a fire standard. Detection
+    /* Client's list said "AS 1070.1", which is not a fire standard. Detection
        and alarm systems are AS 1670.1, the number already used elsewhere in
        this repo. Corrected deliberately. */
     standard: "AS 1670.1",
+    image: "/images/stock/riser-room.webp",
     href: "/services/fire-panels-detection",
     Icon: FirePanelIcon,
   },
   {
     label: "Smoke Alarms",
     standard: "AS 3786",
+    image: "/images/services-img/smoke-alarm-testing.png",
     href: "/services/smoke-alarm-testing",
     Icon: SmokeAlarmIcon,
   },
   {
     label: "Extinguishers, Signage & Blankets",
-    standard: "AS 1851",
+    image: "/images/services-img/fire-extinguisher-tagging.png",
     href: "/services/fire-extinguisher-tagging",
     Icon: ExtinguisherIcon,
   },
   {
     label: "Emergency & Exit Lighting",
-    standard: "AS 2293",
+    image: "/images/services-img/emergency-lighting-testing.png",
     href: "/services/emergency-lighting-testing",
     Icon: EmergencyExitIcon,
   },
   {
     label: "Diesel Fire Pumps",
-    standard: "AS 1851",
+    image: "/images/services-img/diesel-pump-inspection.png",
     href: "/services/diesel-pump-inspection",
     Icon: HydrantIcon,
   },
   {
     label: "Air & Mechanical Services",
-    standard: "AS 1668.1",
+    image: "/images/services-img/air-mechanical.png",
     href: "/services/air-mechanical",
     Icon: AirHandlingIcon,
   },
   {
     label: "Flow Testing",
-    standard: "AS 1851",
+    image: "/images/stock/hydrant.webp",
     /* No standalone flow-testing page exists. Hydrant flow and pressure testing
        is the closest catalogue entry; sprinkler flow lives under Sprinkler
        Systems. Repoint if flow testing becomes its own service. */
@@ -89,13 +93,11 @@ export const serviceCards: (ServiceCard | null)[] = [
   },
   {
     label: "Service Penetrations & Fire Dampers",
-    standard: "AS 4072.1",
     href: "/services/fire-penetration-sealing",
     Icon: PenetrationIcon,
   },
   {
     label: "Fire Doors",
-    standard: "AS 1905.1",
     href: "/services/fire-doors-frames",
     Icon: FireDoorIcon,
   },

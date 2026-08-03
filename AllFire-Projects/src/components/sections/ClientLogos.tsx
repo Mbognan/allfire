@@ -81,13 +81,16 @@ function ClientMark({ client }: { client: (typeof clients)[number] }) {
            The section heading already states what the row is. */
         alt={client.nameConfirmed ? client.name : ""}
         loading="lazy"
-        /* Flat white silhouette, whatever the source colour. See the note on
-           ClientLogoTicker: this is what lets navy, black, colour and
-           already-white marks share one dark ground.
+        /* Artwork exactly as supplied: no grayscale, no brightness, no
+           inversion. The transparency in each PNG carries straight through to
+           the section behind it.
 
-           The per-client `invert` flag is no longer consulted; brightness-0
-           normalises every mark before the invert, so it is redundant. */
-        className="h-12 w-auto max-w-40 shrink-0 object-contain px-6 opacity-80 brightness-0 invert transition-opacity duration-300 hover:opacity-100 md:h-14 md:max-w-48"
+           The per-client `invert` flag is deliberately not applied here. It
+           exists for the light-background placement, where the two
+           white-on-transparent marks would otherwise vanish; on this dark
+           ground they are already correct and inverting them would black them
+           out. The flag stays in the data for that other placement. */
+        className="h-12 w-auto max-w-40 shrink-0 object-contain px-6 md:h-14 md:max-w-48"
       />
     );
   }
