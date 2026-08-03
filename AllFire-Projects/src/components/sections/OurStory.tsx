@@ -22,10 +22,19 @@ import { story } from "@/content/mission";
  * Typed as boolean, not inferred as `false`, so the JSX below stays type-checked
  * rather than being narrowed to unreachable.
  */
-const SHOW_LEGACY_TIMELINE: boolean = false;
+const SHOW_LEGACY_TIMELINE: boolean = true;
 
-/** The client's supplied artwork. Any of these extensions is picked up. */
+/**
+ * The client's supplied artwork, newest filename first.
+ *
+ * tricklebank_family_timeline.png is the current graphic: five generations on a
+ * single arrow, ending with Peter as Managing Director. The older
+ * generation-of-tricklebank names are kept below it so an existing file under
+ * the previous convention still resolves rather than silently dropping to the
+ * text fallback.
+ */
 const LEGACY_IMAGE_CANDIDATES = [
+  "tricklebank_family_timeline.png",
   "generation-of-tricklebank.webp",
   "generation-of-tricklebank.png",
   "generation-of-tricklebank.jpg",
@@ -34,8 +43,8 @@ const LEGACY_IMAGE_CANDIDATES = [
 
 /**
  * Resolved at build time. The client's graphic is the intended presentation,
- * but shipping an <img> for a file that is not in the repo yet would render a
- * broken image on a live page. So: use the artwork the moment it exists, and
+ * but pointing an image tag at a file that is not in the repo yet would render
+ * a broken image on a live page. So: use the artwork the moment it exists, and
  * fall back to the same data as a text timeline until then. Drop the file into
  * public/images/ and this switches over on the next build, no code change.
  */
@@ -111,14 +120,18 @@ export function OurStory({ variant = "full" }: { variant?: "full" | "compact" })
           </figure>
         )}
 
-        {/* Not rendered at all in compact mode. Hiding it with CSS would still
-            ship the markup and publish the same content on two pages.
+        {/* Shown in both modes now, so it sits under "Read our full story" on
+            the landing page as well as on /about.
 
-            Currently switched off everywhere by SHOW_LEGACY_TIMELINE. The
-            timeline dates the family line from 1911 and names the founder,
-            both of which the rest of the site no longer does. Flip the constant
-            to bring it back; nothing else needs changing. */}
-        {SHOW_LEGACY_TIMELINE && !compact && (
+            It was restricted to /about to avoid publishing the same content
+            twice. That reasoning held for the old text timeline, which was a
+            block of names and dates; this is one image, and a repeated image
+            does not carry the duplicate-content cost that repeated prose does.
+
+            Note the tension worth watching: this graphic dates the family line
+            from 1911 and names Peter, while the surrounding copy now starts the
+            business at 2009 and describes the founder by role only. */}
+        {SHOW_LEGACY_TIMELINE && (
         <div className="mt-14">
           {legacyImage ? (
             /*
@@ -131,7 +144,10 @@ export function OurStory({ variant = "full" }: { variant?: "full" | "compact" })
                 {/* eslint-disable-next-line @next/next/no-img-element -- client-supplied artwork, served as-is */}
                 <img
                   src={legacyImage}
-                  alt="Generation of Tricklebank: the family fire service line from 1911 to 2025, listing William, Trevor, Stanley, Ian and Paul Tricklebank, Grant Fuller, Paul Wilson, Managing Director Peter Tricklebank, and next generation Kyriakos and Orlando Tricklebank."
+                  /* Describes the artwork that is actually on screen. The
+                     previous alt listed ten people from an earlier graphic,
+                     including several who do not appear in this one. */
+                  alt="Generation of Tricklebank: five generations in the fire service. 1911 William Tricklebank, grandfather; 1931 Trevor Tricklebank; 1957 Stanley Tricklebank, father; 1959 Ian Tricklebank, uncle; and 2020 to current, Managing Director Peter Tricklebank."
                   loading="lazy"
                   decoding="async"
                   className="h-auto w-full min-w-160 rounded-2xl"

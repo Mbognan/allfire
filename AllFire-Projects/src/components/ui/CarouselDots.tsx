@@ -41,14 +41,19 @@ export function CarouselDots({
     const step = cardWidth + gap;
     if (step <= 0) return;
 
-    setPerView(Math.max(1, Math.round(track.clientWidth / step)));
+    const view = Math.max(1, Math.round(track.clientWidth / step));
+    setPerView(view);
 
+    /* Active is a PAGE index, matching the dots, which count pages rather than
+       sliding positions. Measuring in cards while rendering in pages made dot 2
+       highlight after a single card had scrolled. */
+    const page = step * view;
     const max = track.scrollWidth - track.clientWidth;
-    // Snap the last position to the final dot, or rounding leaves it one short.
+    const lastPage = Math.max(0, Math.ceil(count / view) - 1);
+
+    // Snap the end of travel to the final dot, or rounding leaves it one short.
     setActive(
-      max > 0 && track.scrollLeft >= max - 2
-        ? Math.max(0, count - Math.max(1, Math.round(track.clientWidth / step)))
-        : Math.round(track.scrollLeft / step)
+      max > 0 && track.scrollLeft >= max - 2 ? lastPage : Math.round(track.scrollLeft / page)
     );
   }, [trackRef, count]);
 
@@ -74,17 +79,28 @@ export function CarouselDots({
     };
   }, [trackRef, measure]);
 
+  /** `index` is a page, so a press moves a whole view rather than one card. */
   function goTo(index: number) {
     const track = trackRef.current;
     if (!track) return;
     const card = track.querySelector<HTMLElement>("[data-card]");
     const gap = parseFloat(getComputedStyle(track).columnGap || "0") || 0;
     const step = (card?.offsetWidth ?? track.clientWidth) + gap;
-    track.scrollTo({ left: step * index, behavior: "smooth" });
+    track.scrollTo({ left: step * perView * index, behavior: "smooth" });
   }
 
-  // A carousel showing everything at once does not need a position indicator.
-  const stops = Math.max(1, count - perView + 1);
+  /*
+    Pages, not sliding positions.
+
+    This was `count - perView + 1`, which for 8 cards two-up produced 7 stops
+    indexing overlapping pairs: dot 3 and dot 4 shared a card, so no reader
+    could build a model of what a dot meant. Ceil(count / perView) gives 4 dots
+    for 4 distinct pages, which is also inside the working-memory budget for a
+    position indicator where 7 was not.
+
+    A carousel showing everything at once does not need an indicator at all.
+  */
+  const stops = Math.max(1, Math.ceil(count / perView));
   if (stops <= 1) return null;
 
   return (
@@ -101,7 +117,7 @@ export function CarouselDots({
             type="button"
             role="tab"
             aria-selected={current}
-            aria-label={`Go to item ${i + 1} of ${stops}`}
+            aria-label={`Go to page ${i + 1} of ${stops}`}
             onClick={() => goTo(i)}
             /* Hit area is 44px tall via padding while the dot stays small. */
             className="group cursor-pointer py-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-red-deep"
