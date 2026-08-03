@@ -13,22 +13,28 @@ import { cn } from "@/lib/utils";
 /**
  * The ticker itself, without a section wrapper.
  *
- * Kept on a white surface in both placements. The client artwork is a mix of
- * navy, black and inverted-white marks, so it only holds contrast against
- * white: dropping it onto the dark testimonials background would erase
- * Cambridge Lodge and Household Properties entirely.
+ * Runs directly on the dark section, no white panel.
+ *
+ * The artwork is a mix of navy, black, colour and inverted-white marks, so no
+ * single background suits all of it as supplied. `brightness-0 invert` collapses
+ * every mark to a flat white silhouette: black goes white, navy goes white,
+ * white goes white. That costs the brand colours but it is the standard
+ * treatment for a logo wall on a dark ground, and it is the only option here
+ * that keeps all eight legible without a panel behind them.
+ *
+ * Replace with light-on-dark artwork from each client and drop the filter.
  */
 export function ClientLogoTicker({ className }: { className?: string }) {
   return (
-    <div className={cn("rounded-2xl bg-white py-10", className)}>
-      <p className="px-6 text-center font-display text-sm font-bold tracking-[0.18em] text-ink-soft uppercase">
+    <div className={cn("py-2", className)}>
+      <p className="px-6 text-center font-display text-sm font-bold tracking-[0.18em] text-white/50 uppercase">
         Trusted by strata, property and facility managers across Sydney
       </p>
 
       {/* Edge fades so logos dissolve rather than getting clipped mid-glyph */}
       <div className="relative mt-8 overflow-hidden">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-white to-transparent md:w-28" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-white to-transparent md:w-28" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-ink to-transparent md:w-28" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-ink to-transparent md:w-28" />
 
         <div className="marquee-track marquee-slow flex w-max items-center gap-4 will-change-transform">
           {[0, 1].map((copy) => (
@@ -75,17 +81,13 @@ function ClientMark({ client }: { client: (typeof clients)[number] }) {
            The section heading already states what the row is. */
         alt={client.nameConfirmed ? client.name : ""}
         loading="lazy"
-        /* Full colour, no grayscale wash.
+        /* Flat white silhouette, whatever the source colour. See the note on
+           ClientLogoTicker: this is what lets navy, black, colour and
+           already-white marks share one dark ground.
 
-           The logo-wall convention of muting at rest assumes artwork with
-           enough contrast to survive it. This set does not: two logos are white
-           on transparent and vanish entirely, and grayscale flattened the rest
-           into near-identical greys. Legibility of a real client's mark beats
-           the texture effect. */
-        className={cn(
-          "h-12 w-auto max-w-40 shrink-0 object-contain px-6 transition-opacity duration-300 md:h-14 md:max-w-48",
-          client.invert && "invert"
-        )}
+           The per-client `invert` flag is no longer consulted; brightness-0
+           normalises every mark before the invert, so it is redundant. */
+        className="h-12 w-auto max-w-40 shrink-0 object-contain px-6 opacity-80 brightness-0 invert transition-opacity duration-300 hover:opacity-100 md:h-14 md:max-w-48"
       />
     );
   }

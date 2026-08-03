@@ -2,38 +2,12 @@ import { Container } from "@/components/ui/Container";
 import { SectionBackdrop } from "@/components/ui/SectionBackdrop";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ServicesGridMotion } from "@/components/sections/ServicesGridMotion";
+import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { CheckIcon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
-import { services } from "@/content/services";
-import {
-  serviceStatement,
-  productsStatement,
-  licensedWork,
-  licenceClass,
-} from "@/content/accreditation";
-
-/**
- * The five services the client asked to lead with, in their order.
- *
- * Listed by slug rather than by array position, so reordering or adding a
- * service in the content file cannot silently change what the landing page
- * features. Everything else is still named below the grid, so nothing we offer
- * disappears from the page.
- */
-const FEATURED_SLUGS = [
-  "emergency-lighting-testing",
-  "fire-extinguisher-tagging",
-  "smoke-alarm-testing",
-  "diesel-pump-inspection",
-  "air-mechanical",
-];
+import { productsStatement, licensedWork, licenceClass } from "@/content/accreditation";
 
 export function ServicesSection() {
-  const featured = FEATURED_SLUGS.map((slug) => services.find((s) => s.slug === slug)).filter(
-    (s): s is NonNullable<typeof s> => Boolean(s)
-  );
-
   return (
     <section
       id="services"
@@ -42,41 +16,31 @@ export function ServicesSection() {
       <SectionBackdrop />
 
       <Container className="relative">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-          <div>
-            <Eyebrow tone="light">Our services</Eyebrow>
-            <SectionHeading
-              className="mt-5"
-              tone="light"
-              lead="Everything your building needs"
-              accent="to stay compliant"
-            />
-          </div>
-          <p className="self-end text-white/70">{serviceStatement}</p>
+        {/* Heading only.
+
+            The regulatory service statement that sat beside it is gone: sixty
+            words about the Environmental Planning and Assessment Regulations,
+            in the highest-attention slot on the section, before the reader had
+            been told what is sold. It still reads on the About page, where
+            someone has already decided to care.
+
+            The "these five are where most buildings start" line is gone too.
+            The grid now shows the range rather than summarising it. */}
+        <div className="max-w-2xl">
+          <Eyebrow tone="light">Our services</Eyebrow>
+          <SectionHeading
+            className="mt-5"
+            tone="light"
+            lead="Everything your building needs"
+            accent="to stay compliant"
+          />
         </div>
 
-        <ServicesGridMotion services={featured} />
+        <ServicesGrid />
 
-        {/* The remaining nine services are represented by this line rather than
-            shown. ServiceTiles still exists and can be reinstated here; it was
-            unhooked, not deleted.
-
-            The count is derived, so it cannot drift out of date the way a
-            hardcoded number would. */}
-        <p className="mt-12 max-w-2xl text-lg text-white/70">
-          These five are where most buildings start. We also service{" "}
-          <span className="font-semibold text-flame-yellow">
-            {services.length - FEATURED_SLUGS.length} more
-          </span>{" "}
-          areas of fire protection, from hydrants and sprinklers to passive fire, fire doors and
-          annual statements.
-        </p>
-
-        {/* The grid only features five services, so send anyone who wants the
-            full list to the services index rather than growing the grid. */}
-        <div className="mt-10">
+        <div className="mt-12">
           <Button href="/services" variant="outline-light" withArrow>
-            Explore more
+            View all services
           </Button>
         </div>
 

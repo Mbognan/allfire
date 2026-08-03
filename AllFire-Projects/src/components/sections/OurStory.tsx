@@ -11,7 +11,9 @@ import { generations, legacyStrapline } from "@/content/legacy";
 import { story } from "@/content/mission";
 
 /**
- * Master switch for the Tricklebank generations timeline.
+ * Master switch for every Tricklebank family-legacy element in this section:
+ * the fireman tree artwork on the landing page and the generations timeline on
+ * /about. Both are gated on this one constant so neither can come back alone.
  *
  * Off at the client's request. It is retained rather than deleted because it is
  * their own artwork and data, and because turning it back on is a one-word
@@ -96,7 +98,7 @@ export function OurStory({ variant = "full" }: { variant?: "full" | "compact" })
             would render five portraits at about 90px each. It reads as a band
             under the story, which is also where it sits in the reading order,
             straight after "Read our full story". */}
-        {compact && (
+        {SHOW_LEGACY_TIMELINE && compact && (
           <figure className="mt-14">
             <Image
               src="/images/tricklebank-fireman-tree.png"

@@ -10,12 +10,16 @@
  * Swap for the client's official FPA artwork if they can supply individual files.
  */
 import {
+  Alarm,
+  Pipe,
   ClipboardText,
+  Door,
   Drop,
   Fan,
   FireExtinguisher,
   Gauge,
   Lightbulb,
+  MapTrifold,
   Siren,
 } from "@phosphor-icons/react/dist/ssr";
 import type { IconProps, IconWeight } from "@phosphor-icons/react";
@@ -32,3 +36,16 @@ export const FirePanelIcon = (p: Props) => <Siren weight={WEIGHT} {...p} />;
 export const ComplianceIcon = (p: Props) => <ClipboardText weight={WEIGHT} {...p} />;
 /** Mechanical smoke control: exhaust fans, dampers, stair pressurisation. */
 export const AirHandlingIcon = (p: Props) => <Fan weight={WEIGHT} {...p} />;
+
+/* Landing-grid additions. Same family, same weight, same reasoning as above:
+   nearest real glyph in the set rather than a hand-drawn one. */
+
+/** Smoke alarms, as distinct from the panel that receives them. */
+export const SmokeAlarmIcon = (p: Props) => <Alarm weight={WEIGHT} {...p} />;
+/** Flow and pressure testing. Water, measured. */
+export const FlowTestIcon = (p: Props) => <Drop weight={WEIGHT} {...p} />;
+/** Penetrations and dampers: holes made good through rated construction. */
+export const PenetrationIcon = (p: Props) => <Pipe weight={WEIGHT} {...p} />;
+export const FireDoorIcon = (p: Props) => <Door weight={WEIGHT} {...p} />;
+/** Zone block, evacuation and hydrant plans. */
+export const SitePlanIcon = (p: Props) => <MapTrifold weight={WEIGHT} {...p} />;
