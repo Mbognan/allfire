@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
 import { OurStory } from "@/components/sections/OurStory";
-import { ClientLogos } from "@/components/sections/ClientLogos";
 import { ServicesSection } from "@/components/sections/ServicesSection";
-import { OnTheTools } from "@/components/sections/OnTheTools";
 import { LandmarkShowcase } from "@/components/sections/LandmarkShowcase";
-import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { VideoSection } from "@/components/sections/VideoSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { ShortsCarousel } from "@/components/sections/ShortsCarousel";
@@ -40,16 +37,17 @@ export default function Home() {
       {/* Credibility first: the story, then who trusts us. Compact cut, with the
           generations timeline reserved for /about so it is not published twice. */}
       <OurStory variant="compact" />
-      <ClientLogos />
 
-      {/* The offer, then the differentiator */}
+      {/* The offer, then where it happens */}
       <ServicesSection />
-      <OnTheTools />
       <LandmarkShowcase />
-      <WhyChooseUs />
 
-      {/* The founder and crew sections are unhooked, not deleted. Both
-          components still exist and can be reinstated by importing them here. */}
+      {/* Unhooked, not deleted. Each component still exists and returns by
+          importing it here again:
+            WhyChooseUs    the differentiator panel
+            OnTheTools     documented jobs, real crew photography
+            FounderSection the founder
+            TeamSection    the crew                                        */}
 
       {/* Social proof */}
       <TestimonialsSection />
