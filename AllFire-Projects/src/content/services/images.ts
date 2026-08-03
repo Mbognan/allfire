@@ -20,10 +20,14 @@ export const serviceImages: Record<string, string> = {
   /* Real job photography, from the documented jobs in jobs.ts. */
   "electric-pump-motor": "/images/services-img/staff-img/george-electric-pump-1.jpeg",
   "fire-sprinkler-systems": "/images/services-img/staff-img/peter-sprinkler-1.jpeg",
-  "fire-panels-detection": "/images/stock/riser-room.webp",
-  "fire-hydrant-systems": "/images/stock/hydrant.webp",
-  "fire-penetration-sealing": "/images/stock/crew-2.webp",
-  "fire-doors-frames": "/images/stock/crew-3.webp",
+  /* Commissioned service artwork, the same files the landing cards use, so a
+     service looks the same on its card and on its own page. */
+  "fire-panels-detection": "/images/services-img/fire-panels-detection.png",
+  "fire-doors-frames": "/images/services-img/fire-doors-frames.png",
+  "fire-penetration-sealing": "/images/services-img/fire-penetration-sealing.png",
+  "fire-hydrant-systems": "/images/services-img/flowtest.png",
+
+  /* Still on stock stand-ins. */
   "fire-spray-protection": "/images/stock/crew-4.webp",
   "fire-system-upgrades": "/images/stock/team-1.webp",
   "annual-fire-safety-statement": "/images/stock/team-2.webp",

@@ -7,13 +7,12 @@ import { cn } from "@/lib/utils";
  * and costs no main-thread work. The phrase list is duplicated once and the
  * track translates exactly -50%, which is what makes the loop seamless.
  *
- * The default phrase names the destination rather than opening a conversation.
- * It was "Let's talk", which is vague for a band that scrolls you to a booking
- * form, and it was a sixth way of saying the same thing across the site.
+ * Phrase set by the client to "Need help?".
  *
- * Deliberately not "Need help?": that is the chat assistant's label, and the
- * same two words pointing at two different destinations is worse than a dull
- * label.
+ * Worth knowing when editing: the chat assistant launcher in the bottom-right
+ * carries the same two words, so the phrase now points at two destinations on
+ * the same screen. The band scrolls to the booking form; the launcher opens the
+ * assistant. That was raised and the wording was chosen anyway, so it stays.
  *
  * Two tones:
  *   ink   - solid dark band, used as a CTA, the phrase links.
@@ -25,7 +24,7 @@ import { cn } from "@/lib/utils";
  * One marquee per page. A second reads as filler.
  */
 export function Marquee({
-  text = "Book an inspection",
+  text = "Need help?",
   phrases,
   href = "#booking",
   tone = "ink",

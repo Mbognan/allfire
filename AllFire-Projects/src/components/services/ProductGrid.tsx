@@ -58,12 +58,13 @@ export function ProductGrid({
       <ul className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-3">
         {visible.map((product) => (
           <li key={product.slug} className="flex flex-col">
-            {/* Square, up from 4:3. Fire equipment is mostly upright — an
-                extinguisher, an exit sign, a detector — so a landscape frame
-                spends its extra width on background and shrinks the product to
-                fit the shorter dimension. The square gives roughly a third more
-                height at the same column width. */}
-            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-paper-raised">
+            {/* Portrait, taller than a square box.
+
+                Fire equipment stands up: an extinguisher, an exit sign, a
+                detector on a wall. A square frame fits the tall dimension and
+                leaves the width empty either side, so the product renders
+                smaller than the cell it sits in. 4:5 follows the object. */}
+            <div className="relative aspect-4/5 w-full overflow-hidden rounded-2xl bg-paper-raised">
               {product.image ? (
                 /* eslint-disable-next-line @next/next/no-img-element -- pre-optimised local asset */
                 <img

@@ -33,8 +33,15 @@ export function ClientLogoTicker({ className }: { className?: string }) {
 
       {/* Edge fades so logos dissolve rather than getting clipped mid-glyph */}
       <div className="relative mt-8 overflow-hidden">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-ink to-transparent md:w-28" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-ink to-transparent md:w-28" />
+        {/* Narrow, and only at the very edge.
+
+            These were w-16 / md:w-28. A logo is about 160px wide, so a 112px
+            fade was sitting over most of whichever mark was nearest each end
+            and reading as the whole strip being dimmed. At w-8 / md:w-12 the
+            fade covers the last centimetre of travel, which is enough to stop a
+            hard cut mid-glyph without touching anything the eye is reading. */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-linear-to-r from-ink to-transparent md:w-12" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-linear-to-l from-ink to-transparent md:w-12" />
 
         <div className="marquee-track marquee-slow flex w-max items-center gap-4 will-change-transform">
           {[0, 1].map((copy) => (

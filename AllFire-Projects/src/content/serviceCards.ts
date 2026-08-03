@@ -52,7 +52,7 @@ export const serviceCards: (ServiceCard | null)[] = [
        and alarm systems are AS 1670.1, the number already used elsewhere in
        this repo. Corrected deliberately. */
     standard: "AS 1670.1",
-    image: "/images/stock/riser-room.webp",
+    image: "/images/services-img/fire-panels-detection.png",
     href: "/services/fire-panels-detection",
     Icon: FirePanelIcon,
   },
@@ -89,7 +89,7 @@ export const serviceCards: (ServiceCard | null)[] = [
   },
   {
     label: "Flowtest",
-    image: "/images/stock/hydrant.webp",
+    image: "/images/services-img/flowtest.png",
     /* No standalone flow-testing page exists. Hydrant flow and pressure testing
        is the closest catalogue entry; sprinkler flow lives under Sprinkler
        Systems. Repoint if flow testing becomes its own service. */
@@ -98,16 +98,19 @@ export const serviceCards: (ServiceCard | null)[] = [
   },
   {
     label: "Service Penetration / Fire Damper",
+    image: "/images/services-img/fire-penetration-sealing.png",
     href: "/services/fire-penetration-sealing",
     Icon: PenetrationIcon,
   },
   {
     label: "Fire Door",
+    image: "/images/services-img/fire-doors-frames.png",
     href: "/services/fire-doors-frames",
     Icon: FireDoorIcon,
   },
   {
     label: "Zone Block Plan / Evacuation Plan and Hydrant / Sprinkler Plan",
+    image: "/images/services-img/zone-block-evacuation-plans.png",
     /* No catalogue page covers plans and diagrams, so this goes to the booking
        form rather than somewhere it does not belong. Add a service entry and
        repoint when the client confirms scope. */
