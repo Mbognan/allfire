@@ -10,9 +10,18 @@ import { landmarks } from "@/content/landmarks";
 import { company } from "@/content/company";
 import { cn } from "@/lib/utils";
 
-/** Panel widths. Closed is wide enough to read a suburb; open shows the building. */
-const CLOSED = "w-44 lg:w-52";
-const OPEN = "w-[22rem] lg:w-[30rem]";
+/**
+ * Panel widths, as a share of the visible rail rather than fixed pixels.
+ *
+ * Five panels and four 0.75rem gaps fill the container exactly, so the resting
+ * row always shows five whole buildings at any screen width, with the rest
+ * carried off-screen by the scroller. A hovered panel takes the space of two.
+ *
+ * Fixed widths were the alternative and they cannot hold this: at 1280px they
+ * happen to show five, at 1600px six and a sliver.
+ */
+const CLOSED = "w-[calc(20%-0.6rem)]";
+const OPEN = "w-[calc(40%-0.6rem)]";
 
 /**
  * Strata and landmark buildings.
@@ -38,52 +47,39 @@ export function LandmarkShowcase() {
   const page = useCallback((direction: 1 | -1) => {
     const track = trackRef.current;
     if (!track) return;
-    /* Scroll by most of a viewport rather than one panel: panels are narrow, and
-       a single-panel step makes the arrows feel broken. */
-    track.scrollBy({ left: track.clientWidth * 0.8 * direction, behavior: "smooth" });
+    /* Exactly one railful, which is exactly five panels: the widths are a fifth
+       of this same box. Paging by a fraction would leave a panel half cut at
+       the edge, which is the thing the five-up sizing exists to prevent. */
+    track.scrollBy({ left: track.clientWidth * direction, behavior: "smooth" });
   }, []);
 
   return (
     <section className="relative isolate overflow-hidden bg-paper py-20 md:py-28">
       <Container>
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-2xl">
-            <Eyebrow>Where we work</Eyebrow>
-            <SectionHeading
-              className="mt-5"
-              lead="Strata and landmark"
-              accent="buildings we service"
-            />
-            <p className="mt-6 text-ink-soft">
-              Across {company.areaServed}, from single blocks to whole portfolios.
-            </p>
-          </div>
-
-          {/* Arrows only where the rail exists. Below md the layout is a stack. */}
-          <div className="hidden shrink-0 gap-2 md:flex">
-            {([-1, 1] as const).map((direction) => (
-              <button
-                key={direction}
-                type="button"
-                onClick={() => page(direction)}
-                aria-label={direction === 1 ? "Show more buildings" : "Show previous buildings"}
-                className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-ink/25 text-ink transition-colors duration-200 hover:border-ink hover:bg-ink hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flame-red-deep"
-              >
-                <ArrowRightIcon className={cn("h-4 w-4", direction === -1 && "rotate-180")} />
-              </button>
-            ))}
-          </div>
+        <div className="max-w-2xl">
+          <Eyebrow>Where we work</Eyebrow>
+          <SectionHeading
+            className="mt-5"
+            lead="Strata and landmark"
+            accent="buildings we service"
+          />
+          <p className="mt-6 text-ink-soft">
+            Across {company.areaServed}, from single blocks to whole portfolios.
+          </p>
         </div>
 
-        {/* The rail.
+        {/* Rail, with its controls sitting on it rather than above it.
 
-            Full-bleed via negative margin so panels run to the screen edge and
-            the row reads as continuing rather than stopping at the container. */}
-        <div
-          ref={trackRef}
-          onMouseLeave={() => setActive(null)}
-          className="mt-12 -mx-6 hidden gap-3 overflow-x-auto px-6 pb-2 scrollbar-none md:flex md:h-104 lg:h-128"
-        >
+            The arrows are vertically centred on the panels and inset at each
+            end. Placed in the section header they were a long way from the
+            thing they moved; on the rail itself, the control and its effect are
+            the same object. */}
+        <div className="relative mt-12 hidden md:block">
+          <div
+            ref={trackRef}
+            onMouseLeave={() => setActive(null)}
+            className="flex gap-3 overflow-x-auto pb-2 scrollbar-none md:h-104 lg:h-128"
+          >
           {landmarks.map((landmark, i) => {
             const isActive = i === active;
 
@@ -138,6 +134,25 @@ export function LandmarkShowcase() {
               </button>
             );
           })}
+          </div>
+
+          {/* Overlay controls, centred on the panels and inset at each end.
+              White on the photography so they read at any crop, and outside the
+              scroller so scrolling never carries them away. */}
+          {([-1, 1] as const).map((direction) => (
+            <button
+              key={direction}
+              type="button"
+              onClick={() => page(direction)}
+              aria-label={direction === 1 ? "Show more buildings" : "Show previous buildings"}
+              className={cn(
+                "absolute top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/90 text-ink shadow-lg backdrop-blur-sm transition-colors duration-200 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flame-red-deep",
+                direction === -1 ? "left-3" : "right-3"
+              )}
+            >
+              <ArrowRightIcon className={cn("h-5 w-5", direction === -1 && "rotate-180")} />
+            </button>
+          ))}
         </div>
 
         {/* Below md: a plain stack. An accordion at 375px gives every panel

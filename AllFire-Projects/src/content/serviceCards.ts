@@ -57,7 +57,7 @@ export const serviceCards: (ServiceCard | null)[] = [
     Icon: FirePanelIcon,
   },
   {
-    label: "Smoke",
+    label: "Smoke Detectors",
     standard: "AS 3786",
     image: "/images/services-img/smoke-alarm-testing.png",
     href: "/services/smoke-alarm-testing",
@@ -107,7 +107,7 @@ export const serviceCards: (ServiceCard | null)[] = [
     Icon: FireDoorIcon,
   },
   {
-    label: "Zone Block Plan, Evacuation Plan and Hydrant / Sprinkler Plan",
+    label: "Zone Block Plan / Evacuation Plan and Hydrant / Sprinkler Plan",
     /* No catalogue page covers plans and diagrams, so this goes to the booking
        form rather than somewhere it does not belong. Add a service entry and
        repoint when the client confirms scope. */
