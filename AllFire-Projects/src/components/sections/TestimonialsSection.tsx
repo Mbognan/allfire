@@ -7,6 +7,7 @@ import { SectionBackdrop } from "@/components/ui/SectionBackdrop";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { StarIcon, ArrowRightIcon } from "@/components/ui/Icon";
+import { ClientLogoTicker } from "@/components/sections/ClientLogos";
 import { CarouselDots } from "@/components/ui/CarouselDots";
 import { testimonials } from "@/content/testimonials";
 
@@ -118,12 +119,19 @@ export function TestimonialsSection() {
               key={testimonial.name + testimonial.role}
               data-card
               /*
-                Card width is what makes this a carousel rather than a twitch.
-                At 400px, three cards nearly filled a 1168px track and autoplay
-                had only 80px of travel. At w-140 two cards show and the third
-                is genuinely off-screen, so each advance reads as a move.
+                Two whole cards at lg, never a sliced third.
+
+                This was `snap-center` at a fixed `w-140`. Centring a card that
+                is narrower than the track necessarily paints half a neighbour
+                on each side, so the row read as three cut cards rather than two
+                whole ones. `snap-start` aligns to the left edge, and sizing to
+                half the track minus half the gap means the pair fills it
+                exactly.
+
+                Below lg the peek is deliberate: one card at 86% with the next
+                edge showing is what tells a thumb the row scrolls.
               */
-              className="flex w-[86%] shrink-0 snap-center flex-col justify-between rounded-2xl border border-line bg-white p-8 sm:w-100 lg:w-140"
+              className="flex w-[86%] shrink-0 snap-start flex-col justify-between rounded-2xl border border-line bg-white p-8 lg:w-[calc(50%-0.75rem)]"
             >
               <div>
                 <div className="flex gap-1 text-flame-orange">
@@ -159,6 +167,11 @@ export function TestimonialsSection() {
           tone="light"
           label="Testimonials"
         />
+
+        {/* The logo wall, moved here from its own band earlier in the page.
+            Named reviews and the logos of the firms that gave them are one
+            argument, and they were making it a screen apart. */}
+        <ClientLogoTicker className="mt-16" />
       </Container>
     </section>
   );

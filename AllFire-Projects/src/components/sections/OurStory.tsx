@@ -10,6 +10,18 @@ import { StoryVideo } from "@/components/sections/StoryVideo";
 import { generations, legacyStrapline } from "@/content/legacy";
 import { story } from "@/content/mission";
 
+/**
+ * Master switch for the Tricklebank generations timeline.
+ *
+ * Off at the client's request. It is retained rather than deleted because it is
+ * their own artwork and data, and because turning it back on is a one-word
+ * change if the family-legacy story returns to the site.
+ *
+ * Typed as boolean, not inferred as `false`, so the JSX below stays type-checked
+ * rather than being narrowed to unreachable.
+ */
+const SHOW_LEGACY_TIMELINE: boolean = false;
+
 /** The client's supplied artwork. Any of these extensions is picked up. */
 const LEGACY_IMAGE_CANDIDATES = [
   "generation-of-tricklebank.webp",
@@ -98,8 +110,13 @@ export function OurStory({ variant = "full" }: { variant?: "full" | "compact" })
         )}
 
         {/* Not rendered at all in compact mode. Hiding it with CSS would still
-            ship the markup and publish the same content on two pages. */}
-        {!compact && (
+            ship the markup and publish the same content on two pages.
+
+            Currently switched off everywhere by SHOW_LEGACY_TIMELINE. The
+            timeline dates the family line from 1911 and names the founder,
+            both of which the rest of the site no longer does. Flip the constant
+            to bring it back; nothing else needs changing. */}
+        {SHOW_LEGACY_TIMELINE && !compact && (
         <div className="mt-14">
           {legacyImage ? (
             /*
