@@ -93,6 +93,14 @@ export function OurStory({ variant = "full" }: { variant?: "full" | "compact" })
                 <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />
               </Link>
             )}
+
+            {/* Inside the story column, not a full-width band beneath it.
+
+                The video column is taller than the text, so the left column ran
+                out of content and left a screen of white under the link. The
+                timeline fills that space and reads as part of the story rather
+                than as a separate exhibit. */}
+            {SHOW_LEGACY_TIMELINE && <LegacyTimeline image={legacyImage} className="mt-12" />}
           </div>
 
           <StoryVideo />
@@ -105,77 +113,67 @@ export function OurStory({ variant = "full" }: { variant?: "full" | "compact" })
             artwork. Removed: the block below now covers both pages with the
             file that actually exists. */}
 
-        {/* Shown in both modes now, so it sits under "Read our full story" on
-            the landing page as well as on /about.
-
-            It was restricted to /about to avoid publishing the same content
-            twice. That reasoning held for the old text timeline, which was a
-            block of names and dates; this is one image, and a repeated image
-            does not carry the duplicate-content cost that repeated prose does.
-
-            Note the tension worth watching: this graphic dates the family line
-            from 1911 and names Peter, while the surrounding copy now starts the
-            business at 2009 and describes the founder by role only. */}
-        {SHOW_LEGACY_TIMELINE && (
-        <div className="mt-14">
-          {legacyImage ? (
-            /*
-              The artwork is wide and detailed. Rather than scaling it down to
-              an illegible strip on a phone, it keeps its width and the wrapper
-              scrolls, so the real graphic stays readable at every size.
-            */
-            <figure>
-              <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
-                {/* eslint-disable-next-line @next/next/no-img-element -- client-supplied artwork, served as-is */}
-                <img
-                  src={legacyImage}
-                  /* Describes the artwork that is actually on screen. The
-                     previous alt listed ten people from an earlier graphic,
-                     including several who do not appear in this one. */
-                  alt="Generation of Tricklebank: five generations in the fire service. 1911 William Tricklebank, grandfather; 1931 Trevor Tricklebank; 1957 Stanley Tricklebank, father; 1959 Ian Tricklebank, uncle; and 2020 to current, Managing Director Peter Tricklebank."
-                  loading="lazy"
-                  decoding="async"
-                  className="h-auto w-full min-w-160 rounded-2xl"
-                />
-              </div>
-              <figcaption className="mt-6 border-t border-line pt-6 text-center font-display text-sm font-bold tracking-[0.18em] text-ink-soft uppercase">
-                {legacyStrapline}
-              </figcaption>
-            </figure>
-          ) : (
-            <>
-              {/* Fallback until the artwork lands. Same data, no broken image. */}
-              <p className="font-display text-sm font-bold tracking-[0.18em] text-ink-soft uppercase">
-                Generations of the Tricklebank fire service line
-              </p>
-              <ol className="mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-5 scrollbar-none lg:grid lg:grid-cols-5 lg:gap-6 lg:overflow-visible xl:grid-cols-10">
-                {generations.map((generation) => (
-                  <li
-                    key={`${generation.year}-${generation.name}`}
-                    className="w-40 shrink-0 snap-start text-center lg:w-auto"
-                  >
-                    <span className="brand-gradient mx-auto flex h-16 w-16 items-center justify-center rounded-full font-display text-sm font-bold text-white tabular-nums">
-                      {generation.year.split(" ")[0]}
-                    </span>
-                    <span className="mx-auto mt-3 block h-6 w-px bg-line" aria-hidden="true" />
-                    <p className="font-display text-base font-bold text-flame-red-deep tabular-nums">
-                      {generation.year}
-                    </p>
-                    <p className="mt-1 font-display text-sm font-bold text-ink">
-                      {generation.relation}
-                    </p>
-                    <p className="mt-0.5 text-sm text-ink-soft">{generation.name}</p>
-                  </li>
-                ))}
-              </ol>
-              <p className="mt-6 border-t border-line pt-6 text-center font-display text-sm font-bold tracking-[0.18em] text-ink-soft uppercase">
-                {legacyStrapline}
-              </p>
-            </>
-          )}
-        </div>
-        )}
       </Container>
     </section>
+  );
+}
+
+/**
+ * The generations graphic, sized for the story column rather than the page.
+ *
+ * It ran full width under the grid. In a column it can no longer carry a 640px
+ * minimum, so the artwork simply scales: at roughly 2:1 it sits about half as
+ * tall as the column is wide, which is enough to read five portraits and their
+ * dates without the horizontal scroll the full-width version needed on phones.
+ *
+ * Below sm it keeps a floor and scrolls, because five portraits across a 360px
+ * screen is a smear either way, and scrolling at least leaves them legible.
+ */
+function LegacyTimeline({ image, className }: { image: string | null; className?: string }) {
+  if (image) {
+    return (
+      <figure className={className}>
+        <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:overflow-visible sm:px-0">
+          {/* eslint-disable-next-line @next/next/no-img-element -- client-supplied artwork, served as-is */}
+          <img
+            src={image}
+            /* Describes the artwork that is actually on screen. The previous
+               alt listed ten people from an earlier graphic, including several
+               who do not appear in this one. */
+            alt="Generation of Tricklebank: five generations in the fire service. 1911 William Tricklebank, grandfather; 1931 Trevor Tricklebank; 1957 Stanley Tricklebank, father; 1959 Ian Tricklebank, uncle; and 2020 to current, Managing Director Peter Tricklebank."
+            loading="lazy"
+            decoding="async"
+            className="h-auto w-full min-w-120 rounded-2xl sm:min-w-0"
+          />
+        </div>
+        <figcaption className="mt-5 border-t border-line pt-5 text-center font-display text-sm font-bold tracking-[0.18em] text-ink-soft uppercase">
+          {legacyStrapline}
+        </figcaption>
+      </figure>
+    );
+  }
+
+  /* Fallback until the artwork lands. Same data, no broken image. Two columns
+     rather than the old five-to-ten across, since this now lives in a column. */
+  return (
+    <div className={className}>
+      <p className="font-display text-sm font-bold tracking-[0.18em] text-ink-soft uppercase">
+        Generations of the Tricklebank fire service line
+      </p>
+      <ol className="mt-6 grid grid-cols-2 gap-5 sm:grid-cols-3">
+        {generations.map((generation) => (
+          <li key={`${generation.year}-${generation.name}`} className="text-center">
+            <span className="brand-gradient mx-auto flex h-14 w-14 items-center justify-center rounded-full font-display text-sm font-bold text-white tabular-nums">
+              {generation.year.split(" ")[0]}
+            </span>
+            <p className="mt-3 font-display text-sm font-bold text-ink">{generation.relation}</p>
+            <p className="mt-0.5 text-sm text-ink-soft">{generation.name}</p>
+          </li>
+        ))}
+      </ol>
+      <p className="mt-6 border-t border-line pt-5 text-center font-display text-sm font-bold tracking-[0.18em] text-ink-soft uppercase">
+        {legacyStrapline}
+      </p>
+    </div>
   );
 }
