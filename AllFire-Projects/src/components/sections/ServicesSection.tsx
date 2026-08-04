@@ -1,5 +1,4 @@
 import { Container } from "@/components/ui/Container";
-import { SectionBackdrop } from "@/components/ui/SectionBackdrop";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
@@ -9,13 +8,15 @@ import { productsStatement, licensedWork, licenceClass } from "@/content/accredi
 
 export function ServicesSection() {
   return (
-    <section
-      id="services"
-      className="relative isolate scroll-mt-20 overflow-hidden bg-ink py-20 md:py-28"
-    >
-      <SectionBackdrop />
+    /* White, and no backdrop image.
 
-      <Container className="relative">
+       The section was bg-ink with a photographic SectionBackdrop behind it.
+       Twelve cards, each already carrying its own photograph, sat on top of a
+       thirteenth photograph: the grid was competing with its own background and
+       every card needed a scrim to survive it. On white the artwork is the only
+       imagery in the section and the cards need no defending. */
+    <section id="services" className="relative scroll-mt-20 bg-white py-20 md:py-28">
+      <Container>
         {/* Heading only.
 
             The regulatory service statement that sat beside it is gone: sixty
@@ -27,10 +28,9 @@ export function ServicesSection() {
             The "these five are where most buildings start" line is gone too.
             The grid now shows the range rather than summarising it. */}
         <div className="max-w-2xl">
-          <Eyebrow tone="light">Our services</Eyebrow>
+          <Eyebrow>Our services</Eyebrow>
           <SectionHeading
             className="mt-5"
-            tone="light"
             lead="Everything your building needs"
             accent="to stay compliant"
           />
@@ -39,20 +39,22 @@ export function ServicesSection() {
         <ServicesGrid />
 
         <div className="mt-12">
-          <Button href="/services" variant="outline-light" withArrow>
+          <Button href="/services" variant="outline" withArrow>
             View all services
           </Button>
         </div>
 
         {/* Licensed classes of work. This is hard credential detail, so it is
             set as a dense two-column list rather than more cards. */}
-        <div className="mt-16 border-t border-white/15 pt-12">
+        <div className="mt-16 border-t border-line pt-12">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <div>
-              <h3 className="font-display text-2xl font-bold text-white uppercase md:text-3xl">
-                And so much more
+              {/* Was "And so much more", which filed the hardest credential
+                  detail on the page under an infomercial line. */}
+              <h3 className="font-display text-2xl font-bold text-ink uppercase md:text-3xl">
+                Licensed Class {licenceClass}
               </h3>
-              <p className="mt-4 text-white/70">
+              <p className="mt-4 text-ink-soft">
                 {productsStatement} As an FPA Australia member we hold Class {licenceClass}{" "}
                 licences across the following classes of work.
               </p>
@@ -62,13 +64,12 @@ export function ServicesSection() {
               {licensedWork.map((item) => (
                 <li
                   key={item}
-                  className="flex items-start gap-2.5 border-b border-white/10 py-2.5 text-sm text-white/80"
+                  className="flex items-start gap-2.5 border-b border-line py-2.5 text-sm text-ink-soft"
                 >
-                  <CheckIcon className="mt-1 h-3.5 w-3.5 shrink-0 text-flame-yellow" />
-                  <span>
-                    {item}{" "}
-                    <span className="font-semibold text-flame-yellow">({licenceClass})</span>
-                  </span>
+                  {/* flame-red-deep, not yellow: yellow was chosen to carry on
+                      ink and fails contrast on white. */}
+                  <CheckIcon className="mt-1 h-3.5 w-3.5 shrink-0 text-flame-red-deep" />
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>

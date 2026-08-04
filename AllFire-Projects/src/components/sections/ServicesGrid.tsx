@@ -48,8 +48,8 @@ export function ServicesGrid() {
              nowhere honest to send anyone. Replace with a real entry in
              serviceCards.ts, or drop to ten and move the grid to 5 columns. */
           <motion.li key={`held-${i}`} variants={item} aria-hidden="true">
-            <div className="flex h-full min-h-52 items-center justify-center rounded-2xl border border-dashed border-white/15 p-5">
-              <span className="font-display text-xs font-bold tracking-[0.14em] text-white/25 uppercase">
+            <div className="flex h-full min-h-52 items-center justify-center rounded-2xl border border-dashed border-line p-5">
+              <span className="font-display text-xs font-bold tracking-[0.14em] text-ink-soft/40 uppercase">
                 Service to come
               </span>
             </div>
@@ -64,9 +64,13 @@ function Card({ card }: { card: ServiceCard }) {
   return (
     <Link
       href={card.href}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/12 bg-white/4 transition-colors duration-300 hover:border-flame-orange/60 hover:bg-white/8 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-orange"
+      /* On white the card can no longer be a translucent white panel. It is a
+         hairline box that lifts on hover: the border carries the shape at rest,
+         a tinted shadow carries it on hover. The shadow is warm rather than
+         black, so it reads as light falling on paper rather than as a cutout. */
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-[border-color,box-shadow,transform] duration-300 hover:border-flame-orange/50 hover:shadow-[0_12px_28px_rgba(22,19,15,0.10)] motion-safe:hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-red-deep"
     >
-      <div className="relative aspect-4/3 w-full overflow-hidden bg-ink-2">
+      <div className="relative aspect-4/3 w-full overflow-hidden bg-paper-raised">
         {card.image ? (
           <Image
             src={card.image}
@@ -84,31 +88,29 @@ function Card({ card }: { card: ServiceCard }) {
              deliberate, and swapping it for a real image is one line in
              serviceCards.ts with no change here. */
           <div
-            className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-white/8 to-transparent"
+            className="absolute inset-0 flex items-center justify-center bg-paper-raised"
             aria-hidden="true"
           >
-            <card.Icon className="h-12 w-12 text-white/15" />
+            <card.Icon className="h-12 w-12 text-ink-soft/25" />
           </div>
         )}
 
-        {/* Scrim under the badge only, so it never dims the photograph above. */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-ink/70 to-transparent"
-          aria-hidden="true"
-        />
+        {/* No scrim. It existed to keep the badge legible against a dark
+            section; the badge is a saturated gradient chip on white and holds
+            its own. */}
 
-        <span className="brand-gradient absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-lg transition-transform duration-300 motion-safe:group-hover:scale-110">
+        <span className="brand-gradient absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-md transition-transform duration-300 motion-safe:group-hover:scale-110">
           <card.Icon className="h-5 w-5" aria-hidden="true" />
         </span>
       </div>
 
       <div className="flex flex-1 flex-col p-4 md:p-5">
         {card.standard && (
-          <span className="font-display text-xs font-bold tracking-[0.14em] text-flame-yellow tabular-nums">
+          <span className="font-display text-xs font-bold tracking-[0.14em] text-flame-red-deep tabular-nums">
             {card.standard}
           </span>
         )}
-        <span className="mt-1 block font-display text-base leading-tight font-bold text-balance text-white transition-colors duration-200 group-hover:text-flame-yellow">
+        <span className="mt-1 block font-display text-base leading-tight font-bold text-balance text-ink transition-colors duration-200 group-hover:text-flame-red-deep">
           {card.label}
         </span>
       </div>

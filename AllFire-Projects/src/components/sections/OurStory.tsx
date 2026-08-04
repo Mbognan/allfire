@@ -146,9 +146,11 @@ function LegacyTimeline({ image, className }: { image: string | null; className?
             className="h-auto w-full min-w-120 rounded-2xl sm:min-w-0"
           />
         </div>
-        <figcaption className="mt-5 border-t border-line pt-5 text-center font-display text-sm font-bold tracking-[0.18em] text-ink-soft uppercase">
-          {legacyStrapline}
-        </figcaption>
+        {/* No caption. The artwork already sets "A legacy of service. A future
+            of leadership." across its own base, so repeating it underneath
+            printed the same sentence twice, a centimetre apart. The text
+            fallback below still uses it, because there the strapline is not
+            baked into anything. */}
       </figure>
     );
   }
