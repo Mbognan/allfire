@@ -14,7 +14,13 @@ export function ServicesSection() {
        thirteenth photograph: the grid was competing with its own background and
        every card needed a scrim to survive it. On white the artwork is the only
        imagery in the section and the cards need no defending. */
-    <section id="services" className="relative isolate scroll-mt-20 bg-white py-20 md:py-28">
+    /* paper-raised, not white.
+
+       Our Story above and Landmark below are both light. At pure white all
+       three read as one field with no seam, which is what made this section
+       feel flat rather than clean. The warm step gives it edges and gives the
+       white cards a ground to sit on instead of dissolving into. */
+    <section id="services" className="relative isolate scroll-mt-20 bg-paper-raised py-20 md:py-28">
       {/* One ribbon, top right.
 
           A second mirrored ribbon was added at the top left to frame the

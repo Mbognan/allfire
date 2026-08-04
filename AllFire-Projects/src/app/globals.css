@@ -4,7 +4,17 @@
   --color-ink: #16130f;
   --color-ink-2: #24201b;
   --color-ink-soft: #6b6259;
-  --color-paper: #ffffff;
+  /* Surface scale, lightest to warmest.
+
+     `paper` was #ffffff, byte-identical to bg-white, so every `bg-paper` on the
+     site was silently a no-op and the scale had three steps instead of four.
+     Three consecutive sections on the landing page all resolved to pure white
+     and ran together as one unbroken field.
+
+     #fdfcfa is barely perceptible on its own and clearly distinct next to
+     white, which is exactly the job: it separates adjacent light sections
+     without anyone noticing a colour. */
+  --color-paper: #fdfcfa;
   --color-paper-raised: #f7f4f0;
   --color-line: rgba(22, 19, 15, 0.12);
 

@@ -69,7 +69,14 @@ function Card({ card }: { card: ServiceCard }) {
          hairline box that lifts on hover: the border carries the shape at rest,
          a tinted shadow carries it on hover. The shadow is warm rather than
          black, so it reads as light falling on paper rather than as a cutout. */
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-[border-color,box-shadow,transform] duration-300 hover:border-flame-orange/50 hover:shadow-[0_12px_28px_rgba(22,19,15,0.10)] motion-safe:hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-red-deep"
+      /* White cards on the warm ground, with a resting shadow.
+
+         On white-on-white the border was doing all the work. Against
+         paper-raised the card is a lighter object on a darker field, so a soft
+         shadow at rest reads as lift rather than as decoration, and the hover
+         shadow has somewhere to grow from. Both are warm-tinted, not black:
+         a neutral shadow on a warm ground reads as grime. */
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-[0_2px_8px_rgba(22,19,15,0.05)] transition-[border-color,box-shadow,transform] duration-300 hover:border-flame-orange/50 hover:shadow-[0_14px_32px_rgba(22,19,15,0.12)] motion-safe:hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame-red-deep"
     >
       <div className="relative aspect-4/3 w-full overflow-hidden bg-paper-raised">
         {card.image ? (
