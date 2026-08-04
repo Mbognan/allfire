@@ -151,7 +151,7 @@ export function MobileNav() {
               <Button href={company.phoneHref} variant="primary">
                 Call {company.phone}
               </Button>
-              <Button href="#booking" variant="outline-light" onClick={() => setOpen(false)}>
+              <Button href="#booking" variant="outline-light" withArrow onClick={() => setOpen(false)}>
                 Get a Quote
               </Button>
               {/* A WhatsApp button sat here linking to Peter's mobile, beneath a

@@ -25,7 +25,10 @@ import { ArrowRightIcon } from "@/components/ui/Icon";
  */
 const base =
   [
-    "inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-[50px]",
+    /* Named group, not a bare `group`: these buttons sit inside cards and rows
+       that are themselves groups, and an unnamed one would make the arrow react
+       to hovering the whole card. */
+    "group/btn inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-[50px]",
     "px-6 py-3 text-[0.9375rem] font-bold tracking-[0.06em] whitespace-nowrap uppercase",
     // Only the properties that actually change, so nothing else gets animated.
     "transition-[color,background-color,border-color,transform] duration-200 ease-out",
@@ -37,11 +40,17 @@ const base =
   ].join(" ");
 
 const variants = {
-  primary: "bg-flame-red-deep text-white hover:bg-ink",
+  /* The brand gradient, in its button-safe form. Was a flat flame-red-deep
+     fill; the highlight is now the theme gradient itself. Hover deepens to ink
+     rather than lightening, so the pressed-in feel still reads. */
+  primary: "brand-gradient-fill text-white hover:bg-ink hover:bg-none",
   ink: "bg-ink text-white hover:bg-flame-red-deep",
-  outline: "border border-ink/30 text-ink hover:border-ink hover:bg-ink hover:text-white",
+  /* Hover fills with the same gradient rather than flat ink, so the secondary
+     button resolves into the brand instead of into black. */
+  outline:
+    "border border-ink/30 text-ink hover:border-transparent hover:brand-gradient-fill hover:text-white",
   "outline-light":
-    "border border-white/40 text-white hover:border-white hover:bg-white hover:text-ink",
+    "border border-white/40 text-white hover:border-transparent hover:brand-gradient-fill hover:text-white",
   ghost: "px-0 text-flame-red-deep hover:text-ink",
 };
 
@@ -73,7 +82,13 @@ export function Button(props: ButtonAsButton | ButtonAsLink) {
   const inner = (
     <>
       {children}
-      {withArrow && <ArrowRightIcon className="h-4 w-4" />}
+      {/* The arrow travels on hover, so the button reads as going somewhere
+          rather than merely being decorated with a chevron. Transform only, and
+          motion-safe, so it costs nothing and disappears under reduced motion
+          like the button's own lift. */}
+      {withArrow && (
+        <ArrowRightIcon className="h-4 w-4 transition-transform duration-200 ease-out motion-safe:group-hover/btn:translate-x-1" />
+      )}
     </>
   );
 

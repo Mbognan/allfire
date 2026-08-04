@@ -163,7 +163,9 @@ export default async function BlogPostPage({
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
-                <Button href="/#booking" variant="primary">
+                <Button href="/#booking" variant="primary"
+            withArrow
+          >
                   Get a Quote
                 </Button>
                 <Button href="/services" variant="outline">

@@ -84,7 +84,9 @@ export function Hero() {
           transition={{ duration: 0.95, delay: 0.24, ease }}
           className="mt-10 flex flex-col gap-4 sm:flex-row"
         >
-          <Button href="#booking" variant="primary">
+          <Button href="#booking" variant="primary"
+            withArrow
+          >
             Get a Quote
           </Button>
           <Button href="#services" variant="outline-light" withArrow={false}>

@@ -15,6 +15,10 @@
 
   /* Accessible-for-text sibling of flame-red (white text passes 4.94:1). */
   --color-flame-red-deep: #e20302;
+  /* Accessible-for-text sibling of flame-orange. flame-orange itself reaches
+     only 3.26:1 against white; this holds 4.5:1, so a gradient can run to it
+     without the label going soft at the light end. */
+  --color-flame-orange-deep: #b8430a;
 
   --font-display: var(--font-rajdhani);
   --font-body: var(--font-rajdhani);
@@ -32,6 +36,7 @@
   --color-flame-orange: var(--color-flame-orange);
   --color-flame-yellow: var(--color-flame-yellow);
   --color-flame-red-deep: var(--color-flame-red-deep);
+  --color-flame-orange-deep: var(--color-flame-orange-deep);
 
   --font-display: var(--font-display);
   --font-body: var(--font-body);
@@ -99,6 +104,25 @@ html {
     var(--color-flame-red) 0%,
     var(--color-flame-orange) 55%,
     var(--color-flame-yellow) 100%
+  );
+}
+
+/* Button fill.
+
+   The same gradient, in the same direction, held to values that white text can
+   sit on. `.brand-gradient` ends in flame-yellow, where white reads at roughly
+   1.9:1: fine behind an icon, illegible behind a label. This runs
+   flame-red-deep to flame-orange-deep, so the lightest point a caption crosses
+   still clears 4.5:1.
+
+   Declared with @utility rather than as a plain class so Tailwind variants
+   apply to it: the outline button needs `hover:brand-gradient-fill`, which a
+   bare `.class` selector cannot express. */
+@utility brand-gradient-fill {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-flame-red-deep) 0%,
+    var(--color-flame-orange-deep) 100%
   );
 }
 

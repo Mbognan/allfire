@@ -101,7 +101,9 @@ export function AboutStory() {
           </ul>
 
           <div className="mt-9">
-            <Button href="/#booking" variant="primary">
+            <Button href="/#booking" variant="primary"
+            withArrow
+          >
               Get a Quote
             </Button>
           </div>

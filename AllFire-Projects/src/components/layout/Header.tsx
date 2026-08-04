@@ -91,7 +91,9 @@ export function Header() {
             {company.phone}
           </Button>
 
-          <Button href="#booking" variant="primary" className="px-4 xl:px-6 xl:text-base">
+          <Button href="#booking" variant="primary" className="px-4 xl:px-6 xl:text-base"
+            withArrow
+          >
             Get a Quote
           </Button>
         </div>
