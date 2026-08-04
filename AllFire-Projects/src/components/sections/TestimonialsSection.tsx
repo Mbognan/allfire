@@ -5,10 +5,12 @@ import { motion, useReducedMotion } from "motion/react";
 import { Container } from "@/components/ui/Container";
 import { SectionBackdrop } from "@/components/ui/SectionBackdrop";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ArrowRightIcon } from "@/components/ui/Icon";
+import { ArrowRightIcon, StarIcon } from "@/components/ui/Icon";
 import { ClientLogoTicker } from "@/components/sections/ClientLogos";
 import { CarouselDots } from "@/components/ui/CarouselDots";
-import { testimonials } from "@/content/testimonials";
+import { GoogleLogo } from "@phosphor-icons/react/dist/ssr";
+import { cn } from "@/lib/utils";
+import { testimonials, reviewSource, type Testimonial } from "@/content/testimonials";
 
 function initialsOf(label: string) {
   return label
@@ -167,57 +169,7 @@ export function TestimonialsSection() {
           className="mt-14 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 scrollbar-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
         >
           {testimonials.map((testimonial) => (
-            <figure
-              key={testimonial.name + testimonial.role}
-              data-card
-              /*
-                Two whole cards at lg, never a sliced third.
-
-                This was `snap-center` at a fixed `w-140`. Centring a card that
-                is narrower than the track necessarily paints half a neighbour
-                on each side, so the row read as three cut cards rather than two
-                whole ones. `snap-start` aligns to the left edge, and sizing to
-                half the track minus half the gap means the pair fills it
-                exactly.
-
-                Below lg the peek is deliberate: one card at 86% with the next
-                edge showing is what tells a thumb the row scrolls.
-              */
-              className="flex w-[86%] shrink-0 snap-start flex-col justify-between rounded-2xl border border-line bg-white p-8 lg:w-[calc(50%-0.75rem)]"
-            >
-              {/* No star row.
-
-                  It rendered five stars on every card from a hardcoded
-                  Array.from({ length: 5 }), with no rating field on the type to
-                  drive it. Forty identical glyphs carried no information while
-                  implying a sourced rating that does not exist, and the icon had
-                  no text equivalent for a screen reader. Deleted rather than
-                  faked. If real ratings arrive, add a `rating` field and one
-                  aggregate line under the heading instead. */}
-              <div>
-                {/* The quote now outranks the attribution. It was text-ink-soft
-                    at 16px under a bolder, darker name, so the eye landed on
-                    who said it before what they said. */}
-                <blockquote className="text-lg leading-relaxed text-ink lg:text-xl">
-                  &ldquo;{testimonial.quote}&rdquo;
-                </blockquote>
-              </div>
-
-              <figcaption className="mt-7 flex items-center gap-3.5 border-t border-line pt-5">
-                <span
-                  aria-hidden="true"
-                  className="brand-gradient flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-display text-sm font-bold text-white"
-                >
-                  {initialsOf(testimonial.name)}
-                </span>
-                <span>
-                  <span className="block font-display text-sm font-bold text-ink">
-                    {testimonial.name}
-                  </span>
-                  <span className="block text-sm text-ink-soft">{testimonial.role}</span>
-                </span>
-              </figcaption>
-            </figure>
+            <ReviewCard key={testimonial.name + testimonial.role} testimonial={testimonial} />
           ))}
         </motion.div>
 
@@ -234,5 +186,90 @@ export function TestimonialsSection() {
         <ClientLogoTicker className="mt-16" />
       </Container>
     </section>
+  );
+}
+
+/**
+ * One review.
+ *
+ * Attribution is the point of the redesign: stars from the reviewer's own
+ * rating, and the Google mark, because these are Google reviews and saying so
+ * is what makes them worth more than copy we wrote ourselves.
+ *
+ * The quote clamps to four lines with a Read more toggle rather than being cut
+ * with an ellipsis. A truncated quote that cannot be finished is worse than a
+ * shorter one: the reader is shown that something was withheld and given no way
+ * to get it.
+ */
+function ReviewCard({ testimonial }: { testimonial: Testimonial }) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <figure
+      data-card
+      /*
+        Two whole cards at lg, never a sliced third. snap-start aligns to the
+        left edge, and half the track minus half the gap means the pair fills it
+        exactly. Below lg the peek is deliberate: one card at 86% with the next
+        edge showing is what tells a thumb the row scrolls.
+      */
+      className="flex w-[86%] shrink-0 snap-start flex-col rounded-2xl border border-line bg-white p-7 lg:w-[calc(50%-0.75rem)]"
+    >
+      {/* Rating and source, on one line. The stars are what the reviewer gave;
+          the Google mark is where they gave it. Together they are the whole
+          reason this carries more weight than copy we wrote. */}
+      <div className="flex items-center justify-between gap-4">
+        <span
+          className="flex gap-0.5 text-flame-orange"
+          role="img"
+          aria-label={`${testimonial.rating} out of 5 stars`}
+        >
+          {Array.from({ length: testimonial.rating }).map((_, i) => (
+            <StarIcon key={i} className="h-4 w-4" aria-hidden="true" />
+          ))}
+        </span>
+
+        <span className="flex items-center gap-1.5 text-ink-soft">
+          <GoogleLogo className="h-4 w-4" aria-hidden="true" />
+          <span className="text-xs font-semibold">{reviewSource}</span>
+        </span>
+      </div>
+
+      {/* line-clamp keeps every card the same height at rest, so the row reads
+          as a set rather than a ragged stack. Expanding is per card and does not
+          disturb its neighbours, because the track is a flex row. */}
+      <blockquote
+        className={cn(
+          "mt-5 leading-relaxed text-ink",
+          !expanded && "line-clamp-4"
+        )}
+      >
+        &ldquo;{testimonial.quote}&rdquo;
+      </blockquote>
+
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        aria-expanded={expanded}
+        className="mt-2 w-fit cursor-pointer text-sm font-semibold text-ink-soft transition-colors duration-200 hover:text-flame-red-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flame-red-deep"
+      >
+        {expanded ? "Show less" : "Read more"}
+      </button>
+
+      <figcaption className="mt-auto flex items-center gap-3.5 border-t border-line pt-5">
+        <span
+          aria-hidden="true"
+          className="brand-gradient flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-display text-sm font-bold text-white"
+        >
+          {initialsOf(testimonial.name)}
+        </span>
+        <span>
+          <span className="block font-display text-sm font-bold text-ink">
+            {testimonial.name}
+          </span>
+          <span className="block text-sm text-ink-soft">{testimonial.role}</span>
+        </span>
+      </figcaption>
+    </figure>
   );
 }
