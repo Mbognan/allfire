@@ -104,22 +104,25 @@ function Card({ card }: { card: ServiceCard }) {
           <card.Icon className="h-5 w-5" aria-hidden="true" />
         </span>
 
-        {/* Go-arrow.
+        {/* Go-affordance: the photograph steps back, the arrow steps forward.
 
-            The card is a link, but nothing on it said so: the badge is an
-            identifier and the label is a title, so at rest the tile reads as a
-            picture with a caption. This is the affordance.
+            A corner chip sat here before. It competed with the badge in the
+            opposite corner and read as one more thing on the card rather than
+            as the card becoming a button. Covering the image instead makes the
+            whole tile the target, which is what it actually is.
 
-            It arrives from the left and settles, rather than simply fading:
-            direction is what makes it read as "this takes you somewhere" rather
-            than as a decoration appearing. Opposite corner to the badge, so the
-            two never collide, and both are transform-only so neither costs
-            layout while the image is also scaling. */}
+            The blur is deliberately slight. Enough that the photograph reads as
+            receding behind the arrow, not so much that the card stops being
+            recognisable mid-transition. The scrim under it does the contrast
+            work, so the arrow stays legible even where backdrop-filter is
+            unsupported or disabled. */}
         <span
           aria-hidden="true"
-          className="absolute right-3 bottom-3 flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-white opacity-0 transition-[opacity,transform] duration-300 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-safe:-translate-x-1 motion-safe:group-hover:translate-x-0 motion-safe:group-focus-visible:translate-x-0"
+          className="absolute inset-0 flex items-center justify-center bg-ink/30 opacity-0 backdrop-blur-[3px] transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-visible:opacity-100"
         >
-          <ArrowRightIcon className="h-4 w-4" />
+          <span className="brand-gradient flex h-12 w-12 items-center justify-center rounded-full text-white shadow-lg transition-transform duration-300 ease-out motion-safe:scale-75 motion-safe:group-hover:scale-100 motion-safe:group-focus-visible:scale-100">
+            <ArrowRightIcon className="h-5 w-5" />
+          </span>
         </span>
       </div>
 

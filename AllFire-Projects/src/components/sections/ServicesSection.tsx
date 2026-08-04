@@ -15,23 +15,17 @@ export function ServicesSection() {
        every card needed a scrim to survive it. On white the artwork is the only
        imagery in the section and the cards need no defending. */
     <section id="services" className="relative isolate scroll-mt-20 bg-white py-20 md:py-28">
-      {/* Two ribbons, one at each top corner, framing the section rather than
-          decorating one edge of it.
+      {/* One ribbon, top right.
 
-          A single corner ribbon reads as a flourish on an otherwise plain
-          field. A matched pair reads as a gate: the eye is funnelled down the
-          centre channel between them, which is exactly where the heading and
-          the grid sit now they are centred. The motif is the site's own, so
-          this is the same brand turned up rather than a new device.
-
-          The left one is scaled slightly smaller and set lower. Two identical
-          ribbons would read as a mirrored wallpaper tile; a deliberate
-          imbalance keeps it looking drawn rather than repeated.
+          A second mirrored ribbon was added at the top left to frame the
+          section. Removed at the client's call: with the heading centred
+          between them the pair closed the composition in rather than opening
+          it, and two ribbons in one viewport made the motif read as pattern
+          rather than as a mark.
 
           `isolate` on the section is required: BrandCorner sits at -z-10 and
           would otherwise fall behind the section's own background. */}
       <BrandCorner position="top-right" />
-      <BrandCorner position="top-left" className="h-48 w-104 opacity-70 md:h-56" />
 
       <Container>
         {/* Heading only.

@@ -14,21 +14,17 @@ export function BrandCorner({
   position = "top-right",
   className,
 }: {
-  /** top-left mirrors the ribbon horizontally so a section can be framed. */
-  position?: "top-right" | "bottom-left" | "top-left";
+  position?: "top-right" | "bottom-left";
   className?: string;
 }) {
-  const rotated = position === "bottom-left";
-  const mirrored = position === "top-left";
+  const flip = position === "bottom-left";
 
   return (
     <div
       aria-hidden="true"
       className={cn(
         "pointer-events-none absolute -z-10 h-64 w-152 max-w-[85%] overflow-hidden md:h-80",
-        rotated && "bottom-0 left-0 rotate-180",
-        mirrored && "top-0 left-0 -scale-x-100",
-        !rotated && !mirrored && "top-0 right-0",
+        flip ? "bottom-0 left-0 rotate-180" : "top-0 right-0",
         className
       )}
     >
