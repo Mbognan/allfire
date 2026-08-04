@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion, type Variants } from "motion/react";
+import { ArrowRightIcon } from "@/components/ui/Icon";
 import { serviceCards, type ServiceCard } from "@/content/serviceCards";
 
 const ease = [0.33, 1, 0.68, 1] as const;
@@ -101,6 +102,24 @@ function Card({ card }: { card: ServiceCard }) {
 
         <span className="brand-gradient absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-md transition-transform duration-300 motion-safe:group-hover:scale-110">
           <card.Icon className="h-5 w-5" aria-hidden="true" />
+        </span>
+
+        {/* Go-arrow.
+
+            The card is a link, but nothing on it said so: the badge is an
+            identifier and the label is a title, so at rest the tile reads as a
+            picture with a caption. This is the affordance.
+
+            It arrives from the left and settles, rather than simply fading:
+            direction is what makes it read as "this takes you somewhere" rather
+            than as a decoration appearing. Opposite corner to the badge, so the
+            two never collide, and both are transform-only so neither costs
+            layout while the image is also scaling. */}
+        <span
+          aria-hidden="true"
+          className="absolute right-3 bottom-3 flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-white opacity-0 transition-[opacity,transform] duration-300 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-safe:-translate-x-1 motion-safe:group-hover:translate-x-0 motion-safe:group-focus-visible:translate-x-0"
+        >
+          <ArrowRightIcon className="h-4 w-4" />
         </span>
       </div>
 

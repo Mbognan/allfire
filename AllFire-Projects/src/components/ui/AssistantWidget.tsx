@@ -17,7 +17,7 @@ const ease = [0.33, 1, 0.68, 1] as const;
  * pick one, and the next reply brings a fresh set. These rotate in order.
  */
 const suggestionRounds = [
-  ["When is my AFSS due?", "Book an inspection", "I need someone urgently"],
+  ["When is my AFSS due?", "Request a quote", "I need someone urgently"],
   ["What does an inspection cover?", "How much does it cost?", "Talk to a person"],
   ["Send me a quote", "What standards apply?", "Call me back"],
 ];

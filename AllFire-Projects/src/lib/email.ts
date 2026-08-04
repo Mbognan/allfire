@@ -2,11 +2,18 @@ import { Resend } from "resend";
 import type { BookingInput, QuestionInput, EnquiryInput, QuoteInput } from "@/lib/validation";
 import { company } from "@/content/company";
 
+/**
+ * Quote request from the Request a Quote section.
+ *
+ * Named sendBooking* for the section it used to be; the section is a quote
+ * request now, so the subject and destination follow. QUOTE_EMAIL_TO first, so
+ * quotes land in the quoting inbox rather than the general contact address.
+ */
 export async function sendBookingNotification(data: BookingInput) {
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_EMAIL_TO || company.email;
+  const to = process.env.QUOTE_EMAIL_TO || process.env.CONTACT_EMAIL_TO || company.email;
 
-  const subject = `New booking request: ${data.serviceNeeded} (${data.name})`;
+  const subject = `Quote request: ${data.serviceNeeded} (${data.name})`;
   const text = [
     `Name: ${data.name}`,
     `Phone: ${data.phone}`,

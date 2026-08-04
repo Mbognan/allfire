@@ -30,7 +30,10 @@ export function BookingSection() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.85, ease: [0.33, 1, 0.68, 1] }}
         >
-          <Eyebrow tone="light">Book an inspection</Eyebrow>
+          {/* This section was "Book an inspection". It is the quote request
+              now: a separate QuoteForm on the service pages asked for the same
+              thing in a second place, so the two were merged into this one. */}
+          <Eyebrow tone="light">Request a quote</Eyebrow>
           <SectionHeading
             className="mt-5"
             tone="light"
@@ -38,8 +41,8 @@ export function BookingSection() {
             accent="fire protection service?"
           />
           <p className="mt-6 max-w-md text-lg text-white/70">
-            Tell us what your building needs and we&apos;ll call you back. For urgent
-            after-hours issues, call our emergency line directly.
+            Tell us what your building needs and we&apos;ll come back with a quote. No
+            obligation. For urgent after-hours issues, call our emergency line directly.
           </p>
 
           <a

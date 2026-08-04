@@ -74,9 +74,9 @@ export function BookingForm() {
   if (status === "success") {
     return (
       <div className="rounded-2xl border border-line bg-paper-raised p-8 text-center">
-        <h3 className="font-display text-2xl font-bold uppercase text-ink">Request received</h3>
+        <h3 className="font-display text-2xl font-bold uppercase text-ink">Quote request sent</h3>
         <p className="mt-2 text-ink-soft">
-          Thanks, a member of the AllFire team will call you back shortly. For anything urgent,
+          Thanks, the AllFire team will come back to you with a quote. For anything urgent,
           call us directly on{" "}
           <a href={company.phoneHref} className="cursor-pointer font-semibold text-flame-red-deep">
             {company.phone}
@@ -240,7 +240,7 @@ export function BookingForm() {
               Sending
             </>
           ) : (
-            "Request a Booking"
+            "Request a quote"
           )}
         </Button>
         {/* Announced to screen readers without stealing focus */}

@@ -7,7 +7,6 @@ import { ServiceSidebar } from "@/components/services/ServiceSidebar";
 import { ServiceIntro } from "@/components/services/ServiceIntro";
 import { ProductGrid } from "@/components/services/ProductGrid";
 import { ServiceOverview } from "@/components/services/ServiceOverview";
-import { QuoteForm } from "@/components/forms/QuoteForm";
 import { services, getServiceBySlug } from "@/content/services";
 import { getProductsFor } from "@/content/products";
 
@@ -71,14 +70,6 @@ export default async function ServicePage({
         {hero}
         <ServiceOverview service={service} />
 
-        {/* Services with no range still get quoted; there is just no catalogue
-            above the form. */}
-        <section className="bg-white pb-14 md:pb-20">
-          <Container className="max-w-3xl">
-            <QuoteForm service={service.name} />
-          </Container>
-        </section>
-
         <BookingSection />
       </>
     );
@@ -114,13 +105,6 @@ export default async function ServicePage({
                 serviceSlug={service.slug}
                 serviceName={service.name}
               />
-            </div>
-
-            {/* Directly under the range, while the reader is still looking at
-                the thing they want priced. The general booking section below
-                asks for an inspection, which is a different commitment. */}
-            <div className="mt-14">
-              <QuoteForm service={service.name} />
             </div>
           </div>
         </Container>

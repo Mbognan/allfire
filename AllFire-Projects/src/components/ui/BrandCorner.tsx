@@ -14,17 +14,21 @@ export function BrandCorner({
   position = "top-right",
   className,
 }: {
-  position?: "top-right" | "bottom-left";
+  /** top-left mirrors the ribbon horizontally so a section can be framed. */
+  position?: "top-right" | "bottom-left" | "top-left";
   className?: string;
 }) {
-  const flip = position === "bottom-left";
+  const rotated = position === "bottom-left";
+  const mirrored = position === "top-left";
 
   return (
     <div
       aria-hidden="true"
       className={cn(
-        "pointer-events-none absolute -z-10 h-64 w-[38rem] max-w-[85%] overflow-hidden md:h-80",
-        flip ? "bottom-0 left-0 rotate-180" : "top-0 right-0",
+        "pointer-events-none absolute -z-10 h-64 w-152 max-w-[85%] overflow-hidden md:h-80",
+        rotated && "bottom-0 left-0 rotate-180",
+        mirrored && "top-0 left-0 -scale-x-100",
+        !rotated && !mirrored && "top-0 right-0",
         className
       )}
     >
@@ -55,15 +59,30 @@ export function BrandCorner({
           ))}
         </g>
 
+        {/*
+          Ribbons.
+
+          Both tapers used to run to a mathematical point where the curve met
+          the top edge, and a zero-width tip renders as a hairline splinter that
+          reads as a rendering artefact rather than as ink. Each path now ends on
+          a short arc, so the ribbon closes with a rounded nose. strokeLinejoin
+          rounds the remaining corner where the taper meets the edge.
+        */}
         {/* Outer (yellow to orange) ribbon */}
         <path
-          d="M600 -10 L600 190 C 470 150, 430 60, 250 -10 Z"
+          d="M600 -10 L600 190 C 470 150, 430 60, 286 6 C 268 -1, 258 -8, 250 -10 Z"
           fill="url(#allfire-swoosh-a)"
+          stroke="url(#allfire-swoosh-a)"
+          strokeWidth="10"
+          strokeLinejoin="round"
         />
         {/* Inner (orange to red) ribbon, offset so both edges read */}
         <path
-          d="M600 -10 L600 120 C 500 92, 452 40, 356 -10 Z"
+          d="M600 -10 L600 120 C 500 92, 452 40, 384 4 C 370 -2, 362 -8, 356 -10 Z"
           fill="url(#allfire-swoosh-b)"
+          stroke="url(#allfire-swoosh-b)"
+          strokeWidth="10"
+          strokeLinejoin="round"
         />
       </svg>
     </div>

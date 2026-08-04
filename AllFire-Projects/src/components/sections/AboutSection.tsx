@@ -114,7 +114,7 @@ export function AboutSection() {
 
               <div className="mt-8">
                 <Button href="#booking" variant="primary">
-                  Book an inspection
+                  Request a quote
                 </Button>
               </div>
             </div>
