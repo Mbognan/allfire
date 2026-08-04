@@ -56,7 +56,8 @@ export function LandmarkShowcase() {
   return (
     <section className="relative isolate overflow-hidden bg-paper py-20 md:py-28">
       <Container>
-        <div className="max-w-2xl">
+        {/* Centred over the rail, which runs the full container width. */}
+        <div className="mx-auto max-w-2xl text-center">
           <Eyebrow>Where we work</Eyebrow>
           <SectionHeading
             className="mt-5"

@@ -2,9 +2,8 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
-import { CheckIcon } from "@/components/ui/Icon";
+import { BrandCorner } from "@/components/ui/BrandCorner";
 import { Button } from "@/components/ui/Button";
-import { productsStatement, licensedWork, licenceClass } from "@/content/accreditation";
 
 export function ServicesSection() {
   return (
@@ -15,7 +14,17 @@ export function ServicesSection() {
        thirteenth photograph: the grid was competing with its own background and
        every card needed a scrim to survive it. On white the artwork is the only
        imagery in the section and the cards need no defending. */
-    <section id="services" className="relative scroll-mt-20 bg-white py-20 md:py-28">
+    <section id="services" className="relative isolate scroll-mt-20 bg-white py-20 md:py-28">
+      {/* The letterhead ribbon, at the seam between Our Story and Our Services.
+
+          Both sections are white, so without it the two run together as one
+          long field. The ribbon marks the join and is the only brand colour in
+          the section's chrome, now that the backdrop photograph is gone.
+
+          `isolate` on the section is required: BrandCorner sits at -z-10 and
+          would otherwise fall behind the section's own background. */}
+      <BrandCorner position="top-right" />
+
       <Container>
         {/* Heading only.
 
@@ -27,7 +36,9 @@ export function ServicesSection() {
 
             The "these five are where most buildings start" line is gone too.
             The grid now shows the range rather than summarising it. */}
-        <div className="max-w-2xl">
+        {/* Centred. The grid below is a symmetrical twelve-cell block, so a
+            left-aligned header sat off-axis against it. */}
+        <div className="mx-auto max-w-2xl text-center">
           <Eyebrow>Our services</Eyebrow>
           <SectionHeading
             className="mt-5"
@@ -38,43 +49,20 @@ export function ServicesSection() {
 
         <ServicesGrid />
 
-        <div className="mt-12">
+        {/* Centred with the header, so the section reads on one axis. */}
+        <div className="mt-12 flex justify-center">
           <Button href="/services" variant="outline" withArrow>
             View all services
           </Button>
         </div>
 
-        {/* Licensed classes of work. This is hard credential detail, so it is
-            set as a dense two-column list rather than more cards. */}
-        <div className="mt-16 border-t border-line pt-12">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-            <div>
-              {/* Was "And so much more", which filed the hardest credential
-                  detail on the page under an infomercial line. */}
-              <h3 className="font-display text-2xl font-bold text-ink uppercase md:text-3xl">
-                Licensed Class {licenceClass}
-              </h3>
-              <p className="mt-4 text-ink-soft">
-                {productsStatement} As an FPA Australia member we hold Class {licenceClass}{" "}
-                licences across the following classes of work.
-              </p>
-            </div>
+        {/* The licensed classes of work block was removed at the client's
+            request. It listed nine Class C licence classes with the products
+            statement beside them.
 
-            <ul className="grid grid-cols-1 gap-x-8 gap-y-1 sm:grid-cols-2">
-              {licensedWork.map((item) => (
-                <li
-                  key={item}
-                  className="flex items-start gap-2.5 border-b border-line py-2.5 text-sm text-ink-soft"
-                >
-                  {/* flame-red-deep, not yellow: yellow was chosen to carry on
-                      ink and fails contrast on white. */}
-                  <CheckIcon className="mt-1 h-3.5 w-3.5 shrink-0 text-flame-red-deep" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+            The data is untouched in content/accreditation.ts and still reads
+            elsewhere, so reinstating it is an import and a block, not a
+            retype. */}
       </Container>
     </section>
   );

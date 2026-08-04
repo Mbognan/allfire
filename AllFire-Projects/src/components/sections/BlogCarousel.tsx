@@ -33,8 +33,14 @@ export function BlogCarousel() {
     <section id="insights" className="relative isolate scroll-mt-20 overflow-hidden bg-white py-20 md:py-28">
       <BrandCorner position="bottom-left" />
       <Container>
-        <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
-          <div className="max-w-2xl">
+        {/* Heading centred, arrows below it rather than beside.
+
+            The header was a two-column row: heading left, arrows right. Centring
+            the heading inside that row would have left the arrows floating
+            opposite nothing, so the row becomes a stack and the controls sit
+            under the title on the same axis. */}
+        <div className="flex flex-col items-center gap-6">
+          <div className="max-w-2xl text-center">
             <Eyebrow>Insights</Eyebrow>
             <SectionHeading
               className="mt-5"
