@@ -6,7 +6,7 @@ import { BookingSection } from "@/components/sections/BookingSection";
 import { BlogList } from "@/components/blog/BlogList";
 
 export const metadata: Metadata = {
-  title: "Fire Safety Insights",
+  title: "Fire Safety Insightss",
   description:
     "Plain-language answers to the fire compliance questions Sydney strata managers, building owners and facility managers actually search for.",
   alternates: { canonical: "/blog" },
